@@ -1,9 +1,10 @@
-function [ C ] = APSolve( O )
-%APSolve Calculate unique parameters of Access Point using observed RSSI
+function [ J ] = APSolve( C, O )
+%APSolve Objective function for calculating parameters of Access Point using observed RSSI
 %   O [in]  - Matrix of RSSI values from known locations relevant to
 %       to this Access Point (RSSI, X_long, X_lat)
-%   C [out] - Vector of calculated AP parameters:
+%   C [in] - Vector of AP parameters:
 %       c longtitude, c latitude, transmit power, path loss rate
+%   J [out] - Error between observed and estimated RSSI
 %
 %   Requires at least 5 fixed locations (rows in O) to solve all 4 AP parameters
 %   If not enough fixed locations are visible, use APRandomInit
@@ -14,14 +15,13 @@ assert(size(O,1) > 4, 'Must have at least 5 fixed locations for unique solution'
 
 %d_ij = sqrt((x_jx - c_ix)^2 + (x_jy - c_iy)^2)
 
-syms c_ix c_iy P_i gamma_i;
-equations = [];
+error = zeros(size(0,1));
 
 for j = 1:size(O,1)
-    eqn = P_i - ((10 * gamma_i) * log(sqrt((O(j,2) - c_ix)^2 + (O(j,3) - c_iy)^2))) == O(j,1);
-    equations = [equations, eqn];
+    error(j) = O(j,1) - C(3) + ((10 * C(4)) * log(sqrt((O(j,2) - C(1))^2 + (O(j,3) - C(2))^2)));
 end
-C = solve(equations, [c_ix, c_iy, P_i, gamma_i]);
-    
+
+J = median(sort(abs(error)));
+
 end
 
