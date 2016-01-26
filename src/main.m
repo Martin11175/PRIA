@@ -4,8 +4,12 @@
 % Load raw data from CSV
 srcData = csvread('trainingData.csv', 1);
 
+% Progression sound
+blip = 0.3*sin(linspace(0, 0.1*430*2*pi, round(0.1*1000)));
+
 floor = 1;
 building = 1;
+threshold = -75;
 
 % Isolate a 2D sub-space (single floor of single building)
 rows = ((srcData(:,523) == floor) & (srcData(:,524) == building));
@@ -20,8 +24,7 @@ C = zeros(520, 4);
 error = zeros(520,1);
 for i = 1:520
     % Find which observations include our desired AP
-    %J = ((-75 < dataSet(:,i)) & (dataSet(:,i) < 0));
-    J = (dataSet(:,i) < 0);
+    J = ((threshold < dataSet(:,i)) & (dataSet(:,i) < 0));
     O = dataSet(J,[i 521 522]);
     
     if size(O,1) > 5
@@ -42,10 +45,16 @@ for i = 1:520
         options = optimset('display','off');
         [C(i,:), error(i)] = simulannealbnd(objective, C0, lower, upper, options);
     end
+    
+    % Play progression sound every 100 APs
+    if mod(i,100) == 0
+       sound(blip, 1000);
+       fprintf('i = %d\n',i);
+    end
 end
 
-% Play 2 seconds of 50Hz sound on completion
-sound(sin(linspace(0, 2*50*2*pi, round(2*1000))), 1000)
+% Play sound on completion
+beep;
 display(mean(error(error~=0)))
 
 % TODO: ERSGA
