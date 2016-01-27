@@ -7,13 +7,17 @@ srcData = csvread('trainingData.csv', 1);
 % Progression sound
 blip = 0.3*sin(linspace(0, 0.1*430*2*pi, round(0.1*1000)));
 
-floor = 1;
-building = 1;
-threshold = -75;
+floor = 0;
+building = 0;
+threshold = -50;
 
 % Isolate a 2D sub-space (single floor of single building)
 rows = ((srcData(:,523) == floor) & (srcData(:,524) == building));
 dataSet = srcData(rows, :);
+
+% Scale data to a local space
+dataSet(:,521) = dataSet(:,521) - (min(dataSet(:,521)) - 50);
+dataSet(:,522) = dataSet(:,522) - (min(dataSet(:,522)) - 50);
 
 % TODO: Identify set of most useful locations
 
@@ -49,13 +53,15 @@ for i = 1:520
     % Play progression sound every 100 APs
     if mod(i,100) == 0
        sound(blip, 1000);
-       fprintf('i = %d\n',i);
+       fprintf('Building %d, Floor %d, Threshold %d, i = %d\n', floor, building, threshold, i);
     end
 end
 
 % Play sound on completion
 beep;
-display(mean(error(error~=0)))
+mean(error(error~=0))
+
+PlotFloor(C, dataSet(:,[521 522]))
 
 % TODO: ERSGA
 
