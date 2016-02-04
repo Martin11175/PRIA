@@ -14,7 +14,7 @@ end
 
 % Colour and topography ring definition
 colours = ['r' 'y' 'g' 'c' 'b'];
-ang=0:0.01:2*pi;
+angle=0:0.01:2*pi;
 
 % Plot Access Points as topographical rings
 I = I((I(:,4) ~= 0),:); % Remove undefined APs
@@ -24,10 +24,10 @@ for i = I'
     n = 1;
     for rss = [-40 -55 -70 -85 -100]
         % Distance = strength difference divided by path loss rate
-        r = (rss - i(3)) / i(4);
-        xp=r*cos(ang);
-        yp=r*sin(ang);
-        plot(i(1)+xp, i(2)+yp, colours(n));
+        radius = (rss - i(3)) / i(4);
+        xrotation = radius * cos(angle);
+        yrotation = radius * sin(angle);
+        plot(i(1) + xrotation, i(2) + yrotation, colours(n));
         
         n = n + 1;
     end
