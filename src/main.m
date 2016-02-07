@@ -8,9 +8,9 @@ testData = csvread('validationData.csv', 1);
 floor = 0;
 building = 0;
 threshold = -70;
-bounds = 100;
+bounds = 50;
 
-for threshold = [-100 -90 -80 -75 -70 -65 -60 -50]
+%for threshold = [-100 -90 -80 -75 -70 -65 -60 -50]
 
 % Isolate a 2D sub-space (single floor of single building)
 rows = ((srcData(:,523) == floor) & (srcData(:,524) == building));
@@ -20,13 +20,24 @@ dataSet = srcData(rows, :);
 dataSet(:,521) = dataSet(:,521) - (min(dataSet(:,521)) - bounds);
 dataSet(:,522) = dataSet(:,522) - (min(dataSet(:,522)) - bounds);
 
-% TODO: Identify set of most useful locations
+%-----------------------------EZ-ALGORITHM--------------------------------%
 
-% TODO: Identify set of most useful APs
+% APSelect Algorithm
+normalisedData = 1 - (abs(dataSet(:, 1:520)) / 100);
+rank = zeros(520, 1);
+for i = 1:520 % Rank by number of visible known locations
+    % TODO: Omit visible places with threshold too?
+    rank(i) = size(find(dataSet(normalisedData(:,i) > 0, 521) > 0), 1);
+end
+APSelect = HeirarchicalCluster(normalisedData, rank);
+
+% LocSelect Algorithm
+% TODO: Test efficacy of LocSelect
+%LocSelect = HeirarchicalCluster(normalisedData', zeros(size(normalisedData',1),1));
 
 % For each access point i
 APparams = zeros(520, 4);
-for i = 1:520
+for i = APSelect
     % Find which observations include our desired AP
     J = ((threshold < dataSet(:,i)) & (dataSet(:,i) < 0));
     O = dataSet(J,[i 521 522]);
@@ -41,7 +52,7 @@ for i = 1:520
         %   Transmit power: 0 to -boundsdBm
         %   Path loss: 1.5 to 6.0 from EZ's trials
         % TODO: In report mention that most access points were hitting the 1.5 bound
-        lower = [min(O(:,2)) - bounds, min(O(:,3)) - bounds, -bounds, 0.5];
+        lower = [min(O(:,2)) - bounds, min(O(:,3)) - bounds, -bounds, 1.5];
         upper = [max(O(:,2)) + bounds, max(O(:,3)) + bounds, 0, 6.0];
 
         % Perform simulated annealing, starting from average values
@@ -93,8 +104,8 @@ for j = dataSet'
     n = n + 1;
 end
 
-fprintf('%d: %d/%d localised. %f mean IPS error, %f mean RSSI error \n', threshold, size(find(IPSerror),1), size(IPSerror,1), mean(IPSerror(IPSerror > 0)), mean(RSSIerror(RSSIerror > 0)))
+fprintf('%d: %d/%d localised. %f median IPS error, %f median RSSI error \n', threshold, size(find(IPSerror),1), size(IPSerror,1), median(IPSerror(IPSerror > 0)), median(RSSIerror(RSSIerror > 0)))
 
-end
+%end
 beep;
 % TODO: Average RSS Map (remember -100 if AP not visible, ignore unclassified APs)
