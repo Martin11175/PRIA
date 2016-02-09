@@ -4,7 +4,7 @@ function [ e ] = APSolve( C, O )
 %       to this Access Point (RSSI, X_long, X_lat)
 %   C [in] - Matrix of AP parameters:
 %       c longtitude, c latitude, transmit power, path loss rate
-%   e [out] - Error between observed and estimated RSSI
+%   e [out] - Error between observed and modelled RSSI
 %
 %   Requires at least 5 fixed locations (rows in O) to solve all 4 AP parameters
 
