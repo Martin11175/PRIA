@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2015.9.4)  26 JAN 2016 13:05
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2015.9.4)  3 FEB 2016 14:56
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -711,17 +711,17 @@ Package pdftex.def Info: EZHorusRADARComparison.png used on input line 148.
 chapter 3.
 [16
 
-]
+] [17]
 chapter 4.
-[17
-
-]
-chapter 5.
 [18
 
 ]
+chapter 5.
+[19
+
+]
 chapter 6.
-(./Crowd-sourced Building Analytics.bbl [19
+(./Crowd-sourced Building Analytics.bbl [20
 
 ]
 Underfull \hbox (badness 10000) in paragraph at lines 43--47
@@ -747,23 +747,23 @@ Underfull \hbox (badness 4341) in paragraph at lines 43--47
 d-[]commute-[]times/$[], [Ac-cessed: Nov.
  []
 
-[20
+[21
 
 ])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 200.
- [21]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 200.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 204.
+ [22]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 204.
  (./Crowd-sourced Building Analytics.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 200.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 200.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 204.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 204.
 Package rerunfilecheck Info: File `"Crowd-sourced Building Analytics".out' has 
 not changed.
 (rerunfilecheck)             Checksum: C9BB92C456F3FD371A9D88B563F11BBF;756.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 200.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 204.
  ) 
 Here is how much of TeX's memory you used:
- 11134 strings out of 493091
- 170844 string characters out of 6138532
+ 11135 strings out of 493091
+ 170851 string characters out of 6138532
  350011 words of memory out of 5000000
  14061 multiletter control sequences out of 15000+600000
  72209 words of font info for 323 fonts, out of 8000000 for 9000
@@ -780,11 +780,11 @@ live/2015/texmf-dist/fonts/type1/public/fpl/fplrij8a.pfb><c:/texlive/2015/texmf
 e1/urw/helvetic/uhvr8a.pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw/palatino
 /uplb8a.pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb><c:
 /texlive/2015/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on "Crowd-sourced Building Analytics.pdf" (21 pages, 303642 byte
+Output written on "Crowd-sourced Building Analytics.pdf" (22 pages, 304670 byte
 s).
 PDF statistics:
- 310 PDF objects out of 1000 (max. 8388607)
- 263 compressed objects within 3 object streams
- 66 named destinations out of 1000 (max. 500000)
+ 315 PDF objects out of 1000 (max. 8388607)
+ 267 compressed objects within 3 object streams
+ 67 named destinations out of 1000 (max. 500000)
  40568 words of extra memory for PDF output out of 42996 (max. 10000000)
 

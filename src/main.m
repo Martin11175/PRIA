@@ -22,6 +22,9 @@ dataSet(:,522) = dataSet(:,522) - (min(dataSet(:,522)) - bounds);
 
 %-----------------------------EZ-ALGORITHM--------------------------------%
 
+% Relative Gain Estimation Algorithm
+G = RGEA(srcData(:, 1:520), srcData(:, 528));
+
 % APSelect Algorithm
 normalisedData = 1 - (abs(dataSet(:, 1:520)) / 100);
 rank = zeros(520, 1);
@@ -84,7 +87,7 @@ for j = dataSet'
     I = ((threshold < j(1:520)) & (j(1:520) < 0));
     O = j(I);
     C = APparams(I, :);
-    
+        
     if size(O,1) > 2
         % Fix parameters to search over
         objective = @(J) LocSolve(J, O, C);

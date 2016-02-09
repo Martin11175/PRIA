@@ -17,6 +17,7 @@ while max_similarity > 0.9
     for i = 1:(size(C,2) - 1)
         for j = (i + 1):size(C,2) % Don't re-evaluate cluster pairs
             % Similarity between clusters is average of all inter-cluster pairs
+            % TODO: size(_(==), _) -> sum(==)
             pair_sim = zeros(size(find(Z == C(i)),2), size(find(Z == C(j)),2));
             count_x = 1;
             for x = X(:, Z == C(i))
