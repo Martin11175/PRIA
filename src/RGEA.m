@@ -11,7 +11,7 @@ J(J == 100) = -100; % Replace positive invisibility markers to prevent skew
 deltaG = zeros(size(D,1));
 sigma_deltaG = zeros(size(D,1)); % Uncertainty (estimated standard deviation)
 % TODO: parfor to increase performance?
-parfor i = 1:(size(D,1) - 1)
+for i = 1:(size(D,1) - 1)
     for j = (i+1):size(D,1)
         
         % Test pairs of measurements for proximity by similarity
