@@ -2,8 +2,8 @@
 % Author: mh881@york.ac.uk
 
 % Load raw data from CSV
-srcData = csvread('trainingData.csv', 1);
-testData = csvread('validationData.csv', 1);
+srcData = csvread('UJIndoorLoc/trainingData.csv', 1);
+testData = csvread('UJIndoorLoc/validationData.csv', 1);
 
 floor = 0;
 building = 0;
