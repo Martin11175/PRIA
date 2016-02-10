@@ -5,6 +5,14 @@
 srcData = csvread('UJIndoorLoc/trainingData.csv', 1);
 testData = csvread('UJIndoorLoc/validationData.csv', 1);
 
+% Scale known location data to a local space
+min_lat = min(srcData(:,521));
+min_long = min(srcData(:,522));
+srcData(:,521) = srcData(:,521) - (min_lat - bounds);
+srcData(:,522) = srcData(:,522) - (min_long - bounds);
+testData(:,521) = testData(:,521) - (min_lat - bounds);
+testData(:,522) = testData(:,522) - (min_long - bounds);
+
 floor = 0;
 building = 0;
 threshold = -70;
@@ -16,14 +24,10 @@ bounds = 50;
 rows = ((srcData(:,523) == floor) & (srcData(:,524) == building));
 dataSet = srcData(rows, :);
 
-% Scale data to a local space
-dataSet(:,521) = dataSet(:,521) - (min(dataSet(:,521)) - bounds);
-dataSet(:,522) = dataSet(:,522) - (min(dataSet(:,522)) - bounds);
-
 %-----------------------------EZ-ALGORITHM--------------------------------%
 
 % Relative Gain Estimation Algorithm
-G = RGEA(srcData(:, 1:520), srcData(:, 528));
+G = SimpleRGEA(srcData(:, 1:520), srcData(:, 528), srcData(:,521:523));
 
 % APSelect Algorithm
 normalisedData = 1 - (abs(dataSet(:, 1:520)) / 100);
@@ -72,10 +76,6 @@ end
 % Isolate a 2D sub-space (single floor of single building)
 rows = ((testData(:,523) == floor) & (testData(:,524) == building));
 dataSet = testData(rows, :);
-
-% Scale validation data to a local space
-dataSet(:,521) = dataSet(:,521) - (min(dataSet(:,521)) - bounds);
-dataSet(:,522) = dataSet(:,522) - (min(dataSet(:,522)) - bounds);
 
 % Localise validation data
 IPSresults = zeros(size(dataSet,1),2);

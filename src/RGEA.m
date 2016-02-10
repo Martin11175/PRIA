@@ -1,5 +1,5 @@
 function [ G ] = RGEA( J, K )
-%RGEA Relative Gain Estimation Algorithm
+%RGEA EZ Relative Gain Estimation Algorithm
 %   J [in] - Matrix of RSSI measurements (APs as columns)
 %   K [in] - Vector of device IDs relating rows to device
 %   G [out] - Estimated gain by device ID
@@ -17,6 +17,7 @@ for i = 1:(size(D,1) - 1)
         % Test pairs of measurements for proximity by similarity
         avg_diff = zeros(sum(K == D(i)), sum(K == D(j)));
         
+        % TODO: Difference matrix between vectors = bsxfun(@minus, x, x')
         count_m = 1;
         for m = J(K == D(i), :)'
             count_n = 1;

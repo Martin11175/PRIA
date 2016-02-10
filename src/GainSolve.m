@@ -10,12 +10,19 @@ error_matrix = zeros(size(deltaG,1), size(deltaG,2));
 
 for i = 1:size(deltaG,1)
     for j = 1:size(deltaG,2)
-        % TODO: 1/sigma instead? Currently weighs greater deviation as higher
-        error_matrix(i,j) = sigma_deltaG * (G(i) - G(j) - deltaG(i,j))^2;
+        if deltaG(i,j) ~= 0
+            % TODO: 1/sigma instead? Currently weighs greater deviation as higher
+            % TODO: Tune the 100? Setting larger values will cause the
+            %   simulated annealing to search longer?
+            error_matrix(i,j) = 100 * sigma_deltaG(i,j) * (G(i) - G(j) - deltaG(i,j))^2;
+        end
     end
 end
 
-e = mean(error_matrix(error_matrix > 0));
+e = mean2(error_matrix);
+
+% TODO: Tune Occam's razor?
+e = e + (0.1 * mean(abs(G)));
 
 end
 
