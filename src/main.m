@@ -5,6 +5,11 @@
 srcData = csvread('UJIndoorLoc/trainingData.csv', 1);
 testData = csvread('UJIndoorLoc/validationData.csv', 1);
 
+floor = 0;
+building = 0;
+threshold = -70;
+bounds = 50;
+
 % Scale known location data to a local space
 min_lat = min(srcData(:,521));
 min_long = min(srcData(:,522));
@@ -12,11 +17,6 @@ srcData(:,521) = srcData(:,521) - (min_lat - bounds);
 srcData(:,522) = srcData(:,522) - (min_long - bounds);
 testData(:,521) = testData(:,521) - (min_lat - bounds);
 testData(:,522) = testData(:,522) - (min_long - bounds);
-
-floor = 0;
-building = 0;
-threshold = -70;
-bounds = 50;
 
 %for threshold = [-100 -90 -80 -75 -70 -65 -60 -50]
 
@@ -27,7 +27,11 @@ dataSet = srcData(rows, :);
 %-----------------------------EZ-ALGORITHM--------------------------------%
 
 % Relative Gain Estimation Algorithm
-G = SimpleRGEA(srcData(:, 1:520), srcData(:, 528), srcData(:,521:523));
+G = GroundRGEA(srcData(:, 1:520), srcData(:, 528), srcData(:,521:523));
+for d = G'
+    deviceMeas = srcData(:,528) == d(1);
+    srcData(deviceMeas, 1:520) = srcData(deviceMeas, 1:520) - d(2);
+end
 
 % APSelect Algorithm
 normalisedData = 1 - (abs(dataSet(:, 1:520)) / 100);

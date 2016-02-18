@@ -2,7 +2,10 @@ function [ G ] = RGEA( J, K )
 %RGEA EZ Relative Gain Estimation Algorithm
 %   J [in] - Matrix of RSSI measurements (APs as columns)
 %   K [in] - Vector of device IDs relating rows to device
-%   G [out] - Estimated gain by device ID
+%   G [out] - Pairs of device IDs (1) to estimated gain (2)
+
+prox_threshold = 3;
+min_AP_overlap = 2;
 
 D = sort(unique(K)); % List of device IDs
 J(J == 100) = -100; % Replace positive invisibility markers to prevent skew
@@ -24,22 +27,24 @@ for i = 1:(size(D,1) - 1)
             for n = J(K == D(j), :)'
                 % Only compare APs visible at at least one location
                 vis = (m > -100) | (n > -100);
-                avg_diff(count_m, count_n) = mean(m(vis) - n(vis));
-                count_n = count_n + 1;
+                if(sum(vis) > min_AP_overlap && mean(abs(m(vis) - n(vis))) < prox_threshold)
+                    avg_diff(count_m, count_n) = mean(m(vis) - n(vis));
+                    count_n = count_n + 1;
+                end
             end
             count_m = count_m + 1;
         end
         
         % Compare all proximate locations
-        prox = abs(avg_diff) < 3; % Too high? > 50 matching n per m!
+        prox = abs(avg_diff) < prox_threshold & (avg_diff ~= 0);
         
-        if sum(sum(prox)) > 0
+        if sum(sum(prox)) > 10
             deltaG(i, j) = mean(avg_diff(prox));
             deltaG(j, i) = -deltaG(i, j);
             sigma_deltaG(i, j) = (1 / sum(sum(prox))) * sqrt(sum((avg_diff(prox) - deltaG(i,j)).^2));
             sigma_deltaG(j, i) = sigma_deltaG(i, j);
         end
-        fprintf('%d:%d / %d\n', i, j, size(D,1))
+        fprintf('%f | %d:%d / %d\n', deltaG(i,j), i, j, size(D,1))
     end
 end
 
@@ -57,6 +62,8 @@ upper = zeros(size(D,1), 1) + 20;
 G0 = zeros(size(D,1), 1);
 options = optimset('display','off');
 G = simulannealbnd(objective, G0, lower, upper, options);
+
+G = [D G];
 
 end
 
