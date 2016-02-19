@@ -82,6 +82,8 @@ rows = ((testData(:,523) == floor) & (testData(:,524) == building));
 dataSet = testData(rows, :);
 
 % Localise validation data
+% TODO: Can we change this to least-squares constraint solving of the form
+% C.x = d? (See RGEA solvers)
 IPSresults = zeros(size(dataSet,1),2);
 RSSIerror = zeros(size(dataSet,1),1);
 IPSerror = zeros(size(dataSet,1),1);
