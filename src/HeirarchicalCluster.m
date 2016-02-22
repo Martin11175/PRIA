@@ -15,17 +15,14 @@ while max_similarity > threshold_similarity
     C = sort(unique(Z)); % Clusters to be evaluated
     
     % Calculate similarity and mark maximum on each pass
-    % TODO: Replace i and j with nchoosek
-    for i = 1:(size(C,2) - 1)
-        for j = (i + 1):size(C,2) % Don't re-evaluate cluster pairs
+    for i = nchoosek(unique(C), 2)'
             % Similarity between clusters is average of all inter-cluster pairs
-            % TODO: size(_(==), _) -> sum(==)
             % TODO: Difference matrix between vectors = bsxfun(@minus, x, x')
-            pair_sim = zeros(size(find(Z == C(i)),2), size(find(Z == C(j)),2));
+            pair_sim = zeros(sum(Z == i(1)), sum(Z == i(2)));
             count_x = 1;
-            for x = X(:, Z == C(i))
+            for x = X(:, Z == i(1))
                 count_y = 1;
-                for y = X(:, Z == C(j))
+                for y = X(:, Z == i(2))
                     pair_sim(count_x, count_y) = 1 - (1 / size(X,2) * sum(abs(x - y)));
                     count_y = count_y + 1;
                 end
@@ -35,14 +32,10 @@ while max_similarity > threshold_similarity
             
             if similarity > max_similarity
                 max_similarity = similarity;
-                cluster = [C(i) C(j)]; % Pair of clusters to merge
+                cluster = i; % Pair of clusters to merge
             end
             
-            % Nothing can be more similar than exact (speed boost)
-            if max_similarity == 1
-                break;
-            end
-        end
+        % Nothing can be more similar than exact (speed boost)
         if max_similarity == 1
             break;
         end
@@ -72,7 +65,7 @@ for c = sort(unique(Z))
                     avg_similarity = avg_similarity + (1 - (1 / size(X,2) * sum(abs(X(:,i) - X(:,j)))));
                 end
             end
-            avg_similarity = avg_similarity / (size(find(Z == c), 2) - 1);
+            avg_similarity = avg_similarity / (sum(Z == c) - 1);
             
             if avg_similarity > best_avg_similarity
                 best_avg_similarity = avg_similarity;
