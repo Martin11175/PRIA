@@ -171,13 +171,13 @@
 
 	\chapter{Method}
 	
-		This chapter will cover the development of an indoor positioning system from which positioning data and Wireless AP models can be extracted for use as part of a general building model. The  model will follow the techniques as specified in the EZ localisation system \citep{chintalapudi2010indoor} with measurements from the UJIIndoorLoc data set for testing and evaluation purposes.
+		This chapter will cover the development of an indoor positioning system from which positioning data and Wireless AP models can be extracted for use as part of a general building model. The  model will follow the techniques as specified in the EZ localisation system \citep{chintalapudi2010indoor} with measurements from the UJIIndoorLoc data set for testing and evaluation purposes \citep{torres2014ujiindoorloc}.
 		
 		\section{System Specification}
 		
 			\begin{itemize}
 				\item Extract requirements from EZ spec
-				\item Design set of components in UML (pipe & filter?)
+				\item Design set of components in UML (pipe \& filter?)
 				\item State why components are useful
 				\item Test according to requirements (profiler)
 				\item \textcolor{red}{Repeat per component?!}
@@ -191,7 +191,7 @@
 				\item Using entire data set to estimate gain as should provide most average picture, but then modelling 2D subspaces as techniques are most tested in 2D realm
 				\item Implementation of ground truth RGEA for evaluation (noticable speed difference because only comparing the 3 parameters)
 				\item In EZ spec, compare all APs, led to far too many proximate measurements and completely connected graph of relative gains (unsatisfiable)
-				\item System of linear equations ($1k_i + 1k_j = V_ij$), underspecified for number of gains to be solved, but simulated annealing performs far worse (and modifies irrelevant parameters). Determines MSE and prioritised initially by sigma_deltaG, but this causes exponential increase in priority for very little increase in probability through bell curve.
+				\item System of linear equations ($1k_i + 1k_j = V_ij$), underspecified for number of gains to be solved, but simulated annealing performs far worse (and modifies irrelevant parameters). Determines MSE and prioritised initially by \texttt{sigma\_deltaG}, but this causes exponential increase in priority for very little increase in probability through bell curve.
 				\item Simplified RGEA compares only those where the strongest RSSIs were of the same APs. Massive speed gains as only comparing similar number of parameters to ground truth.
 			\end{itemize}
 		
@@ -230,7 +230,7 @@
 			\item Test same parameters across other data sets (library and computer lab) for consistent levels of accuracy
 		\end{itemize}
 		
-		\textcolor{blue}{\emph{\[GOOD PIECES WITHIN\]} - Testing should show validation as well as evaluation of the new model. Validation could explain how increasing threshold level will remove APs from other floors, but also potentially remove small overlaps from nearby buildings (i.e. if an AP is visible only in a small area near the edge of the building, seeing that AP means the location must me in that space). A similar effect could potentially be observed across floors (i.e. the AP only being visible if the location is directly below it), but this would require a much wider domain for parameters, such as extremely low transmission powers or extremely high path loss rates. However, use of these extremes, could be identified and used to help place the AP on another floor with some defined loss across floors like the WAF used in RADAR.}
+		\textcolor{blue}{\emph{\[GOOD PIECES WITHIN\]}Testing should show validation as well as evaluation of the new model. Validation could explain how increasing threshold level will remove APs from other floors, but also potentially remove small overlaps from nearby buildings (i.e. if an AP is visible only in a small area near the edge of the building, seeing that AP means the location must me in that space). A similar effect could potentially be observed across floors (i.e. the AP only being visible if the location is directly below it), but this would require a much wider domain for parameters, such as extremely low transmission powers or extremely high path loss rates. However, use of these extremes, could be identified and used to help place the AP on another floor with some defined loss across floors like the WAF used in RADAR.}
 	
 	\chapter{Further Work}
 	
