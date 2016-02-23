@@ -170,28 +170,67 @@
             Finally sets of constraints were identified for generating possible floor plans based on estimated dimensions. While restrictive in their application to walls in the four cardinal directions, this fits common traditional layouts of buildings and it is anticipated that more complex arrangements could be broken down into rectangular subspaces to build in. Through combinations of the described techniques this report will now explore ways in which a system might determine room usage from a set of simple crowd-sourced data.
 
 	\chapter{Method}
-    
-        \textcolor{blue}{Initial experiments with 2D subspace proved unsuccessful (gather results?) as it was unknowingly mapping a 3D space onto 2D space. With no AP location data to base from, we can attempt mapping AP's in 3D space relative to the 2D locations with a fixed floor height, or threshold RSSI values to indicate that the AP and the observation were on the same floor (as floors a generally made of concrete, especially in the UK because of building regulations? Needs source, should also then explain that it may be less applicable for smaller buildings then as they may not have this distinction?). Initial thresholding attempts have proved promising, now creating comparisons for various threshold values. Could also generate threshold by hill-climbing over GA results? Overparameterised then though??}
-        
-        \textcolor{blue}{GA runs risk of overfitting threshold. Show experiments with and without using thresholds, could simply increment by 2dB at a time. Create visualiser to show relative placement and accuracy using topographical map of signal strength. Use Spearman's rank correlation coefficient to show that including my threshold improves the 2D subspacial model. Then implement the rest of EZ and see what happens.}
-        
-        \textcolor{blue}{Testing should show validation as well as evaluation of the new model. Validation could explain how increasing threshold level will remove APs from other floors, but also potentially remove small overlaps from nearby buildings (i.e. if an AP is visible only in a small area near the edge of the building, seeing that AP means the location must me in that space). A similar effect could potentially be observed across floors (i.e. the AP only being visible if the location is directly below it), but this would require a much wider domain for parameters, such as extremely low transmission powers or extremely high path loss rates. However, use of these extremes, could be identified and used to help place the AP on another floor with some defined loss across floors like the WAF used in RADAR.}
-        
-        \textcolor{green}{System should be shown to be reaching maturity through evaluation and preparation for future use.}
 	
-		\textcolor{red}{Provide population usage as when so you can suggest substitutes (will require a metric). Bare in mind we will need some empirical data to compare the calculated metric to! Can include timetables or other information to provide ground truths (i.e. with the rise of contactless mobile payments in a shop, we can correlate an ApplePay payment with it's terminal and thereby it's precise location around which to base other learning)}
+		This chapter will cover the development of an indoor positioning system from which positioning data and Wireless AP models can be extracted for use as part of a general building model. The  model will follow the techniques as specified in the EZ localisation system \citep{chintalapudi2010indoor} with measurements from the UJIIndoorLoc data set for testing and evaluation purposes.
+		
+		\section{System Specification}
+		
+			\begin{itemize}
+				\item Extract requirements from EZ spec
+				\item Design set of components in UML (pipe & filter?)
+				\item State why components are useful
+				\item Test according to requirements (profiler)
+				\item \textcolor{red}{Repeat per component?!}
+			\end{itemize}
+		
+		\section{Data Preparation}
+		
+			\begin{itemize}
+				\item Data localised to much smaller area to prevent invalid scaling (initial readings in meters from lat, long 0,0)
+				\item RGEA run first to reduce artificial noise applied to RSSI measurements at each location
+				\item Using entire data set to estimate gain as should provide most average picture, but then modelling 2D subspaces as techniques are most tested in 2D realm
+				\item Implementation of ground truth RGEA for evaluation (noticable speed difference because only comparing the 3 parameters)
+				\item In EZ spec, compare all APs, led to far too many proximate measurements and completely connected graph of relative gains (unsatisfiable)
+				\item System of linear equations ($1k_i + 1k_j = V_ij$), underspecified for number of gains to be solved, but simulated annealing performs far worse (and modifies irrelevant parameters). Determines MSE and prioritised initially by sigma_deltaG, but this causes exponential increase in priority for very little increase in probability through bell curve.
+				\item Simplified RGEA compares only those where the strongest RSSIs were of the same APs. Massive speed gains as only comparing similar number of parameters to ground truth.
+			\end{itemize}
+		
+		\section{Heirarchical Clustering}
+		
+			\begin{itemize}
+				\item Emphasize necessity specifically with UJIIndoorLoc as measurements with lots of different devices taken at the same location and EZ requires readings at different distances to prevent skew when performing the GA.
+				\item EZ implementation requires \emph{HUGE} amounts of comparisons because of its fundamentally simple nature (profiling shows > 10,000,000 * 520 comparisons for AP clustering alone!)
+				\item Renders LocSelect computationally intractible using the UJIIndoorLoc data set
+				\item Worth a brief investigation into set clustering techniques? (already pruning on equivalent set discovery)
+				\item Simplified version using similar techniques to simplified RGEA to speed the process along
+			\end{itemize}
+		
+		\section{Model Creation}
+		
+			\begin{itemize}
+				\item Simulated annealing rather than GA on AP-by-AP basis (assuming independence) for speed of implementation
+				\item No real AP parameters specified as part of UJIIndoorLoc, localising data from 2D subspace with 3D readings doesn't work! Confirmed plans to provide more detailed data set in the near future (both the library piece on the website and a set from just their labs). Will test if released in time.
+				\item Mention possibility of localising in 3D, but increases number of parameters and required equations to solve for respectively
+				\item Thresholding idea to split 3D into set of 2D subspaces (does eliminate edge-case measurements which are niche, but powerful in isolating a very particular area of the building such as directly below and AP on the next floor or in the nearest building)
+				\item Thresholding parameters (number of max strenght measurements / threshold leve) could be determined through GA again, but this would run the risk of overfitting. State intent to experiment with parameters as they also affect the amount of data that can be localised in the test set.
+				\item \textcolor{red}{IMPLEMENT ERSGA}
+				\item Show maturity through completeness and preparation for future use
+				\item Simplified model uses only strongest measurements for model creation and localisation; avoids conflicting measurements, increases speed
+			\end{itemize}
         
-        \textcolor{red}{Metric based on size of room as well? E.g. A large room occupied with the same number of people as a smaller room is obviously under-occupied.}
-         
-        \textcolor{red}{How to tell the difference between unused space types that may or may not be walled off (i.e. cupboards / empty space like the stairwell)?}
-        
-        \textcolor{red}{Simplest approach could use base-station connectedness as the location and usage metric. Coarser granularity, but useful for comparison against my model when evaluating.}
-        
-        \textcolor{red}{How can we lever the clustering technique for sensors to create a wireless fingerprint of each room? Adjacent rooms are likely to have a drop if it's the first wall to come between the AP and the user, but as shown in RADAR, 3 or more walls have no more significant impact. Also noted through Richard George, doors create a guillotine effect, but do we count doorways with no doors as a separate room?}
-        
-        \textcolor{red}{Started implementing EZ. Using simulated annealing rather than GA on an AP-by-AP basis assuming they are independent, need to compare accuracy. Requested more details surrounding UJIIndoorLoc from authors as no AP information provided, causing inaccuracies when working in a 2D subspace (algorithm trying to locate an AP from a different floor on a 2D plane puts it way outside the building!).}
+	\chapter{Evaluation}
 	
-	\chapter{Results}
+		\textcolor{red}{Save actual quantifiable results for this section! Evaluate against requirements / massive discrepancies in method.}
+		\begin{itemize}
+			\item Parameter experimentation
+			\item Use PlotFloor to show difference between models with various pieces of the system included / excluded and parameters tweaked
+			\item Evaluate with noisy and partially localised data
+			\item Show validation as well as evaluation of new model - explain increasing threshold will remove potentially useful boundary cases, but remove a large amount of useless noisy data.
+			\item Validation should mainly be shown through qualitative justification and explanation, but can be done over a large number of tests (multiple runs on multiple floors and buildings) in the absence of mathematical proof.
+			\item Test same parameters across other data sets (library and computer lab) for consistent levels of accuracy
+		\end{itemize}
+		
+		\textcolor{blue}{\emph{\[GOOD PIECES WITHIN\]} - Testing should show validation as well as evaluation of the new model. Validation could explain how increasing threshold level will remove APs from other floors, but also potentially remove small overlaps from nearby buildings (i.e. if an AP is visible only in a small area near the edge of the building, seeing that AP means the location must me in that space). A similar effect could potentially be observed across floors (i.e. the AP only being visible if the location is directly below it), but this would require a much wider domain for parameters, such as extremely low transmission powers or extremely high path loss rates. However, use of these extremes, could be identified and used to help place the AP on another floor with some defined loss across floors like the WAF used in RADAR.}
 	
 	\chapter{Further Work}
 	

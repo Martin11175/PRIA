@@ -6,6 +6,7 @@ srcData = csvread('UJIndoorLoc/trainingData.csv', 1);
 testData = csvread('UJIndoorLoc/validationData.csv', 1);
 
 % Scale known location data to a local space
+bounds = 50;
 min_lat = min(srcData(:,521));
 min_long = min(srcData(:,522));
 srcData(:,521) = srcData(:,521) - (min_lat - bounds);
@@ -27,7 +28,6 @@ end
 floor = 0;
 building = 0;
 threshold = -70;
-bounds = 50;
 
 %for threshold = [-100 -90 -80 -75 -70 -65 -60 -50]
 
