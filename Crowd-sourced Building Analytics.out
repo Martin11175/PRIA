@@ -13,6 +13,8 @@
 \BOOKMARK [1][-]{section.4.2}{Data Preparation}{chapter.4}% 13
 \BOOKMARK [1][-]{section.4.3}{Heirarchical Clustering}{chapter.4}% 14
 \BOOKMARK [1][-]{section.4.4}{Model Creation}{chapter.4}% 15
-\BOOKMARK [0][-]{chapter.5}{Evaluation}{}% 16
-\BOOKMARK [0][-]{chapter.6}{Further Work}{}% 17
-\BOOKMARK [0][-]{chapter.7}{Conclusion}{}% 18
+\BOOKMARK [2][-]{subsection.4.4.1}{Off-line Learning}{section.4.4}% 16
+\BOOKMARK [2][-]{subsection.4.4.2}{On-line Localisation}{section.4.4}% 17
+\BOOKMARK [0][-]{chapter.5}{Evaluation}{}% 18
+\BOOKMARK [0][-]{chapter.6}{Further Work}{}% 19
+\BOOKMARK [0][-]{chapter.7}{Conclusion}{}% 20
