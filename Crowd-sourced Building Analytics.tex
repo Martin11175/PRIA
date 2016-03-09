@@ -4,8 +4,10 @@
 \usepackage{amsmath}
 \usepackage{color}
 \usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{positioning,shapes.geometric}
 
-\title{Using Crowd Sourced Information to Understand How Buildings are Used}
+\title{Towards a Building Modelling Framework: Heuristic-EZ}
 \MEng{}
 \author{Martin Higgs}
 \date{\today}
@@ -174,50 +176,116 @@
             
             A more general approach to generating floor plans based on a set of constraints however comes from \citet{charman1994constraint}. This method mathematically defines a set of rooms based on their rotation, reference point and dimensions and attempts to fit them into a given space by connecting their corners. As the rooms are placed, a set of constraints are then evaluated and back-tracked upon where necessary (e.g. Bedroom \#1 must be to the right of Bathroom \#2). By exhaustively generating solutions, the system is able to find all possible layouts of rooms, given the pieces of data / constraints supplied. While successful at producing floor plans for traditional housing layouts, the method could fall short with modern architecture that often contains complex shapes (not squares) and unidentified empty spaces.
             
-        \section{Conclusions}
+        \section{Summary}
+        \label{sec:relsum}
         
 	        This chapter has now broken down the work surrounding building analysis into the data gathering, data localisation and floor plan generation steps and provided a variety of techniques that are applicable at each stage. When gathering data from users it has been shown that techniques exist to reduce the load placed on users and their devices, potentially increasing the amount of data that would be gathered in a crowd-sourced technique through more opted-in users. While users are of the utmost importance when performing any crowd-based operations, this report focuses mainly on applications of the data once collected.
             
             When localising gathered data, a theme has emerged centring around the use of RSSI to estimate distances from access points. Despite its complex nature, the  widespread use and coverage of wireless networks combined with the success of simple models make it an attractive choice for IPS. Techniques explored here covered the fundamentals of modelling radio signal propagation, then demonstrated more advanced and novel techniques inferring unknown parameters through machine learning for ease of deployment and increased accuracy alike.
             
             Finally sets of constraints were identified for generating possible floor plans based on estimated dimensions. While restrictive in their application to walls in the four cardinal directions, this fits common traditional layouts of buildings and it is anticipated that more complex arrangements could be broken down into rectangular subspaces to build in. Through combinations of the described techniques this report will now explore ways in which a system might determine room usage from a set of simple crowd-sourced data.
-            
-    \chapter{\textcolor{red}{Problem Analysis?}}
 
+    \chapter{Problem Analysis}
+    
+        This chapter will explore the problem space involved with attaining the goals of the project. Primarily, this project is tasked with establishing a framework around which building analytic techniques might be developed or applied. This could include the development of any combination of the techniques covered in chapter \ref{chap:related} concerning crowd-sourcing the data, localising the data and modelling the space itself.
+        
+        Developing a complete system however might prove intangible for a project of this size as the system would require implementation across multiple platforms and likely multiple languages, carrying with it the interoperability complications to navigate and technical difficulties as opposed to research challenges. Furthermore spreading implementation time so thinly might also prevent any deeper evaluation as it would be hard to compare systems at such a high level. As such it would be wiser to focus on implementing a single component around which a system can be built.
+        
+        The first component to consider would be a modern crowd-sourcing tool-kit for specifying, gathering and collating some selection of data from sensors at minimal impact to the users. While implementing an application in Java using the techniques described in section \ref{sec:crowd} to enable gathering from a wide selection of Android devices would be beneficial to build from, it is known that a specific study into the factors surrounding crowd-sourcing data is running concurrently to this project \citep{IainBate}. Floor plan modelling using location data to feed a constraint solver such as that described by \citet{charman1994constraint} could also be an effective component. However, compiling such a complete set of data without implementing either of the previous components of the system would be very costly for such a small team, given the number of man hours it would take to exhaustively map out a significant area. Therefore, the most useful component to create as part of this project would be an Indoor Positioning System around which other techniques may be developed. As demonstrated by \citet{torres2014ujiindoorloc}, there exists a high demand for open implementations of such components and thanks to the existence of such sample data sets, the cost of testing and comparing such techniques are greatly reduced.
+        
+        As explored in section \ref{sec:ips}, there exist a multitude of techniques for localising users in an indoor space with varying degrees of accuracy. The goals of this project however, limit the range of applicable techniques as the model should be created from readily available sources of information. While this immediately rules out any infrastructured techniques as the installation of extra equipment severely limits the domain space that can be modelled, this project will also avoid those that require a large set of ground-truth, domain-wide test data as they are again limited in their application.With these restrictions in place the most interesting systems to study would be: RADAR \citep{bahl2000radar}, landmarked dead-reckoning \citep{wang2012no} and EZ \citep{chintalapudi2010indoor} from those evaluated in chapter \ref{chap:related}.
+        
+        RADAR provides one of the highest levels of accuracy of all reviewed techniques for relatively low localisation and model-building cost as it is all based around a pre-existing floor plan. Using this floor plan, the technique estimates the RSSI of every AP by using a simple formula modelling the signal's attenuation through walls and across space. In situations where detailed floor plans are already available, using this method could be the most efficient means for determining building usage metrics as the model building process is skipped entirely and user positions can be determined immediately. However, floor plans are not always complete, universally accessible nor consistent with flexible spaces such as exhibition centres. Because of this limitation in combination with the lack of information generated by skipping the modelling process, this technique is not useful for the project.
+        
+        Landmarked dead-reckoning appears to rectify most of these concerns as the technique requires no previous knowledge of the space (by dead-reckoning from a known point) and creates its map of landmarks that are potentially much less dependent on the flexible properties of the space (such as elevators and stairs). This enables the modelled space to change over time while preserving a relatively high level of relative location accuracy. Therein however lies the problem with using this technique to measure space utilisation as it can only detect relative movement as opposed to independent single-point localisation. This is not to say that the technique would be difficult to gather sample data as \citet{torres2015ujiindoorlocmag} provides the full complement of magnetometer, accelerometer and (in conjunction with future data to be provided by \citet{JoaquinEmail}) RSSI readings necessary to implement such a system. The worry is more about the load placed on prospective user's devices and how to gather meaningful results without the storage requirements becoming infeasible. As shown in the UJIIndoorLoc-Mag database, the ~40,000 data points only correspond to ~300 short relative motion traces so it is not unimaginable for the data sets to quickly get out of hand, especially if a user were to store multiple day's worth of data before a storage opportunity arises. Solutions to these problems could involve modifying the sampling frequency to reduce the load on the user's device and the amount of data held for analysis, but it is unknown as to how this would affect the accuracy of the model due to the precise nature of the landmarks. Also, the test data and initial research do not cover the prospect of spending a large period of time walking around the same space with no significant landmarks. In these cases, the behaviour would return to basic dead-reckoning and continually stack up inaccuracies, potentially invalidating the data. For these issues in combination, landmarked dead-reckoning does not significantly work in the project's favour.
+        
+        EZ however, implements a system requiring a very simple set of independent client-side measurements backed up by a server-side model that can adapt to a changing space as the set of observations grows, without human intervention (such as specifying a new floor-plan like RADAR). With this technique, RSSI measurements are provided along with GPS co-ordinates (where possible) to estimate the relative location and signal transmission properties of the access points being observed. This simplicity of the data required to build the model along with that of the model itself also makes it useful for research into building analytics as it reduces the effort required to crowd-source the data in the first place and reduces the complexity of any floor plan model wishing to reinterpret the EZ data.
+        
+        Assuming that the crowd-sourcing programme or test data input provides a reading of all RSSIs available (as already required by a wide range of infrastructureless indoor positioning systems) alongside the occasional GPS location, EZ will be able to provide a model for localising those without position data and any future measurements made. Furthermore, assuming that the floor plan modelling technique is also able to make use of positioning data, the output of running EZ on the original data set will still be useful regardless of the technique's ability to interpret the AP parameters to some degree. Combining these assumptions with a large set of sample data such as that provided by \citet{torres2014ujiindoorloc}, the EZ localisation component can then be developed independently of any crowd-sourcing or floor-plan modelling strategies that may follow.
+
+		\textcolor{red}{Does this need any more of a wrap up? Are there any points I have missed?}
+ 
 	\chapter{Method}
     \label{chap:method}
 	
-		This chapter will cover the development of an indoor positioning system from which positioning data and Wireless AP models can be extracted for use as part of a general building model. The  model will follow the techniques as specified in the EZ localisation system \citep{chintalapudi2010indoor} with measurements from the UJIIndoorLoc data set for testing and evaluation purposes \citep{torres2014ujiindoorloc}. This chapter will also identify weaknesses in the specification of EZ and propose the Simplified-EZ localisation system to compensate.
+		This chapter will cover the development of an indoor positioning system from which positioning data and Wireless AP models can be extracted for use as part of a general building model. The  model will follow the techniques as specified in the EZ localisation system \citep{chintalapudi2010indoor} with measurements from the UJIIndoorLoc data set for testing and evaluation purposes \citep{torres2014ujiindoorloc}. This chapter will also identify some weaknesses in the specification of EZ and propose the Heuristic-EZ localisation system to compensate.
 		
 		\section{System Specification}
-		
-            As explored in chapter \ref{chap:related}, there exist a multitude of techniques for localising users in an indoor space with varying degrees of accuracy. The goals of this project however, limit the range of applicable techniques as the model should be created from readily available sources of information. While this immediately rules out any infrastructured techniques as the installation of extra equipment severely limits the domain space that can be modelled, this project will also avoid those that require a large set of ground-truth, domain-wide test data as they are again limited in their application.With these restrictions in place the most interesting systems to study would be: RADAR \citep{bahl2000radar}, landmarked dead-reckoning \citep{wang2012no} and EZ \citep{chintalapudi2010indoor} from those evaluated in chapter \ref{chap:related}.
+        \label{sec:sysspec}
+             
+            The original implementation of EZ by \citeauthor{chintalapudi2010indoor} consisted of ``about 7000 lines of C\# and Python code'' encompassing all of the client-server communications, data gathering and off-line modelling /on-line localisation operations. By separating out the data processing elements of EZ from the rest of the system, this implementation of EZ can take advantage of languages with more powerful built-in mathematical functionality without worrying about handling sensors and external communications. As such this project will pursue an implementation in Matlab 2015b consuming a .CSV file of pre-gathered measurements and outputting two .CSV files containing all localised points and the AP parameters separately. This allows future efforts into crowd-sourcing to take advantage of techniques available to other languages while still piping data into this implementation of EZ. It will also allow floor plan modellers to be selective as to which types of data they wish to use to generate their models, again in their language and platform of choice.
             
-            RADAR provides one of the highest levels of accuracy of all reviewed techniques for relatively low localisation and model-building cost all based around a single source of information: a pre-existing floor plan \textcolor{red}{Add 1 sentence about WAF, what it does}. In situations where detailed floor plans are already available, using this method could be the most efficient means for determining building usage metrics as the model building process is skipped entirely and user positions can be determined immediately. However, floor plans are not always complete, universally accessible nor consistent with flexible spaces such as exhibition centres. Because of this limitation in combination with the lack of information generated by skipping the modelling process, this technique is not useful for the project.
+            \begin{figure}[h]
+            \label{fig:EZControl}
+            \centering
+            \resizebox {\textwidth} {!} {
+            \begin{tikzpicture}[%
+            ->,
+            shorten >=2pt,
+            >=stealth,
+            node distance=1cm,
+            process/.style={%
+            	rectangle,
+            	text width=6em,
+            	minimum height=3em,
+            	align=center,
+            	draw
+            },
+            data/.style={%
+            	ellipse,
+            	text width=4em,
+            	align=center,
+            	minimum height=3em,
+            	draw
+            }
+            ]
+            \node[data] (1)                                 {RSSI + GPS Data};
+            \node[process] (2) [right=of 1]                 {Data Preparation};
+            \node[process] (3) [right=of 2] 				{Data Clustering};
+            \node[process] (4) [right=of 3]                 {Model Creation};
+            \node[data] (5) [above right=of 4]              {Localised Data};
+            \node[data] (6) [below right=of 4]              {AP Model};
             
-            Landmarked dead-reckoning appears to rectify most of these concerns as the technique requires no previous knowledge of the space and creates its map of landmarks that are potentially much less dependent on the flexible properties of the space (such as elevators and stairs). This enables the modelled space to change over time while preserving a relatively high level of relative location accuracy. Therein however lies the problem with using this technique to measure space utilisation as it can only detect relative movement as opposed to independent single-point localisation. This is not to say that the technique would be difficult to gather sample data as \citet{torres2015ujiindoorlocmag} provides the full complement of magnetometer, accelerometer and (in conjunction with \textcolor{red}{PRIVATE CORRESPONDENCE SAYS RSSI DATA FOR AREA IN COMING}) RSSI readings necessary to implement such a system. The worry is more about the load placed on prospective user's devices and how to gather meaningful results without the storage requirements becoming infeasible. As shown in the UJIIndoorLoc-Mag database, the ~40,000 data points only correspond to ~300 short relative motion traces so it is not unimaginable for the data sets to quickly get out of hand, especially if a user were to store multiple day's worth of data before a storage opportunity arises. Solutions to these problems could involve modifying the sampling frequency to reduce the load on the user's device and the amount of data held for analysis, but it is unknown as to how this would affect the accuracy of the model due to the precise nature of the landmarks. Also, the test data and initial research do not cover the prospect of spending a large period of time walking around the same space with no significant landmarks. In these cases, the behaviour would return to basic dead-reckoning and continually stack up inaccuracies, potentially invalidating the data. For these issues in combination, landmarked dead-reckoning does not significantly work in the project's favour.
+            \path (1) edge             node {} (2)
+            (2) edge                   node {} (3)
+            (3) edge                   node {} (4)
+            (4) edge                   node {} (5)
+            (4) edge                   node {} (6);
+            \end{tikzpicture}
+	        }
+            \caption{EZ Control Flow}
+	        \end{figure}
             
-            EZ however, implements a system requiring a very simple set of independent client-side measurements backed up by a server-side model that can adapt to a changing space as the set of observations grows, without human intervention (such as specifying a new floor-plan like RADAR). 
+            EZ's specification then breaks the system down into a set of components, each of which is able to operate independently of the others or chained together for various effects. To this end, the project's implementation of EZ will take a pipe \& filter approach allowing each component to affect the data in turn before passing it on to the next (see Figure \ref{fig:EZControl}). These components will all operate without knowledge of the other's actions and upon the same data format, such that components may be changed for different versions or removed entirely without significantly impacting the program's flow.
             
-            \textcolor{blue}{Developing this system using samples from a large data set such as the one created by \citet{torres2014ujiindoorloc} will also enable the component to exist independently, with the crowd-sourcing and floor plan modelling strategies being interchanged at will.}
+            The creation of EZ's model is the first and only mandatory component specified, but also comes as the final piece of any system variant that might be created. Given a set of data this component will attempt to create a model based on the idea that with enough already localised measurements of RSSI from an AP, some basic parameters can be estimated about the object (giving the AP model data). Then if a measurement without GPS data can view enough parameterised APs, then its location can be trilaterated using simultaneous equations (this will be covered in detail in section \ref{sec:modelcreation}).
             
-            \textcolor{green}{State assumptions about other parts of the project you're not doing. Provide context.}
+            However, as is also specified, the data can be effectively refined and reduced before it is passed to the model creator through preparation and selection of the most useful pieces of data. The most prominent piece described for preparing data is that of gain estimation as they appeared to find gain differences of up to ~14dB which could significantly distort models generated using that data by making measurements taken at the same location on different devices appear very different by RSSI. To alleviate some of these problems, they propose the Relative Gain Estimation Algorithm (RGEA) which looks for small, consistent differences in RSSI measurements and creates a set of estimated differences in gain across devices. By solving these differences as a set of simultaneous equations, the gain values of each individual device can be estimated and used to correct the input data (covered in full in section \ref{sec:dataprep}).
             
-            Points covered:
-			\begin{itemize}
-				\item Extract requirements from EZ spec and why EZ (why not others) (4)
-				\item Design set of components in UML (pipe \& filter?) and why components (2)
-                \item Introduce and justify implementation in Matlab (1)
-				\item Test according to claims in paper (compare to large test set) (2)
-                \item Explain why only IPS specification here? (1)
-				\item \textcolor{red}{Repeat per component}
-			\end{itemize}
+            Finally covered is the selection of specific data points to use when modelling through the use of hierarchical clustering. This clustering algorithm aims to group data points of 90\% or greater similarity and then nominate a representative from each group to be passed to the model. The algorithm is run twice on the same data set, but once to select the most useful Access Points (APSelect) and once to select the most useful measurement locations (LocSelect) for different reasons. APSelect is run to reduce the number of APs modelled as the team observed up to ``160 APs across a single office floor'', potentially leading to an over-constrained model and excessive modelling time. LocSelect however, is necessary to prevent biases in the model where too many measurements from the same location may reduce accuracy in others.
+            
+            The ordering of these components is of course fixed as clustering data without correcting for gain could miss potential groupings and correcting the gain of already localised points would lead to inaccuracies. The components can however be avoided entirely (except for modelling) as \citeauthor{chintalapudi2010indoor} experimented with. This project will make comparisons of its implementation to their claims using their `\emph{LARGE}' data set as its size is comparable to a single floor of a building in that of the work by \citet{torres2014ujiindoorloc}.
+            
+            \textcolor{red}{How to segue from specification to implementation? Crude to just say ``with the system now specified the implementation can begin''}
 		
 		\section{Data Preparation}
+        \label{sec:dataprep}
+        
+            In order to compensate for artificial noise created by differences in gain across devices measuring RSSI at the same location, the RGEA estimates these differences and applies them to the data set. However, with only a subset of the data having a known location, the RGEA has to use RSSI to guess at `proximate' locations. The specification states that measurements are deemed proximate if the average difference between RSSIs are less than 3dB. For each pair of devices ($k_1,k_2$), these pairs of measurements are then gathered into a set $M^{k_1k_2}$ and compared to get the average difference (Equation \ref{eq:avggaindiff}). This relative gain is then plugged into equation \ref{eq:stddevgain} to calculate the standard deviation of that relative gain from the difference in all comparable measurements.
+            
+            \begin{equation}
+            \label{eq:avggaindiff}
+                \Delta G^{k_1k_2}=\dfrac{1}{|M^{k_1k_2}|} \sum_{(p_1,p_2)\in M^{k_1k_2}} (p_1 - p_2)
+            \end{equation}
+            
+            \begin{equation}
+            \label{eq:stddevgain}
+                \sigma(\Delta G^{k_1k_2})=\dfrac{1}{|M^{k_1k_2}|} \sqrt{\sum_{(p_1,p_2)\in M^{k_1k_2}} (p_1 - p_2 - \Delta G^{k_1k_2})^2}
+            \end{equation}
+            
+            Because these relative gains are transitive (i.e. $\Delta G^{k_1k_3} = \Delta G^{k_1k_2} + \Delta G^{k_2k_3}$), any pairs of devices with proximate locations can then be chained together with other device pairs to create a system of simultaneous equations. Finally a random device as part of this system is selected and chosen to have some value of gain so then the system can be solved. As this is an estimate however, the equations are weighted according to their standard deviation or in effect their likelihood of being accurate.
 		
 			\begin{itemize}
-				\item Why data prep first (RGEA run first to reduce artificial noise applied to RSSI measurements at each location). Data localised to much smaller area to prevent invalid scaling (initial readings in meters from lat, long: 0,0) (1)
-                \item Explain EZ specification with equations! (1)
 				\item First version of implementation incorrect (2)
 				\begin{itemize}
 					\item EZ spec, compare all APs, led to far too many proximate measurements and completely connected graph of relative gains (unsatisfiable)
@@ -225,7 +293,7 @@
 					\item Using simulated annealing to factor in random element
 					\item nchoosek to extract pairs of devices (relative gain is symmetrical)
 				\end{itemize}
-				\item Implementation of ground truth RGEA for evaluation (noticable speed difference because only comparing the 3 parameters) (1)
+				\item Implementation of ground truth RGEA for evaluation (mention scale to local area) (noticable speed difference because only comparing the 3 parameters) (1)
 				\item Fix RGEA according to faults discovered found through experimentation (2)
 				\begin{itemize}
 					\item Check for average absolute difference but then gain is average normal difference (think diagram)
@@ -238,6 +306,7 @@
 			\end{itemize}
 		
 		\section{Heirarchical Clustering}
+        \label{sec:datacluster}
 		
 			\begin{itemize}
                 \item Explain EZ APSelect and LocSelect with goals and equations (1)
@@ -255,6 +324,7 @@
 			\end{itemize}
 		
 		\section{Model Creation}
+        \label{sec:modelcreation}
         
             \textcolor{red}{Explain main script and purpose of model.}
         
@@ -293,6 +363,8 @@
 			\item Parameter experimentation
 			\item Use PlotFloor to show difference between models with various pieces of the system included / excluded and parameters tweaked
 			\item Evaluate with noisy and partially localised data
+            \item Independent vs. estimating every APs parameters at once?
+			\item Note EZ specifically says it works best with a large amount of data distributed across the whole area whereas UJIIndoorLoc provides with lots of measurements from the same locations. Will be interesting to see accuracy when used on an actual crowd-sourced deployment / samples collected from randomly generated locations.
 			\item Show validation as well as evaluation of new model - explain increasing threshold will remove potentially useful boundary cases, but remove a large amount of useless noisy data.
 			\item Validation should mainly be shown through qualitative justification and explanation, but can be done over a large number of tests (multiple runs on multiple floors and buildings) in the absence of mathematical proof.
 			\item Test same parameters across other data sets (library and computer lab) for consistent levels of accuracy
