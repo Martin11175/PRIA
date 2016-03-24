@@ -84,6 +84,10 @@ for i = nchoosek(1:size(D,1), 2)'
         if sum(k_1(h_m, max_1(h_m,:))) > (num_strongest_APs * min_AP_strength)
         for h_n = 1:size(max_2,1)
             if sum(ismember(max_1(h_m,:), max_2(h_n,:))) > min_strong_overlap
+                if sum(ismember([h_m h_n], [g_m g_n], 'rows')) == 0
+                    dist_diff = sqrt((x_1(h_m,1) - x_2(h_n,1))^2 + (x_1(h_m,2) - x_2(h_n,2))^2);
+                    fprintf('False positive distance: %f, %d floors', dist_diff, x_1(h_m,3) - x_2(h_n,3));
+                end
                 h_prox(h_m, h_n) = 1;
             end
         end
@@ -91,6 +95,8 @@ for i = nchoosek(1:size(D,1), 2)'
     end
     [h_m, h_n] = find(h_prox);
     toc
+    
+    % TODO: For each point in h_prox, limit to those with avg_diff of 3dB
     
     ez_correct = sum(ismember([g_m, g_n], [ez_m, ez_n], 'rows'));
     h_correct = sum(ismember([g_m, g_n], [h_m, h_n], 'rows'));
