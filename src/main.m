@@ -42,7 +42,7 @@ for i = 1:520 % Rank by number of visible known locations
     % TODO: Omit visible places with threshold too?
     rank(i) = size(find(dataSet(normalisedData(:,i) > 0, 521) > 0), 1);
 end
-APSelect = HeirarchicalCluster(normalisedData, rank);
+APSelect = HeirarchicalCluster(normalisedData, rank, 'overlap');
 
 % LocSelect Algorithm
 % TODO: Test efficacy of LocSelect
