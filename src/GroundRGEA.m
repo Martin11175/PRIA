@@ -71,6 +71,8 @@ for k = 1:size(i,1)
     d(k) = deltaG(i(k),j(k)) * weight;
 end
 
+warning('off','MATLAB:rankDeficientMatrix');
 G = [D (C \ d)];
+warning('on','MATLAB:rankDeficientMatrix');
 
 end

@@ -17,17 +17,19 @@ testData(:,522) = testData(:,522) - (min_long - bounds);
 %-----------------------------EZ-ALGORITHM--------------------------------%
 
 % Relative Gain Estimation Algorithm
+tic
 G = GroundRGEA(srcData(:, 1:520), srcData(:, 528), srcData(:,521:523));
 for d = G'
     deviceMeas = srcData(srcData(:,528) == d(1), 1:520);
     visMeas = (deviceMeas(:,1:520) ~= 100) & (deviceMeas(:,1:520) ~= -100);
     deviceMeas(visMeas) = deviceMeas(visMeas) - d(2);
 end
+toc
 
 % Iterate over 2D subspaces
 floor = 0;
 building = 0;
-threshold = -70;
+threshold = -100;
 
 %for threshold = [-100 -90 -80 -75 -70 -65 -60 -50]
 
@@ -36,16 +38,16 @@ rows = ((srcData(:,523) == floor) & (srcData(:,524) == building));
 dataSet = srcData(rows, :);
 
 % APSelect Algorithm
+tic
 normalisedData = 1 - (abs(dataSet(:, 1:520)) / 100);
 rank = zeros(520, 1);
 for i = 1:520 % Rank by number of visible known locations
-    % TODO: Omit visible places with threshold too?
     rank(i) = size(find(dataSet(normalisedData(:,i) > 0, 521) > 0), 1);
 end
 APSelect = HeirarchicalCluster(normalisedData, rank, 'overlap');
+toc
 
 % LocSelect Algorithm
-% TODO: Test efficacy of LocSelect
 %LocSelect = HeirarchicalCluster(normalisedData', zeros(size(normalisedData',1),1));
 
 % For each access point i
@@ -65,13 +67,19 @@ for i = APSelect
         %   Transmit power: 0 to -boundsdBm
         %   Path loss: 1.5 to 6.0 from EZ's trials
         % TODO: In report mention that most access points were hitting the 1.5 bound
-        lower = [min(O(:,2)) - bounds, min(O(:,3)) - bounds, -bounds, 1.5];
+        lower = [min(O(:,2)) - bounds, min(O(:,3)) - bounds, -50, 1.5];
         upper = [max(O(:,2)) + bounds, max(O(:,3)) + bounds, 0, 6.0];
 
         % Perform simulated annealing, starting from average values
         C0 = [mean(O(:,2)), mean(O(:,3)), -25, 3.0];
         options = optimset('display','off');
+        fprintf('AP: %d, %d observations...', i, size(O,1));
+        tic
         APparams(i,:) = simulannealbnd(objective, C0, lower, upper, options);
+        toc
+        fprintf('Median localisation error: %fm\n', ...
+            median(abs((sqrt((O(:,2) - APparams(i,1)).^2 + (O(:,3) - APparams(i,2)).^2) ...
+            - 10.^((APparams(i,3) - O(:,1))./(10*APparams(i,4)))))));
     end
 end
 
@@ -87,18 +95,18 @@ dataSet = testData(rows, :);
 % TODO: Can we change this to least-squares constraint solving of the form
 % C.x = d? (See RGEA solvers)
 IPSresults = zeros(size(dataSet,1),2);
-RSSIerror = zeros(size(dataSet,1),1);
 IPSerror = zeros(size(dataSet,1),1);
 n = 1;
 for j = dataSet'
     % Find which APs we wish to evaluate
-    I = ((threshold < j(1:520)) & (j(1:520) < 0));
+    I = ((threshold < j(1:520)) & (j(1:520) < 0) & (APparams(:,4) ~= 0));
     O = j(I);
     C = APparams(I, :);
         
     if size(O,1) > 2
+        D = 10.^((C(:,3) - O)./(10*C(:,4)));
         % Fix parameters to search over
-        objective = @(J) LocSolve(J, O, C);
+        objective = @(J) LocSolve(J, D, C);
         
         % Bounds on area to search (boundsm outside AP locations)
         lower = [min(C(:,1)) - bounds, min(C(:,1)) - bounds];
@@ -107,7 +115,7 @@ for j = dataSet'
         % Perform simulated annealing, starting from average values
         J0 = [mean(C(:,1)), mean(C(:,2))];
         options = optimset('display','off');
-        [IPSresults(n,:), RSSIerror(n)] = simulannealbnd(objective, J0, lower, upper, options);
+        IPSresults(n,:) = simulannealbnd(objective, J0, lower, upper, options);
         
         % Calculate localisation error
         IPSerror(n) = sqrt((IPSresults(n,1) - dataSet(n,521))^2 + (IPSresults(n,2) - dataSet(n,522))^2);
@@ -115,7 +123,7 @@ for j = dataSet'
     n = n + 1;
 end
 
-fprintf('%d: %d/%d localised. %f median IPS error, %f median RSSI error \n', threshold, size(find(IPSerror),1), size(IPSerror,1), median(IPSerror(IPSerror > 0)), median(RSSIerror(RSSIerror > 0)))
+fprintf('%d: %d/%d localised. %f median IPS error\n', threshold, sum(IPSerror > 0), size(IPSerror,1), median(IPSerror(IPSerror > 0)))
 
 %end
 beep;

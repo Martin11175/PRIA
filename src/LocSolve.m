@@ -1,24 +1,21 @@
-function [ e ] = LocSolve( J, O, C )
-%LocSolve Objective function for calculating location of an observation using RSSIs
+function [ e ] = LocSolve( J, D, C )
+%LocSolve Objective function for calculating location of an observation using distance
 %   J [in] - Access point location (longitude, latitude)
-%   O [in] - Vector of observed RSSI values
-%   C [in] - Matrix of AP parameters:
-%       c longtitude, c latitude, transmit power, path loss rate
-%   e [out] - Error between observed and estimated RSSI
+%   D [in] - Vector of calculated distances to APs
+%   C [in] - Matrix of AP locations (c_longitude, c_lattitude)
+%   e [out] - Mean Squared Error between calculated and localised distance
 %
-%   Must be able to see at least 3 APs to uniquely solve.
-
-%p_ij = P_i - (10* gamma_i)*log(d_ij) + R
+%   Must be able to see at least 3 APs to uniquely trilaterate
 
 %d_ij = sqrt((x_jx - c_ix)^2 + (x_jy - c_iy)^2)
 
-error = zeros(size(O,1),1);
+error = zeros(size(D,1),1);
 
-for i = 1:size(O,1)
-    error(i) = O(i) - C(i,3) + ((10 * C(i,4)) * log(sqrt((J(1) - C(i,1))^2 + (J(2) - C(i,2))^2)));
+for i = 1:size(D,1)
+    error(i) = D(i) - sqrt((J(1) - C(i,1))^2 + (J(2) - C(i,2))^2);
 end
 
-e = median(sort(abs(error)));
+e = mean(error.^2);
 
 end
 

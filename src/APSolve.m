@@ -15,7 +15,7 @@ function [ e ] = APSolve( C, O )
 error = zeros(size(O,1),1);
 
 for j = 1:size(O,1)
-    error(j) = O(j,1) - C(3) + ((10 * C(4)) * log(sqrt((O(j,2) - C(1))^2 + (O(j,3) - C(2))^2)));
+    error(j) = O(j,1) - C(3) + ((10 * C(4)) * log10(sqrt((O(j,2) - C(1))^2 + (O(j,3) - C(2))^2)));
 end
 
 e = median(sort(abs(error)));
