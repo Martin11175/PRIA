@@ -6,7 +6,6 @@ function [ G ] = SimpleRGEA( J, K )
 
 num_strongest_APs = 4;
 min_strong_overlap = 3;
-min_AP_overlap = 4;
 min_AP_strength = -90;
 
 D = sort(unique(K)); % List of device IDs

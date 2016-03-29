@@ -12,20 +12,33 @@ srcData(:,521) = srcData(:,521) - (min_lat - bounds);
 srcData(:,522) = srcData(:,522) - (min_long - bounds);
 
 % Set data up for test
+% TODO: Limit to a single floor
 J = srcData(:, 1:520);
 K = srcData(:, 528);
 D = sort(unique(K));
 X = srcData(:,521:523);
 
 % Ground truth params
-g_dist = 1;
+if exist('g_dist', 'var') == 0
+    g_dist = 1;
+end
 % EZ Params
-ez_prox_threshold = 3;
-min_AP_overlap = 2;
+if exist('ez_prox_threshold', 'var') == 0
+    ez_prox_threshold = 3;
+end
+if exist('min_AP_overlap', 'var') == 0
+    min_AP_overlap = 2;
+end
 % Heuristic Params
-min_AP_strength = -100;
-num_strongest_APs = 4;
-min_strong_overlap = 3;
+if exist('min_AP_strength', 'var') == 0
+    min_AP_strength = -100;
+end
+if exist('num_strongest_APs', 'var') == 0
+    num_strongest_APs = 4;
+end
+if exist('min_strong_overlap', 'var') == 0
+    min_strong_overlap = 3;
+end
 
 % Data prep
 J(J == 100) = -100; % Replace positive invisibility markers
@@ -110,3 +123,18 @@ for i = nchoosek(1:size(D,1), 2)'
     [ez_result(count_d,:) h_result(count_d,:)]
     count_d = count_d + 1;
 end
+
+% Create results directory structure
+if exist('results', 'dir') == 0
+    mkdir('results');
+end
+if exist('results/prox_test', 'dir') == 0
+    mkdir('results/prox_test');
+end
+
+% Write results out to a file
+ez_filename = sprintf('results/prox_test/ez_%d_%d.csv', ez_prox_threshold, min_AP_overlap);
+csvwrite(ez_filename, [ez_correct, ez_missed, ez_false_positive]);
+
+h_filename = sprintf('results/prox_test/h_%d_%d_%d.csv', num_strongest_APs, min_strong_overlap, min_AP_strength);
+csvwrite(h_filename, [h_correct, h_missed, h_false_positive]);
