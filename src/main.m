@@ -59,10 +59,13 @@ testData(:,522) = testData(:,522) - (min_long - bounds);
 if strcmp(RGEA_type,'none') == 0
     tic
     if strcmp(RGEA_type,'rgea') == 1
+        rgea_num = 1;
         G = RGEA(srcData(:, 1:520), srcData(:, 528));
     elseif strcmp(RGEA_type,'simple') == 1
+        rgea_num = 2;
         G = SimpleRGEA(srcData(:, 1:520), srcData(:, 528));
     else
+        rgea_num = 3;
         G = GroundRGEA(srcData(:, 1:520), srcData(:, 528), srcData(:,521:523));
     end
     for d = G'
@@ -71,6 +74,8 @@ if strcmp(RGEA_type,'none') == 0
         deviceMeas(visMeas) = deviceMeas(visMeas) - d(2);
     end
     toc
+else
+    rgea_num = 0;
 end
 
 % Iterate over 2D subspaces
@@ -99,14 +104,18 @@ if strcmp(apselect_type,'none') == 0
         ap_rank(i) = sum(dataSet(normalisedData(:,i) > 0, 521) > 0);
     end
     if strcmp(apselect_type,'all') == 1
+        ap_num = 1;
         APSelect = HeirarchicalCluster(normalisedData, ap_rank, 'all');
     elseif strcmp(apselect_type,'max') == 1
+        ap_num = 2;
         APSelect = HeirarchicalCluster(normalisedData, ap_rank, 'max');
     else
+        ap_num = 3;
         APSelect = HeirarchicalCluster(normalisedData, ap_rank, 'overlap');
     end
     toc
 else
+    ap_num = 0;
     APSelect = 1:520;
 end
 
@@ -116,20 +125,24 @@ if strcmp(locselect_type,'none') == 0
     % Prefer GPS localised measurements (binary rank)
     loc_rank = (dataSet(:,521) ~= 0 | dataSet(:,522) ~= 0);
     if strcmp(locselect_type,'all') == 1
+        loc_num = 1;
         LocSelect = HeirarchicalCluster(normalisedData', loc_rank, 'all');
     elseif strcmp(locselect_type,'max') == 1
+        loc_num = 2;
         LocSelect = HeirarchicalCluster(normalisedData', loc_rank, 'max');
     else
+        loc_num = 3;
         LocSelect = HeirarchicalCluster(normalisedData', loc_rank, 'overlap');
     end
     toc
 else
-    LocSelect = 1:size(normalisedData,2);
+    loc_num = 0;
+    LocSelect = 1:size(normalisedData,1);
 end
-LocSelect = ismember(1:size(normalisedData,2), LocSelect);
+LocSelect = ismember(1:size(normalisedData,1), LocSelect)';
 
 % Iterate until no new parameters can be determined
-APparams = zeros(520, 4);
+APparams = zeros(520, 5);
 new_value_flag = true;
 while new_value_flag
     new_value_flag = false;
@@ -160,11 +173,13 @@ while new_value_flag
             options = optimset('display','off');
             fprintf('AP: %d, %d observations...', i, size(O,1));
             tic
-            APparams(i,:) = simulannealbnd(objective, C0, lower, upper, options);
+            APparams(i,1:4) = simulannealbnd(objective, C0, lower, upper, options);
             toc
-            fprintf('Median localisation error: %fm\n', ...
-                median(abs((sqrt((O(:,2) - APparams(i,1)).^2 + (O(:,3) - APparams(i,2)).^2) ...
-                - 10.^((APparams(i,3) - O(:,1))./(10*APparams(i,4)))))));
+            % Trust metric
+            med_ap_err = median(abs((sqrt((O(:,2) - APparams(i,1)).^2 + (O(:,3) - APparams(i,2)).^2) ...
+                - 10.^((APparams(i,3) - O(:,1))./(10*APparams(i,4))))));
+            APparams(i, 5) = med_ap_err;
+            fprintf('Median localisation error: %fm\n', med_ap_err);
         end
     end
     
@@ -172,7 +187,7 @@ while new_value_flag
     if new_value_flag
         new_value_flag = false;
         
-        for j = dataSet((dataSet(:,521) == 0) & (dataSet(:,522) == 0) & LocSelect)
+        for j = dataSet((dataSet(:,521) == 0) & (dataSet(:,522) == 0) & LocSelect)'
             % Find which APs we wish to evaluate
             I = ((threshold < j(1:520)) & (j(1:520) < 0) ...
                 & (APparams(:,4) ~= 0));
@@ -243,8 +258,24 @@ for j = test_dataSet'
     n = n + 1;
 end
 
+% Summary results output
+if strcmp(ips_type, 'all') == 1
+    ips_num = 0;
+else
+    ips_num = 1;
+end
+
 fprintf('%d: %d/%d localised. %f median IPS error\n', ...
-    threshold, sum(IPSerror > 0), size(IPSerror,1), median(IPSerror(IPSerror > 0)))
+    threshold, sum(IPSerror > 0), size(IPSerror,1), median(IPSerror(IPSerror > 0)));
+if exist('summary.csv', 'file') == 0
+    fprintf(fopen('summary.csv', 'w'), ...
+        'building, floor, rgea, ap, loc, ips, threshold, bounds, chance, num_test, num_loc, median_error\n');
+end
+dlmwrite('summary.csv', ...
+    [building, floor, rgea_num, ap_num, loc_num, ips_num, ...
+    threshold, bounds, chance, ...
+    size(IPSerror,1), sum(IPSerror > 0), median(IPSerror(IPSerror > 0))], ...
+    'delimiter', ',', '-append');
 
 % Create results directory structure
 if exist('results', 'dir') == 0
@@ -260,15 +291,15 @@ if exist(floor_dir, 'dir') == 0
 end
 
 % Output csv files of results
-src_filename = sprintf('results/building_%d/floor_%d/src_rgea:%s_ap:%s_loc:%s_ips:%s_threshold:%d_bounds:%d_chance:%d.csv', ...
+src_filename = sprintf('results/building_%d/floor_%d/src_rgea(%s)_ap(%s)_loc(%s)_ips(%s)_threshold(%)_bounds(%d)_chance(%d).csv', ...
     building, floor, RGEA_type, apselect_type, locselect_type, ips_type, threshold, bounds, chance);
 csvwrite(src_filename, [original_locations dataSet(:, 521:522) LocSelect]);
 
-tst_filename = sprintf('results/building_%d/floor_%d/tst_rgea:%s_ap:%s_loc:%s_ips:%s_threshold:%d_bounds_chance:%d:%d.csv', ...
+tst_filename = sprintf('results/building_%d/floor_%d/tst_rgea(%s)_ap(%s)_loc(%s)_ips(%s)_threshold(%)_bounds(%d)_chance(%d).csv', ...
     building, floor, RGEA_type, apselect_type, locselect_type, ips_type, threshold, bounds, chance);
 csvwrite(tst_filename, [test_dataSet(:,521:522) IPSresults]);
 
-ap_filename = sprintf('results/building_%d/floor_%d/ap_rgea:%s_ap:%s_loc:%s_ips:%s_threshold:%d_bounds_chance:%d:%d.csv', ...
+ap_filename = sprintf('results/building_%d/floor_%d/ap_rgea(%s)_ap(%s)_loc(%s)_ips(%s)_threshold(%)_bounds(%d)_chance(%d).csv', ...
     building, floor, RGEA_type, apselect_type, locselect_type, ips_type, threshold, bounds, chance);
 csvwrite(ap_filename, APparams);
 end
