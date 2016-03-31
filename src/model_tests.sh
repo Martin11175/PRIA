@@ -30,7 +30,7 @@ do
                     for chance in "${chances[@]}"
                     do
                         # Run tests
-                        nohup matlab -nosplash -nojvm -nodisplay -r "\
+                        nohup matlab -nosplash -nojvm -nodisplay -r "\"\
                         rgea_type = $rgea_type;\
                         ap_type = $ap_type};\
                         loc_type = $loc_type;\
@@ -41,7 +41,7 @@ do
                         floors = $floors;\
                         thresholds = $thresholds;\
                         main;\
-                        exit" &
+                        exit\"" >/dev/null 2>&1 &
                     done
                 done
             done
