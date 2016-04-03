@@ -213,7 +213,7 @@ while new_value_flag
                 new_value_flag = true;
                 % Calculate distance and set equation to solve
                 D = 10.^((C(:,3) - O)./(10*C(:,4)));
-                objective = @(J) D - sqrt((J(1) - C(:,1)).^2 + (J(2) - C(:,2)).^2));
+                objective = @(J) D - sqrt((J(1) - C(:,1)).^2 + (J(2) - C(:,2)).^2);
                 
                 % Bounds on area to search (outside AP locations)
                 lower = [min(C(:,1)) - bounds, min(C(:,1)) - bounds];
@@ -241,11 +241,11 @@ n = 1;
 for j = test_dataSet'
     % Find which APs we wish to evaluate
     I = ((threshold < j(1:520)) & (j(1:520) < 0) & (APparams(:,4) ~= 0));
-    if strcmp(ips_type,'max') == 1
+    if (strcmp(ips_type,'max') == 1) && (sum(I) > 2)
         tmp = find(I);
         [~, order] = sort(j(I), 'descend');
         I = false(520,1);
-        I(tmp) = true;
+        I(tmp(order(1:3))) = true;
     end
     O = j(I);
     C = APparams(I, :);
@@ -265,7 +265,7 @@ for j = test_dataSet'
         IPSresults(n,:) = lsqnonlin(objective, J0, lower, upper, options);
         
         % Calculate localisation error
-        IPSerror(n) = sqrt((IPSresults(n,1) - dataSet(n,521))^2 + (IPSresults(n,2) - dataSet(n,522))^2);
+        IPSerror(n) = sqrt((IPSresults(n,1) - test_dataSet(n,521))^2 + (IPSresults(n,2) - test_dataSet(n,522))^2);
     end
     n = n + 1;
 end
