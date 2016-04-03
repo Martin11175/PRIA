@@ -8,9 +8,9 @@ ez_prox_threshold=( 1 2 3 4 5 6 7 8 ) # Proximity threshold in dB
 min_AP_overlap=( 2 3 4 5 6 7 ) # Minimum similar visible APs
 
 # Heuristic params
-min_AP_strength=( -100 -95 -90 -85 -80 -75 -70 -65 -60 )
-num_strongest=( 2 3 4 5 6 7 8 9 10 )
-min_strong_overlap=( 1 2 3 4 5 6 7 8 9 10 )
+min_AP_strength=( -100 -90 -80 ) #( -100 -95 -90 -85 -80 -75 -70 -65 -60 )
+num_strongest=( 2 3 4 5 7 10 ) #( 2 3 4 5 6 7 8 9 10 )
+min_strong_overlap=( 2 3 4 5 6 ) #( 1 2 3 4 5 6 7 8 9 10 )
 
 # Parameter counters
 ez_prox_threshold_n=0
@@ -30,15 +30,14 @@ do
     # Run tests
     #nice -n -5 \
     nohup \
-    matlab -nosplash -nojvm -nodisplay -r "\"\
+    matlab -nosplash -nojvm -nodisplay -r "\
     ez_prox_threshold = ${ez_prox_threshold[$ez_prox_threshold_n]};\
     min_AP_overlap = ${min_AP_overlap[$min_AP_overlap_n]};\
     min_AP_strength = ${min_AP_strength[$min_AP_strength_n]};\
     num_strongest = ${num_strongest[$num_strongest_n]};\
     min_strong_overlap = ${min_strong_overlap[$min_strong_overlap_n]};\
     prox_test;\
-    exit\"" \
-    >/dev/null 2>&1 &
+    exit" >/dev/null 2>&1 &
 
     # Increment parameters
     if $more_ex_tests

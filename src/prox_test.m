@@ -97,10 +97,12 @@ for i = nchoosek(1:size(D,1), 2)'
         if sum(k_1(h_m, max_1(h_m,:))) > (num_strongest_APs * min_AP_strength)
         for h_n = 1:size(max_2,1)
             if sum(ismember(max_1(h_m,:), max_2(h_n,:))) > min_strong_overlap
+                %{
                 if sum(ismember([h_m h_n], [g_m g_n], 'rows')) == 0
                     dist_diff = sqrt((x_1(h_m,1) - x_2(h_n,1))^2 + (x_1(h_m,2) - x_2(h_n,2))^2);
-                    fprintf('False positive distance: %f, %d floors', dist_diff, x_1(h_m,3) - x_2(h_n,3));
+                    fprintf('False positive distance: %f, %d floors\n', dist_diff, x_1(h_m,3) - x_2(h_n,3));
                 end
+                %}
                 h_prox(h_m, h_n) = 1;
             end
         end
@@ -123,6 +125,21 @@ for i = nchoosek(1:size(D,1), 2)'
     [ez_result(count_d,:) h_result(count_d,:)]
     count_d = count_d + 1;
 end
+
+% Write summary out
+if exist('ez_prox_summary.csv', 'file') == 0
+    fprintf(fopen('ez_prox_summary.csv', 'w'), ...
+        'prox_threshold, min_AP_overlap, correct, missed, false\n');
+end
+dlmwrite('ez_prox_summary.csv', ...
+    [ez_prox_threshold, min_AP_overlap, sum(ez_result,1)], 'delimiter', ',', '-append');
+if exist('h_prox_summary.csv', 'file') == 0
+    fprintf(fopen('h_prox_summary.csv', 'w'), ...
+        'num_strongest_APs, min_AP_strength, min_strong_overlap, correct, missed, false\n');
+end
+dlmwrite('h_prox_summary.csv', ...
+    [num_strongest_APs, min_AP_strength, min_strong_overlap, sum(h_result,1)], 'delimiter', ',', '-append');
+
 
 % Create results directory structure
 if exist('results', 'dir') == 0
