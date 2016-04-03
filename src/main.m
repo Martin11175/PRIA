@@ -158,7 +158,8 @@ while new_value_flag
         if size(O,1) > 4
             new_value_flag = true;
             % Objective function looking to minimise RSSI error
-            objective = @(C) APSolve(C, O);
+            objective = @(C) mean((O(:,1) - C(3) + ((10 * C(4)) * ...
+                log10(sqrt((O(:,2) - C(1)).^2 + (O(:,3) - C(2)).^2)))).^2);
             
             % Lower and upper bounds for parameter search:
             %   Lat and long (in metres): bounds outside of observation locations
@@ -172,14 +173,24 @@ while new_value_flag
             C0 = [mean(O(:,2)), mean(O(:,3)), -25, 3.0];
             options = optimset('display','off');
             fprintf('AP: %d, %d observations...', i, size(O,1));
+            med_ap_err = Inf;
+            try_count = 0;
             tic
-            APparams(i,1:4) = simulannealbnd(objective, C0, lower, upper, options);
+            % Avoid obviously terrible results
+            while med_ap_err > 10 && try_count < 10
+                APparams(i,1:4) = simulannealbnd(objective, C0, lower, upper, options);
+                % Trust metric
+                med_ap_err = median(abs((sqrt((O(:,2) - APparams(i,1)).^2 + (O(:,3) - APparams(i,2)).^2) ...
+                    - 10.^((APparams(i,3) - O(:,1))./(10*APparams(i,4))))));
+                fprintf('Median localisation error: %fm\n', med_ap_err);
+                try_count = try_count + 1;
+            end
             toc
-            % Trust metric
-            med_ap_err = median(abs((sqrt((O(:,2) - APparams(i,1)).^2 + (O(:,3) - APparams(i,2)).^2) ...
-                - 10.^((APparams(i,3) - O(:,1))./(10*APparams(i,4))))));
-            APparams(i, 5) = med_ap_err;
-            fprintf('Median localisation error: %fm\n', med_ap_err);
+            if med_ap_err > 10
+                APparams(i,1:5) = [0 0 0 0 0];
+            else
+                APparams(i, 5) = med_ap_err;
+            end
         end
     end
     
@@ -200,10 +211,9 @@ while new_value_flag
             
             if size(O,1) > 2
                 new_value_flag = true;
-                % Calculate distance
+                % Calculate distance and set equation to solve
                 D = 10.^((C(:,3) - O)./(10*C(:,4)));
-                % Fix parameters to search over
-                objective = @(J) LocSolve(J, D, C);
+                objective = @(J) D - sqrt((J(1) - C(:,1)).^2 + (J(2) - C(:,2)).^2);
                 
                 % Bounds on area to search (outside AP locations)
                 lower = [min(C(:,1)) - bounds, min(C(:,1)) - bounds];
@@ -212,7 +222,7 @@ while new_value_flag
                 % Perform simulated annealing, starting from average values
                 J0 = [mean(C(:,1)), mean(C(:,2))];
                 options = optimset('display','off');
-                dataSet(j,521:522) = simulannealbnd(objective, J0, lower, upper, options);
+                dataSet(j,521:522) = lsqnonlin(objective, J0, lower, upper, options);
             end
         end
     end
@@ -231,17 +241,19 @@ n = 1;
 for j = test_dataSet'
     % Find which APs we wish to evaluate
     I = ((threshold < j(1:520)) & (j(1:520) < 0) & (APparams(:,4) ~= 0));
-    if strcmp(ips_type,'max') == 1
-        [~, order] = sort(j(1:520), 'descend');
-        I = I & ismember(1:520, order(1:4));
+    if (strcmp(ips_type,'max') == 1) && (sum(I) > 2)
+        tmp = find(I);
+        [~, order] = sort(j(I), 'descend');
+        I = false(520,1);
+        I(tmp(order(1:3))) = true;
     end
     O = j(I);
     C = APparams(I, :);
         
     if size(O,1) > 2
+        % Calculate distance and set equation to solve
         D = 10.^((C(:,3) - O)./(10*C(:,4)));
-        % Fix parameters to search over
-        objective = @(J) LocSolve(J, D, C);
+        objective = @(J) D - sqrt((J(1) - C(:,1)).^2 + (J(2) - C(:,2)).^2);
         
         % Bounds on area to search (outside AP locations)
         lower = [min(C(:,1)) - bounds, min(C(:,1)) - bounds];
@@ -250,10 +262,10 @@ for j = test_dataSet'
         % Perform simulated annealing, starting from average values
         J0 = [mean(C(:,1)), mean(C(:,2))];
         options = optimset('display','off');
-        IPSresults(n,:) = simulannealbnd(objective, J0, lower, upper, options);
+        IPSresults(n,:) = lsqnonlin(objective, J0, lower, upper, options);
         
         % Calculate localisation error
-        IPSerror(n) = sqrt((IPSresults(n,1) - dataSet(n,521))^2 + (IPSresults(n,2) - dataSet(n,522))^2);
+        IPSerror(n) = sqrt((IPSresults(n,1) - test_dataSet(n,521))^2 + (IPSresults(n,2) - test_dataSet(n,522))^2);
     end
     n = n + 1;
 end
