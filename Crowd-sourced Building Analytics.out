@@ -11,10 +11,16 @@
 \BOOKMARK [0][-]{chapter.4}{Method}{}% 11
 \BOOKMARK [1][-]{section.4.1}{System Specification}{chapter.4}% 12
 \BOOKMARK [1][-]{section.4.2}{Data Preparation}{chapter.4}% 13
-\BOOKMARK [1][-]{section.4.3}{Heirarchical Clustering}{chapter.4}% 14
+\BOOKMARK [1][-]{section.4.3}{Hierarchical Clustering}{chapter.4}% 14
 \BOOKMARK [1][-]{section.4.4}{Model Creation}{chapter.4}% 15
 \BOOKMARK [2][-]{subsection.4.4.1}{Off-line Learning}{section.4.4}% 16
 \BOOKMARK [2][-]{subsection.4.4.2}{On-line Localisation}{section.4.4}% 17
 \BOOKMARK [0][-]{chapter.5}{Evaluation}{}% 18
-\BOOKMARK [0][-]{chapter.6}{Further Work}{}% 19
-\BOOKMARK [0][-]{chapter.7}{Conclusion}{}% 20
+\BOOKMARK [1][-]{section.5.1}{Relative Gain Estimation}{chapter.5}% 19
+\BOOKMARK [2][-]{subsection.5.1.1}{Proximity Determination}{section.5.1}% 20
+\BOOKMARK [2][-]{subsection.5.1.2}{Gain Estimation}{section.5.1}% 21
+\BOOKMARK [1][-]{section.5.2}{Modelling Accuracy}{chapter.5}% 22
+\BOOKMARK [2][-]{subsection.5.2.1}{Component Effectiveness}{section.5.2}% 23
+\BOOKMARK [2][-]{subsection.5.2.2}{Restricted Modelling Performance}{section.5.2}% 24
+\BOOKMARK [0][-]{chapter.6}{Further Work}{}% 25
+\BOOKMARK [0][-]{chapter.7}{Conclusion}{}% 26
