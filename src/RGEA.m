@@ -1,11 +1,15 @@
-function [ G ] = RGEA( J, K )
+function [ G ] = RGEA( J, K, prox_threshold, min_AP_overlap )
 %RGEA EZ Relative Gain Estimation Algorithm
 %   J [in] - Matrix of RSSI measurements (APs as columns)
 %   K [in] - Vector of device IDs relating rows to device
 %   G [out] - Pairs of device IDs (1) to estimated gain (2)
 
-prox_threshold = 3;
-min_AP_overlap = 2;
+if exist('prox_threshold', 'var') == 0
+    prox_threshold = 3;
+end
+if exist('min_AP_overlap', 'var') == 0
+    min_AP_overlap = 2;
+end
 
 D = sort(unique(K)); % List of device IDs
 J(J == 100) = -100; % Replace positive invisibility markers to prevent skew

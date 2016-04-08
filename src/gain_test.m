@@ -41,10 +41,7 @@ g = GroundRGEA(J,K,X);
 % Run algortihms and write summaries
 for prox = prox_threshold
     for overlap = min_AP_overlap
-        if prox == 2 || prox == 3 || prox == 4 || ...
-            ((prox == 5) && (overlap == 1 || overlap == 2 || overlap == 3))
-            continue;
-        end
+        continue;
         fprintf('Complete | EZ: %d %d\n', prox, overlap);
         ez = RGEA(J,K,prox,overlap);
         
@@ -57,6 +54,10 @@ end
 for strength = min_AP_strength
     for num_str = num_strongest
         for str_overlap = min_strong_overlap
+            if strength == -100 || strength == -90 || strength == -80 || ...
+                ((strength == -70) && (num_str ~= 10))
+                continue;
+            end
             fprintf('Complete | H: %d %d %d\n', num_str, strength, str_overlap);
             h = SimpleRGEA(J,K, strength, num_str, str_overlap);
 

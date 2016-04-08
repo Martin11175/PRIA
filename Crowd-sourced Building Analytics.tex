@@ -25,6 +25,8 @@
 	\chapter{Introduction}
     \label{chap:intro}
     
+	    \textcolor{red}{Introduce the idea behind your project! What you aim to achieve :)}
+    
 		The aim of this project is to use data from sources such as phones to track where individual people are in building and then this information can be used to learn a model of how the building itself is being used. For instance, models of typical movement patterns, congregation areas etc can be formed. These models can be improved, or cross referenced for verification, with other sources of information, e.g. timetable information, that would suggest who should be in which rooms at what times. The models can then be used for many reasons including optimising the energy usage within a building, e.g. only heat particular rooms shortly before the room(s) is to be used and switch off heating when there is no one in the room(s).
 		
 		The phases of this project are as follows:
@@ -291,11 +293,25 @@
             
             Because these relative gains are transitive (i.e. $\Delta G^{k_1k_3} = \Delta G^{k_1k_2} + \Delta G^{k_2k_3}$), any pairs of devices with proximate locations can then be chained together with other device pairs to create a system of simultaneous equations. Finally a random device as part of this system is selected and chosen to have some value of gain and so the system can be solved. As this is an estimate however, the equations are weighted according to their standard deviation or in effect their likelihood of being accurate.
            
-            Implementing this short specification however, leads to incorrect results. The main discrepancy is the selection of RSSI readings to include when comparing a pair of measurements. For completeness, the UJIIndoorLoc data set includes every invisible AP as a measurement of 100dB to mark it as an invalid measurement. If all readings (including invisible markers) are compared for a pair of measurements, then in spaces where only a small proportion of APs are visible at any given location, all locations will be deemed proximate as all invisible APs register a difference of $0$. The opposite however also causes problems, if only points visible at both locations are compared, then being equidistant from a single AP could cause the whole measurement to be deemed proximate. The solution is to compare all readings visible in either measurement, such if the measurement were to be localised using the set of points, they would be equal. However, including readings in this manner with the UJIIndoorLoc positive invisibility indicator causes any single difference in AP visibility, no matter how weak (i.e. -99dB), to be marked as not proximate in error. The simple fix was to change all 100dB readings to -100dB. \textcolor{blue}{Diagrams explaining these situations? Yes.}
+            Implementing this short specification however, leads to incorrect results. The main discrepancy is the selection of RSSI readings to include when comparing a pair of measurements. For completeness, the UJIIndoorLoc data set includes every invisible AP as a measurement of 100dB to mark it as an invalid measurement. If all readings (including invisible markers) are compared for a pair of measurements, then in spaces where only a small proportion of APs are visible at any given location, all locations will be deemed proximate as all invisible APs register a difference of $0$. The opposite however also causes problems, if only points visible at both locations are compared, then being equidistant from a single AP could cause the whole measurement to be deemed proximate. The solution is to compare all readings visible in either measurement, such if the measurement were to be localised using the set of points, they would be equal. However, including readings in this manner with the UJIIndoorLoc positive invisibility indicator causes any single difference in AP visibility, no matter how weak (i.e. -99dB), to be marked as not proximate in error. The simple fix was to change all 100dB readings to -100dB. \textcolor{blue}{Diagram ref}
+            
+            \begin{figure}[h]
+            	\centering
+            	\begin{minipage}{0.45\textwidth}
+            		\centering
+            		\includegraphics[width=\textwidth]{single_overlap.jpg}
+            		\caption{All locations demonstrated would be marked as proximate with $0$dB gain when only using APs visible at both locations.}
+            	\end{minipage}\hfill
+            	\begin{minipage}{0.45\textwidth}
+            		\centering
+            		\includegraphics[width=1\textwidth]{wall.jpg}
+            		\caption{Across wall case mistakenly marked as proximate with $0$dB gain.}
+            	\end{minipage}
+            \end{figure}
             
             With the specification implementation producing feasible results, it was at this point that the technique was to be validated against some known values. With no provided gain values for the devices in use by UJIIndoorLoc however, it was necessary to attempt to calculate them separately. To this end another relative gain estimator was created using the ground truth location values to specify exactly which pairs of measurements were proximate. The first major change was the addition of a general location translator to the data preparation phase as measurements were gathered within a few hundred metres of each other, but the latitude values started at \textasciitilde4,865,000m. The other major difference was a factor of speed. As the location comparison only needed to compare the difference between latitude and longitude as opposed to the average difference of up to 520 APs, the ground truth calculator performed \textcolor{red}{Profile RGEA and Ground Truth calculator for ballpark difference (i.e. 2 orders of magnitude faster)}.
             
-            Through experimentation and comparing the RGEA's output with the newly calculated values, several other faults of the implementation came to light. The first was that when calculating the average difference between measurements for inclusion in the set $M^{k_1k_2}$, it was meant to be the average \emph{absolute} difference being less than 3dB. Errors in light of this fault arose with measurements where readings balanced out with positive and negative differences (such as being opposite sides of a wall). For example the average difference of (-20dB, 20dB) for 2 APs is $0$dB, causing the points to be falsely identified as proximate with no relative gain. \textcolor{blue}{Diagram?}
+            Through experimentation and comparing the RGEA's output with the newly calculated values, several other faults of the implementation came to light. The first was that when calculating the average difference between measurements for inclusion in the set $M^{k_1k_2}$, it was meant to be the average \emph{absolute} difference being less than 3dB. Errors in light of this fault arose with measurements where readings balanced out with positive and negative differences (such as being opposite sides of a wall). For example the average difference of (-20dB, 20dB) for 2 APs is $0$dB, causing the points to be falsely identified as proximate with no relative gain. \textcolor{blue}{Diagram ref}
             
             Despite removing the majority of the falsely proximate points through this fault, the technique would still produce a very small number proximate points for those that should have none in common due to random fluctuations in the RSSI. Because of the transitive nature of the relative gain, this lead the algorithm to attempt to include erroneous relationships in its system of simultaneous equations, rendering them either unsatisfiable or wildly overestimating the gain applied to certain devices. As such the simplest solution was to impose a minimum number of proximate points for a relative gain to be of great enough significance to consider in the system.
             
@@ -335,6 +351,20 @@
                 The search space is constructed with reasonable allowances for signal transmission parameters (according to \citet{chintalapudi2010indoor}) and a bounded space around the included observations. Within that, the starting point is set as the average location of the included observations as might be common in a central AP deployment. This starting point is of lesser significance however, as simulated annealing provides a non-deterministic element to the gradient descent unlike other function minimisers, leading to less reliance on a good starting point. The main constraint on the simulated annealer is actually over the sufficiency of its output; given its semi-random, single solution nature, it is possible for the annealer to miss all plausible solutions and output a model-skewing set of bad AP parameters. As such, if the annealer's solution re-localises the modelling data to a median error of more than 10m, it is re-run up to a maximum of 10 times at which point the AP is deemed unsatisfiable and removed from the model.
                 
                 After attempting to model several APs it became apparent that a much larger proportion was being deemed unsatisfiable than initially anticipated, despite having a significant number of observations. The problem with these APs was that they appeared to be located on other floors of the same building. While theoretically plausible given enough data and time to model the extra dimension for AP placement, this project aimed to remain in the more proven 2D subspace (as demonstrated through the review of work in section \ref{sec:ips}). As such, the set of weak measurements coming through the floor to a small area was being interpreted as a large distance from the AP, but then being modelled laterally rather than vertically.
+                
+                \begin{figure}[h]
+                	\centering
+                	\begin{minipage}{0.45\textwidth}
+                		\centering
+                		\includegraphics[width=0.7\textwidth]{fringe.jpg}
+                		\caption{Red area marking the localisable fringe-case zone of a building.}
+                	\end{minipage}\hfill
+                	\begin{minipage}{0.45\textwidth}
+                		\centering
+                		\includegraphics[width=0.7\textwidth]{vertical.jpg}
+                		\caption{Visual representation of the difference between modelling an AP vertically (red) and laterally (black).}
+                	\end{minipage}
+                \end{figure}
                 
                 While potentially very useful towards localising to a very specific area of a floor, such a small area of coverage would be impossible to model without greatly expanding the search space for every AP. Given that these signals were also passing through concrete, electrical cables and various pipes to be received, the signals might also be particularly prone to interference and as such inaccurate beyond identifying the general area that the measurement was taken. Without ground truth data about the APs that would allow for model comparison and preparatory pruning of those less directly useful (though more thorough data covering alternative spaces are anticipated through communication with \citet{JoaquinEmail}), a thresholding heuristic was devised in place.
                 
@@ -384,17 +414,6 @@
 		
 		\textcolor{green}{\emph{\[GOOD PIECES WITHIN\]}Testing should show validation as well as evaluation of the new model. Validation could explain how increasing threshold level will remove APs from other floors, but also potentially remove small overlaps from nearby buildings (i.e. if an AP is visible only in a small area near the edge of the building, seeing that AP means the location must me in that space). A similar effect could potentially be observed across floors (i.e. the AP only being visible if the location is directly below it), but this would require a much wider domain for parameters, such as extremely low transmission powers or extremely high path loss rates. However, use of these extremes, could be identified and used to help place the AP on another floor with some defined loss across floors like the WAF used in RADAR.}
 	
-	\chapter{Further Work}
-    \label{chap:further}
-    
-	    \begin{itemize}
-	    	\item Validation against a real-world crowd sourced data set necessary
-	    	\item Make use of absence of signal / fringe cases
-            \item Compare AP model info to ground truth AP parameters
-            \item Model 3D space through either inclusion of 3rd dimension or model 3D as a set of 2D layers
-            \item Horus methodology - use strongest measurements to define fingerprinted area, then use weaker measurements to refine position
-	    \end{itemize}
-	
 	\chapter{Conclusion}
     \label{chap:conclusion}
     
@@ -404,6 +423,15 @@
 	    	\item Effectiveness of initial EZ model does not stretch to larger / more complex areas under modelling
 	    	\item Heuristic components improve on speed and accuracy of EZ's IPS
 	    	\item Framework now prepared for future work on crowd-sourced building analytics
+	    \end{itemize}
+	    
+	    Further Work:
+	    \begin{itemize}
+	    	\item Validation against a real-world crowd sourced data set necessary
+	    	\item Make use of absence of signal / fringe cases
+	    	\item Compare AP model info to ground truth AP parameters
+	    	\item Model 3D space through either inclusion of 3rd dimension or model 3D as a set of 2D layers
+	    	\item Horus methodology - use strongest measurements to define fingerprinted area, then use weaker measurements to refine position
 	    \end{itemize}
     
     \textcolor{red}{\emph{MAKE SURE YOU CHECK YOUR REFERENCES ARE CORRECT!}}

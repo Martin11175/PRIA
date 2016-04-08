@@ -87,6 +87,7 @@ for threshold = thresholds
 rows = ((srcData(:,523) == floor) & (srcData(:,524) == building));
 dataSet = srcData(rows, :);
 normalisedData = 1 - (abs(dataSet(:, 1:520)) / 100);
+%normalisedData = normalisedData - mean(normalisedData);
 original_locations = dataSet(:, 521:522);
 
 % Artificial GPS restriction
