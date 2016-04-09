@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2015.10.5)  7 APR 2016 21:07
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2015.10.5)  9 APR 2016 21:36
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -772,28 +772,28 @@ File: pgflibraryshapes.geometric.code.tex 2008/06/26 v3.0.1a (rcs-revision 1.1)
 )) (./Crowd-sourced Building Analytics.aux)
 \openout1 = `"Crowd-sourced Building Analytics.aux"'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 21.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 21.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 33.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 33.
 
 (c:/texlive/2015/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Info: Redefining \microtypecontext on input line 21.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Info: Redefining \microtypecontext on input line 33.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
@@ -808,7 +808,7 @@ Package microtype Info: No adjustment of character kerning.
 File: mt-ppl.cfg 2005/11/16 v1.6 microtype config. file: Palatino (RS)
 )
 \AtBeginShipoutBox=\box40
-Package hyperref Info: Link coloring OFF on input line 21.
+Package hyperref Info: Link coloring OFF on input line 33.
 
 (c:/texlive/2015/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
@@ -818,9 +818,9 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
 \c@section@level=\count135
 )
-LaTeX Info: Redefining \ref on input line 21.
-LaTeX Info: Redefining \pageref on input line 21.
-LaTeX Info: Redefining \nameref on input line 21.
+LaTeX Info: Redefining \ref on input line 33.
+LaTeX Info: Redefining \pageref on input line 33.
+LaTeX Info: Redefining \nameref on input line 33.
 
 (./Crowd-sourced Building Analytics.out)
 (./Crowd-sourced Building Analytics.out)
@@ -858,54 +858,54 @@ e
 ))
 ABD: EveryShipout initializing macros
 LaTeX Font Info:    Font shape `T1/pplj/bx/n' in size <10.95> not available
-(Font)              Font shape `T1/pplj/b/n' tried instead on input line 23.
+(Font)              Font shape `T1/pplj/b/n' tried instead on input line 35.
 LaTeX Font Info:    Font shape `T1/pplj/bx/n' in size <14.4> not available
-(Font)              Font shape `T1/pplj/b/n' tried instead on input line 23.
+(Font)              Font shape `T1/pplj/b/n' tried instead on input line 35.
 LaTeX Font Info:    Font shape `T1/pplj/bx/n' in size <12> not available
-(Font)              Font shape `T1/pplj/b/n' tried instead on input line 23.
-LaTeX Font Info:    Try loading font information for T1+phv on input line 23.
+(Font)              Font shape `T1/pplj/b/n' tried instead on input line 35.
+LaTeX Font Info:    Try loading font information for T1+phv on input line 35.
 
 (c:/texlive/2015/texmf-dist/tex/latex/psnfss/t1phv.fd
 File: t1phv.fd 2001/06/04 scalable font definitions for T1/phv.
 )
 LaTeX Font Info:    Font shape `T1/phv/m/n' will be
-(Font)              scaled to size 9.85492pt on input line 23.
+(Font)              scaled to size 9.85492pt on input line 35.
 Package microtype Info: Loading generic settings for font family
 (microtype)             `phv' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <10.95> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 23.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 35.
 LaTeX Font Info:    Font shape `T1/phv/b/n' will be
-(Font)              scaled to size 9.85492pt on input line 23.
+(Font)              scaled to size 9.85492pt on input line 35.
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <20.74> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 23.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 35.
 LaTeX Font Info:    Font shape `T1/phv/b/n' will be
-(Font)              scaled to size 18.66588pt on input line 23.
-LaTeX Font Info:    Try loading font information for OT1+ppl on input line 23.
+(Font)              scaled to size 18.66588pt on input line 35.
+LaTeX Font Info:    Try loading font information for OT1+ppl on input line 35.
 
 (c:/texlive/2015/texmf-dist/tex/latex/psnfss/ot1ppl.fd
 File: ot1ppl.fd 2001/06/04 font definitions for OT1/ppl.
 )
-LaTeX Font Info:    Try loading font information for OML+zplm on input line 23.
+LaTeX Font Info:    Try loading font information for OML+zplm on input line 35.
 
 
 (c:/texlive/2015/texmf-dist/tex/latex/psnfss/omlzplm.fd
 File: omlzplm.fd 2002/09/08 Fontinst v1.914 font definitions for OML/zplm.
 )
-LaTeX Font Info:    Try loading font information for OMS+zplm on input line 23.
+LaTeX Font Info:    Try loading font information for OMS+zplm on input line 35.
 
 
 (c:/texlive/2015/texmf-dist/tex/latex/psnfss/omszplm.fd
 File: omszplm.fd 2002/09/08 Fontinst v1.914 font definitions for OMS/zplm.
 )
-LaTeX Font Info:    Try loading font information for OMX+zplm on input line 23.
+LaTeX Font Info:    Try loading font information for OMX+zplm on input line 35.
 
 
 (c:/texlive/2015/texmf-dist/tex/latex/psnfss/omxzplm.fd
 File: omxzplm.fd 2002/09/08 Fontinst v1.914 font definitions for OMX/zplm.
 )
-LaTeX Font Info:    Try loading font information for OT1+zplm on input line 23.
+LaTeX Font Info:    Try loading font information for OT1+zplm on input line 35.
 
 
 (c:/texlive/2015/texmf-dist/tex/latex/psnfss/ot1zplm.fd
@@ -916,7 +916,7 @@ Package microtype Info: Loading generic settings for font family
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 LaTeX Font Info:    Font shape `T1/phv/m/n' will be
-(Font)              scaled to size 10.79993pt on input line 23.
+(Font)              scaled to size 10.79993pt on input line 35.
  [1
 
 
@@ -924,127 +924,136 @@ LaTeX Font Info:    Font shape `T1/phv/m/n' will be
 {c:/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2
 
 
-] [3] [4
+]
+LaTeX Font Info:    Try loading font information for TS1+pplj on input line 35.
+
+
+(c:/texlive/2015/texmf-dist/tex/latex/psnfss/ts1pplj.fd
+File: ts1pplj.fd 2004/09/06 font definitions for TS1/pplj.
+) [3] [4
+
+
+] [5] [6
 
 
 ]
-Package tocbasic Info: character protrusion at toc deactivated on input line 23
+Package tocbasic Info: character protrusion at toc deactivated on input line 35
 .
 
 (./Crowd-sourced Building Analytics.toc)
 \tf@toc=\write5
 \openout5 = `"Crowd-sourced Building Analytics.toc"'.
 
- [5
+ [7
 
 ]
 chapter 1.
-LaTeX Font Info:    Try loading font information for TS1+pplj on input line 43.
+[8
 
-(c:/texlive/2015/texmf-dist/tex/latex/psnfss/ts1pplj.fd
-File: ts1pplj.fd 2004/09/06 font definitions for TS1/pplj.
-) [6
-
-] [7]
+] [9]
 chapter 2.
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <14.4> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 69.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 70.
 LaTeX Font Info:    Font shape `T1/phv/b/n' will be
-(Font)              scaled to size 12.9599pt on input line 69.
+(Font)              scaled to size 12.9599pt on input line 70.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [8
+ [10
 
 ]
 Underfull \vbox (badness 1701) has occurred while \output is active []
 
- [9]
+ [11]
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <12> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 100.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 101.
 LaTeX Font Info:    Font shape `T1/phv/b/n' will be
-(Font)              scaled to size 10.79993pt on input line 100.
+(Font)              scaled to size 10.79993pt on input line 101.
 
 Underfull \vbox (badness 4726) has occurred while \output is active []
 
- [10]
-<Model_M2.png, id=217, 285.31593pt x 523.9575pt>
+ [12]
+<Model_M2.png, id=227, 285.31593pt x 523.9575pt>
 File: Model_M2.png Graphic file (type png)
  <use Model_M2.png>
-Package pdftex.def Info: Model_M2.png used on input line 124.
+Package pdftex.def Info: Model_M2.png used on input line 125.
 (pdftex.def)             Requested size: 135.89175pt x 249.55397pt.
- [11 <./Model_M2.png>] <dead.png, id=239, 845.40843pt x 491.58656pt>
+ [13 <./Model_M2.png>] <dead.png, id=250, 845.40843pt x 491.58656pt>
 File: dead.png Graphic file (type png)
  <use dead.png>
-Package pdftex.def Info: dead.png used on input line 142.
+Package pdftex.def Info: dead.png used on input line 143.
 (pdftex.def)             Requested size: 317.07619pt x 184.367pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[12] [13 <./dead.png>]
-<EZHorusRADARComparison.png, id=262, 734.745pt x 566.86781pt>
+[14] [15 <./dead.png>]
+<EZHorusRADARComparison.png, id=272, 734.745pt x 566.86781pt>
 File: EZHorusRADARComparison.png Graphic file (type png)
 
 <use EZHorusRADARComparison.png>
-Package pdftex.def Info: EZHorusRADARComparison.png used on input line 165.
+Package pdftex.def Info: EZHorusRADARComparison.png used on input line 166.
 (pdftex.def)             Requested size: 317.07619pt x 244.63068pt.
- [14 <./EZHorusRADARComparison.png>] [15]
-[16]
+ [16 <./EZHorusRADARComparison.png>] [17]
+[18]
 chapter 3.
-[17
+[19
 
-] [18] [19]
+] [20] [21]
 chapter 4.
 
 Overfull \hbox (1.23798pt too wide) in paragraph at lines 263--263
  [][][][]\T1/pplj/m/n/10.95 (-20) Localised 
  []
 
-[20
+[22
 
-] [21] <single_overlap.jpg, id=335, 415.5525pt x 213.04594pt>
+]
+Underfull \vbox (badness 2698) has occurred while \output is active []
+
+ [23]
+<single_overlap.jpg, id=347, 415.5525pt x 213.04594pt>
 File: single_overlap.jpg Graphic file (type jpg)
 
 <use single_overlap.jpg>
-Package pdftex.def Info: single_overlap.jpg used on input line 302.
+Package pdftex.def Info: single_overlap.jpg used on input line 301.
 (pdftex.def)             Requested size: 203.8342pt x 104.50069pt.
 
-Underfull \hbox (badness 6047) in paragraph at lines 303--303
+Underfull \hbox (badness 6047) in paragraph at lines 302--302
 []\T1/pplj/m/n/10.95 (+20) All loc-a-tions demon-strated
  []
 
-<wall.jpg, id=336, 331.2375pt x 249.93375pt>
+<wall.jpg, id=348, 331.2375pt x 249.93375pt>
 File: wall.jpg Graphic file (type jpg)
  <use wall.jpg>
 Package pdftex.def Info: wall.jpg used on input line 307.
 (pdftex.def)             Requested size: 203.8342pt x 153.80177pt.
- [22 <./single_overlap.jpg> <./wall.jpg>] [23] [24]
-<fringe.jpg, id=364, 219.06844pt x 225.09094pt>
+ [24 <./single_overlap.jpg> <./wall.jpg>] [25] [26]
+<fringe.jpg, id=379, 219.06844pt x 225.09094pt>
 File: fringe.jpg Graphic file (type jpg)
  <use fringe.jpg>
-Package pdftex.def Info: fringe.jpg used on input line 359.
+Package pdftex.def Info: fringe.jpg used on input line 360.
 (pdftex.def)             Requested size: 142.6833pt x 146.60617pt.
 
-<vertical.jpg, id=365, 239.39438pt x 270.25969pt>
+<vertical.jpg, id=380, 239.39438pt x 270.25969pt>
 File: vertical.jpg Graphic file (type jpg)
  <use vertical.jpg>
-Package pdftex.def Info: vertical.jpg used on input line 364.
+Package pdftex.def Info: vertical.jpg used on input line 366.
 (pdftex.def)             Requested size: 142.6833pt x 161.08073pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[25]
+[27]
 Underfull \vbox (badness 1226) has occurred while \output is active []
 
- [26 <./fringe.jpg> <./vertical.jpg>] [27]
+ [28 <./fringe.jpg> <./vertical.jpg>] [29]
 chapter 5.
-[28
+[30
 
-] [29]
+] [31]
 chapter 6.
-(./Crowd-sourced Building Analytics.bbl [30
+(./Crowd-sourced Building Analytics.bbl [32
 
 ]
 Underfull \hbox (badness 10000) in paragraph at lines 43--47
@@ -1070,24 +1079,24 @@ Underfull \hbox (badness 4341) in paragraph at lines 43--47
 d-[]commute-[]times/$[], [Ac-cessed: Nov.
  []
 
-[31
+[33
 
-]) [32]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 441.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 441.
+]) [34]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 443.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 443.
  (./Crowd-sourced Building Analytics.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 441.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 441.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 443.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 443.
 Package rerunfilecheck Info: File `"Crowd-sourced Building Analytics".out' has 
 not changed.
 (rerunfilecheck)             Checksum: EAFFAC84587EB31397CAD144219C8C4E;1610.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 441.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 443.
  ) 
 Here is how much of TeX's memory you used:
- 21746 strings out of 493054
- 398834 string characters out of 6138327
- 558556 words of memory out of 5000000
- 24446 multiletter control sequences out of 15000+600000
+ 21749 strings out of 493054
+ 398882 string characters out of 6138327
+ 559433 words of memory out of 5000000
+ 24451 multiletter control sequences out of 15000+600000
  73052 words of font info for 329 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  64i,12n,68p,2173b,862s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1103,11 +1112,11 @@ ype1/urw/helvetic/uhvb8a.pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw/helvet
 ic/uhvr8a.pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb><
 c:/texlive/2015/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb><c:/texlive/2015
 /texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on "Crowd-sourced Building Analytics.pdf" (32 pages, 425437 byte
+Output written on "Crowd-sourced Building Analytics.pdf" (34 pages, 431326 byte
 s).
 PDF statistics:
- 487 PDF objects out of 1000 (max. 8388607)
- 422 compressed objects within 5 object streams
- 100 named destinations out of 1000 (max. 500000)
+ 500 PDF objects out of 1000 (max. 8388607)
+ 433 compressed objects within 5 object streams
+ 98 named destinations out of 1000 (max. 500000)
  40696 words of extra memory for PDF output out of 42996 (max. 10000000)
 

@@ -15,8 +15,20 @@
 \wordcount{\textcolor{red}{TODO}}
 
 \abstract{
-	\textcolor{red}{TODO}
+	Estimate (for BSc!):
+	\begin{itemize}
+		\item Abstract, ethics statement, etc. - 500 \textcolor{red}{(0)}
+		\item Introduction - 1,000 \textcolor{green}{(881)}
+		\item Literature review - 3,000 \textcolor{green}{(4,104)}
+		\item Problem description/analysis - 1,500 \textcolor{green}{(1,350)}
+		\item Design and implementation - 2,500 \textcolor{green}{(3,707)}
+		\item Results and evaluation - 2,500 \textcolor{red}{(0)}
+		\item Conclusion - 1,000 \textcolor{red}{(0)}
+	\end{itemize}
+	\textcolor{red}{Total word count: 10,631 (including notes)}
 }
+
+\acknowledgements{Thanks to Iain Bate in his role of supervisor, without whom's support and guidance this project may never have seen success. Also thanks to \citeauthor{torres2014ujiindoorloc} for their eager responses and wide data set enabling great future insight and broad analysis.}
 
 \begin{document}
 	
@@ -25,42 +37,31 @@
 	\chapter{Introduction}
     \label{chap:intro}
     
-	    \textcolor{red}{Introduce the idea behind your project! What you aim to achieve :)}
-    
-		The aim of this project is to use data from sources such as phones to track where individual people are in building and then this information can be used to learn a model of how the building itself is being used. For instance, models of typical movement patterns, congregation areas etc can be formed. These models can be improved, or cross referenced for verification, with other sources of information, e.g. timetable information, that would suggest who should be in which rooms at what times. The models can then be used for many reasons including optimising the energy usage within a building, e.g. only heat particular rooms shortly before the room(s) is to be used and switch off heating when there is no one in the room(s).
-		
-		The phases of this project are as follows:
-		\begin{enumerate}
-			\item Determine and choose from the available sources of information. Where needed augment this with bespoke mobile applications
-			\item Investigate how classical machine learning approaches can help derive the necessary models
-			\item Derive models from the information obtained
-			\item Evaluate the quality of the models using other sources of information
-		\end{enumerate}
-		The outputs of this project are useful data sets, software for deriving models from the information and a means of evaluating the quality of the models.
-		
-		The main challenges of this project are:
-		\begin{itemize}
-			\item Determining which sources of information can easily be used
-			\item Deriving means of determining whether a model is good
-			\item Producing useful models from unreliable information from a diverse set of sources
-			\item Determining credible independent sources of information to compare the information against
-		\end{itemize}
+        Modern buildings can be technological marvels with beautifully designed spaces to get the maximum amount of light to every corner. Navigating these spaces however can be another beast entirely with different layouts and separations across multiple floors and only the occasional abstractly designed map stating ``You are here''. With the prevalence of sensor-packed smart-phones, outdoors your simplest recompense might be to ask the mighty Google (or your preferred mapping software) and within seconds you can be told exactly which muddy field you are trudging through along with a crisp satellite image of the area. Indoors, these positioning technologies rapidly lose their accuracy, either giving up entirely or if not declaring your location to be somewhere within the next 5 buildings.
         
-        \textcolor{red}{Interesting ethical point: I believe most smartphones (Android, iOS and Windows) request to send visible access points back to a central server for mapping availability. By developing this technique could I be inadvertantly mapping every building in the world (private and public alike) with the sheer volume of smartphones available? This is good for things like emergency services, but where do I draw the line?!}
+        This rapid loss of accuracy is due to the loss of visibility to the small number of landmarks from which your position is determined. Contrarily, one of the currently most effective ways to localise yourself in a strange place is to ask a fellow wanderer who might use their experiences to give you directions based on numerous smaller landmarks within the space (such as a shop or fountain). In a similar manner, might it not be more effective to use our sensor-enabled devices to build a shared picture of the space using machine-identifiable landmarks (like magnetometry or radio data)?
         
-        \textcolor{red}{Conclude with a breakdown of what the following sections (chapters at the moment) aim to achieve.}
+        This is the aim of this project: to create a framework wherein researchers and real-world deployments alike can collect data from a large number of devices traversing their space and use it to create a model that users can locate themselves in. Though it should be noted that most often machine-identifiable landmarks and those used by people do not overlap. As such investigations will also be made into how machine learning might be able to translate these data points into other characteristics of the space, like a human-readable floor map. 
         
-        Estimated length Breakdown (number of words for BSc):
+        The uses and sources of information that could be pooled for this purpose are virtually unbounded from timetabling schedules to security check-ins to emergency situation planners, so a flexible, verifiable implementation could be extensively useful. But of course, not all information is complete, freely available, accurate or even relevant to every application. Creating this framework will enable collaboration across teams working on multiple techniques by providing them with an array of common components to evaluate against.
+        
+        As such this project will look into:
         \begin{itemize}
-        	\item Abstract, ethics statement, etc. - 500 \textcolor{red}{(0)}
-        	\item Introduction - 1,000 \textcolor{red}{(0)}
-        	\item Literature review - 3,000 \textcolor{green}{(4,104)}
-        	\item Problem description/analysis - 1,500 \textcolor{red}{(0)}
-        	\item Design and implementation - 2,500 \textcolor{yellow}{(800)}
-        	\item Results and evaluation - 2,500 \textcolor{red}{(0)}
-        	\item Conclusion - 1,000 \textcolor{red}{(0)}
+        	\item Potential crowd-sourced data gathering techniques, both pre-existing and theoretical improvements
+        	\item Data sources used in various indoor positioning systems
+        	\item Machine learning techniques for turning this data into a functional model
+        	\item Creating or acquiring freely available data sets to enable common evaluation
+        	\item Translating models and data into a human readable format
         \end{itemize}
-	
+        
+        While it would be foolish to assume that research already exists on or that this singular project could accomplish all of these goals in a single blow, it might be pessimistic to assume that none of these goals are already sufficiently covered in the real world. As such this project will assess the related literature and make the best possible start towards a unified building analytical framework. Ideally this project will produce a piece of software collecting or modelling data with an associated example data set and a set of experimental results for comparison against future works.
+        
+        This is of course not without anticipated challenges. For one, when crowd-sourcing, how might the user be provided with the utmost respect, both for their privacy and such as not to impede their daily life, while still aiming to collect a diverse and representative data set? When modelling data, how might the system deal with noisy or unreliable data and then make comparisons against more credible sources of information for correctness? And finally, when translating this all into more useful or human readable data, what actually makes each model good?
+        
+        Before attempting to answer these questions, the ethical connotations of this study should also be considered. Given the unknown applicability of data for building these models, it would make sense to build a crowd-sourcing application that can target as wide a user-base as possible for as many types of data as possible. Thereby, if the techniques for gathering data are so subtle that the user might never notice an installation of an application of this nature, there is the possibility that it could be deployed maliciously. Further, should the modelling techniques prove successful at generating human-readable maps from the user's data, given enough time theoretically any space could be mapped, with or without the owner's consent. These concerns however are generally mitigated by modern mobile operating systems allowing user's fine-grain control over application's access to data and secure locations often banning the use of foreign mobile technology entirely.
+        
+        With all of these points in mind, this report will be broken down into the following chapters, documenting the project's progression. Chapter \ref{chap:related} will cover a review of the existing work surrounding the project's goals while chapter \ref{chap:problem} will then attempt to identify the most significant contribution possible in line with the those goals while maintaining a manageable scope. Chapter \ref{chap:method} will document the process of creating the initial components of the framework this project aims to create and chapter \ref{chap:eval} will attempt to evaluate it against other documented techniques. Finally, chapter \ref{chap:conclusion} will provide an overview of the entire experience, including future work and the non-functional attributes described previously.
+        
 	\chapter{Related Work}
     \label{chap:related}
 	
@@ -188,6 +189,7 @@
             Finally sets of constraints were identified for generating possible floor plans based on estimated dimensions. While restrictive in their application to walls in the four cardinal directions, this fits common traditional layouts of buildings and it is anticipated that more complex arrangements could be broken down into rectangular subspaces to build in. Through combinations of the described techniques this report will now explore ways in which a system might determine room usage from a set of simple crowd-sourced data.
 
     \chapter{Problem Analysis}
+    \label{chap:problem}
     
 	    \textcolor{red}{Potential re-structure if you have time: Move advantages / disadvantages (critique) of each method to lit review, then you can make this section very brief, stating the main reason why you can't use it.}
 	    
@@ -208,8 +210,8 @@
         EZ however, implements a system requiring a very simple set of independent client-side measurements backed up by a server-side model that can adapt to a changing space as the set of observations grows, without human intervention (such as specifying a new floor-plan like RADAR). With this technique, RSSI measurements are provided along with GPS co-ordinates (where possible) to estimate the relative location and signal transmission properties of the access points being observed. This simplicity of the data required to build the model along with that of the model itself also makes it useful for research into building analytics as it reduces the effort required to crowd-source the data in the first place and reduces the complexity of any floor plan model wishing to reinterpret the EZ data.
         
         Assuming that the crowd-sourcing programme or test data input provides a reading of all RSSIs available (as already required by a wide range of infrastructureless indoor positioning systems) alongside the occasional GPS location, EZ will be able to provide a model for localising those without position data and any future measurements made. Furthermore, assuming that the floor plan modelling technique is also able to make use of positioning data, the output of running EZ on the original data set will still be useful regardless of the technique's ability to interpret the AP parameters to some degree. Combining these assumptions with a large set of sample data such as that provided by \citet{torres2014ujiindoorloc}, the EZ localisation component can then be developed independently of any crowd-sourcing or floor-plan modelling strategies that may follow.
-
-		\textcolor{blue}{Does this need any more of a wrap up? Are there any points I have missed?}
+        
+        Unfortunately, \citeauthor{chintalapudi2010indoor}'s implementation of EZ is proprietary property of Microsoft and as such was not available for inclusion in this project. Re-implementing the system however provides an opportunity to evaluate the specification provided against a number of non-functional metrics as well as the modelling accuracy. For example, re-implementation and testing against a new data set may highlight a number of hidden assumptions and scenarios in which the model is flawed impacting directly on its applications for the real world and the ease of development for a more novice team. This project's implementation will also be aligned with a different set of goals, such as extensibility and flexibility (with regards to parameters and components) as opposed to raw throughput that a commercial solution might strive for.
  
 	\chapter{Method}
     \label{chap:method}
@@ -219,9 +221,7 @@
 		\section{System Specification}
         \label{sec:sysspec}
             
-            \textcolor{red}{Main point is that the implementation was not available and the ability to do it in matlab instead is a side note!}
-            
-            The original implementation of EZ by \citeauthor{chintalapudi2010indoor} consisted of ``about 7000 lines of C\# and Python code'' encompassing all of the client-server communications, data gathering and off-line modelling /on-line localisation operations. By separating out the data processing elements of EZ from the rest of the system, this implementation of EZ can take advantage of languages with more powerful built-in mathematical functionality without worrying about handling sensors and external communications. As such this project will pursue an implementation in Matlab 2015b consuming a .CSV file of pre-gathered measurements and outputting two .CSV files containing all localised points and the AP parameters separately. This allows future efforts into crowd-sourcing to take advantage of techniques available to other languages while still piping data into this implementation of EZ. It will also allow floor plan modellers to be selective as to which types of data they wish to use to generate their models, again in their language and platform of choice.
+            Microsoft's proprietary implementation of EZ by \citeauthor{chintalapudi2010indoor} consisted of ``about 7000 lines of C\# and Python code'' encompassing all of the client-server communications, data gathering and off-line modelling /on-line localisation operations. By separating out the data processing elements of EZ from the rest of the system, this implementation of EZ can take advantage of languages with more powerful built-in mathematical functionality without worrying about handling sensors and external communications. As such this project will pursue an implementation in Matlab 2015b consuming a .CSV file of pre-gathered measurements and outputting two .CSV files containing all localised points and the AP parameters separately. This allows future efforts into crowd-sourcing to take advantage of techniques available to other languages while still piping data into this implementation of EZ. It will also allow floor plan modellers to be selective as to which types of data they wish to use to generate their models, again in their language and platform of choice.
             
             \begin{figure}[h]
             \label{fig:EZControl}
@@ -272,9 +272,7 @@
             
             Finally covered is the selection of specific data points to use when modelling through the use of hierarchical clustering. This clustering algorithm aims to group data points of 90\% or greater similarity and then nominate a representative from each group to be passed to the model. The algorithm is run twice on the same data set, but once to select the most useful Access Points (APSelect) and once to select the most useful measurement locations (LocSelect) for different reasons. APSelect is run to reduce the number of APs modelled as the team observed up to ``160 APs across a single office floor'', potentially leading to an over-constrained model and excessive modelling time. LocSelect however, is necessary to prevent biases in the model where too many measurements from the same location may reduce accuracy in others.
             
-            The ordering of these components is of course fixed as clustering data without correcting for gain could miss potential groupings and correcting the gain of already localised points would lead to inaccuracies. The components can however be avoided entirely (except for modelling) as \citeauthor{chintalapudi2010indoor} experimented with. This project will make comparisons of its implementation to their claims using their `\emph{LARGE}' data set as its size is comparable to a single floor of a building in that of the work by \citet{torres2014ujiindoorloc}.
-            
-            \textcolor{blue}{How to segue from specification to implementation? Crude to just say ``with the system now specified the implementation can begin''}
+            The ordering of these components is of course fixed as clustering data without correcting for gain could miss potential groupings and correcting the gain of already localised points would lead to inaccuracies. The components can however be avoided entirely (except for modelling) as \citeauthor{chintalapudi2010indoor} experimented with. This project will make comparisons of its implementation to their claims using their `\emph{LARGE}' data set as its size is more comparable to a single floor of a building in that of the work by \citet{torres2014ujiindoorloc}.
 		
 		\section{Data Preparation}
         \label{sec:dataprep}
@@ -293,17 +291,19 @@
             
             Because these relative gains are transitive (i.e. $\Delta G^{k_1k_3} = \Delta G^{k_1k_2} + \Delta G^{k_2k_3}$), any pairs of devices with proximate locations can then be chained together with other device pairs to create a system of simultaneous equations. Finally a random device as part of this system is selected and chosen to have some value of gain and so the system can be solved. As this is an estimate however, the equations are weighted according to their standard deviation or in effect their likelihood of being accurate.
            
-            Implementing this short specification however, leads to incorrect results. The main discrepancy is the selection of RSSI readings to include when comparing a pair of measurements. For completeness, the UJIIndoorLoc data set includes every invisible AP as a measurement of 100dB to mark it as an invalid measurement. If all readings (including invisible markers) are compared for a pair of measurements, then in spaces where only a small proportion of APs are visible at any given location, all locations will be deemed proximate as all invisible APs register a difference of $0$. The opposite however also causes problems, if only points visible at both locations are compared, then being equidistant from a single AP could cause the whole measurement to be deemed proximate. The solution is to compare all readings visible in either measurement, such if the measurement were to be localised using the set of points, they would be equal. However, including readings in this manner with the UJIIndoorLoc positive invisibility indicator causes any single difference in AP visibility, no matter how weak (i.e. -99dB), to be marked as not proximate in error. The simple fix was to change all 100dB readings to -100dB. \textcolor{blue}{Diagram ref}
+            Implementing this short specification however, leads to incorrect results. The main discrepancy is the selection of RSSI readings to include when comparing a pair of measurements. For completeness, the UJIIndoorLoc data set includes every invisible AP as a measurement of 100dB to mark it as an invalid measurement. If all readings (including invisible markers) are compared for a pair of measurements, then in spaces where only a small proportion of APs are visible at any given location, all locations will be deemed proximate as all invisible APs register a difference of $0$. The opposite however also causes problems, if only points visible at both locations are compared, then being equidistant from a single AP could cause the whole measurement to be deemed proximate (see Figure \ref{fig:overlap}). The solution is to compare all readings visible in either measurement, such if the measurement were to be localised using the set of points, they would be equal. However, including readings in this manner with the UJIIndoorLoc positive invisibility indicator causes any single difference in AP visibility, no matter how weak (i.e. -99dB), to be marked as not proximate in error. The simple fix was to change all 100dB readings to -100dB.
             
             \begin{figure}[h]
             	\centering
             	\begin{minipage}{0.45\textwidth}
             		\centering
+                    \label{fig:overlap}
             		\includegraphics[width=\textwidth]{single_overlap.jpg}
             		\caption{All locations demonstrated would be marked as proximate with $0$dB gain when only using APs visible at both locations.}
             	\end{minipage}\hfill
             	\begin{minipage}{0.45\textwidth}
             		\centering
+                    \label{fig:wall}
             		\includegraphics[width=1\textwidth]{wall.jpg}
             		\caption{Across wall case mistakenly marked as proximate with $0$dB gain.}
             	\end{minipage}
@@ -311,7 +311,7 @@
             
             With the specification implementation producing feasible results, it was at this point that the technique was to be validated against some known values. With no provided gain values for the devices in use by UJIIndoorLoc however, it was necessary to attempt to calculate them separately. To this end another relative gain estimator was created using the ground truth location values to specify exactly which pairs of measurements were proximate. The first major change was the addition of a general location translator to the data preparation phase as measurements were gathered within a few hundred metres of each other, but the latitude values started at \textasciitilde4,865,000m. The other major difference was a factor of speed. As the location comparison only needed to compare the difference between latitude and longitude as opposed to the average difference of up to 520 APs, the ground truth calculator performed \textcolor{red}{Profile RGEA and Ground Truth calculator for ballpark difference (i.e. 2 orders of magnitude faster)}.
             
-            Through experimentation and comparing the RGEA's output with the newly calculated values, several other faults of the implementation came to light. The first was that when calculating the average difference between measurements for inclusion in the set $M^{k_1k_2}$, it was meant to be the average \emph{absolute} difference being less than 3dB. Errors in light of this fault arose with measurements where readings balanced out with positive and negative differences (such as being opposite sides of a wall). For example the average difference of (-20dB, 20dB) for 2 APs is $0$dB, causing the points to be falsely identified as proximate with no relative gain. \textcolor{blue}{Diagram ref}
+            Through experimentation and comparing the RGEA's output with the newly calculated values, several other faults of the implementation came to light. The first was that when calculating the average difference between measurements for inclusion in the set $M^{k_1k_2}$, it was meant to be the average \emph{absolute} difference being less than 3dB. Errors in light of this fault arose with measurements where readings balanced out with positive and negative differences (such as being opposite sides of a wall). For example the average difference of (-20dB, 20dB) for 2 APs is $0$dB, causing the points to be falsely identified as proximate with no relative gain (see Figure 4.3).
             
             Despite removing the majority of the falsely proximate points through this fault, the technique would still produce a very small number proximate points for those that should have none in common due to random fluctuations in the RSSI. Because of the transitive nature of the relative gain, this lead the algorithm to attempt to include erroneous relationships in its system of simultaneous equations, rendering them either unsatisfiable or wildly overestimating the gain applied to certain devices. As such the simplest solution was to impose a minimum number of proximate points for a relative gain to be of great enough significance to consider in the system.
             
@@ -330,7 +330,7 @@
 	        
 	        In an attempt to minimise these issues, MATLAB's sparse matrices can be employed if making full comparisons per point (to little effect) but to get a less aggressive clustering, techniques explored during the creation of the RGEA can be employed. The first of these is to use a much simpler indicator as to whether the points might be similar before running the calculation, the most obvious of which is simply the set of non-zero measurements. If the set overlaps enough (differing in size dependent on the number of non-zero measurements per point) then a comparison over the union of both of these sets should be run.
 	        
-	        This idea can then be extended to only consider the high strength measurements from each point as they are the least prone to noise and likely to be reliable for modelling. By only considering measurements above a threshold this comparator also creates a 'zero' category where measurements for the point were not considered reliable enough and skipped entirely, providing a significant speed increase by immediately removing points from clustering. Removing these fringe-case measurements however, may also impact on a location's instant recognisability. For example, if an AP belongs to a neighbouring building and is only visible in a very small area on the edge of the building being modelled, then seeing that AP could immediately narrow down the location of the data point. The impact of these various attempts at data set reduction will be evaluated in section \ref{sec:modeleval}.
+	        This idea can then be extended to only consider the high strength measurements from each point as they are the least prone to noise and likely to be reliable for modelling. By only considering measurements above a threshold this comparator also creates a 'zero' category where measurements for the point were not considered reliable enough and skipped entirely, providing a significant speed increase by immediately removing points from clustering. Removing these fringe-case measurements however, may also impact on a location's instant recognisability. For example, if an AP belongs to a neighbouring building and is only visible in a very small area on the edge of the building being modelled, then seeing that AP could immediately narrow down the location of the data point (see Figure \ref{fig:fringe}). The impact of these various attempts at data set reduction will be evaluated in section \ref{sec:modeleval}.
 		
 		\section{Model Creation}
         \label{sec:modelcreation}
@@ -350,17 +350,19 @@
                 
                 The search space is constructed with reasonable allowances for signal transmission parameters (according to \citet{chintalapudi2010indoor}) and a bounded space around the included observations. Within that, the starting point is set as the average location of the included observations as might be common in a central AP deployment. This starting point is of lesser significance however, as simulated annealing provides a non-deterministic element to the gradient descent unlike other function minimisers, leading to less reliance on a good starting point. The main constraint on the simulated annealer is actually over the sufficiency of its output; given its semi-random, single solution nature, it is possible for the annealer to miss all plausible solutions and output a model-skewing set of bad AP parameters. As such, if the annealer's solution re-localises the modelling data to a median error of more than 10m, it is re-run up to a maximum of 10 times at which point the AP is deemed unsatisfiable and removed from the model.
                 
-                After attempting to model several APs it became apparent that a much larger proportion was being deemed unsatisfiable than initially anticipated, despite having a significant number of observations. The problem with these APs was that they appeared to be located on other floors of the same building. While theoretically plausible given enough data and time to model the extra dimension for AP placement, this project aimed to remain in the more proven 2D subspace (as demonstrated through the review of work in section \ref{sec:ips}). As such, the set of weak measurements coming through the floor to a small area was being interpreted as a large distance from the AP, but then being modelled laterally rather than vertically.
+                After attempting to model several APs it became apparent that a much larger proportion was being deemed unsatisfiable than initially anticipated, despite having a significant number of observations. The problem with these APs was that they appeared to be located on other floors of the same building. While theoretically plausible given enough data and time to model the extra dimension for AP placement, this project aimed to remain in the more proven 2D subspace (as demonstrated through the review of work in section \ref{sec:ips}). As such, the set of weak measurements coming through the floor to a small area was being interpreted as a large distance from the AP, but then being modelled laterally rather than vertically (see Figure 4.5).
                 
                 \begin{figure}[h]
                 	\centering
                 	\begin{minipage}{0.45\textwidth}
                 		\centering
+                        \label{fig:fringe}
                 		\includegraphics[width=0.7\textwidth]{fringe.jpg}
                 		\caption{Red area marking the localisable fringe-case zone of a building.}
                 	\end{minipage}\hfill
                 	\begin{minipage}{0.45\textwidth}
                 		\centering
+                        \label{fig:vertical}
                 		\includegraphics[width=0.7\textwidth]{vertical.jpg}
                 		\caption{Visual representation of the difference between modelling an AP vertically (red) and laterally (black).}
                 	\end{minipage}
