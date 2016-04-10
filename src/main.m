@@ -55,6 +55,18 @@ testData(:,522) = testData(:,522) - (min_long - bounds);
 
 %-----------------------------EZ-ALGORITHM--------------------------------%
 
+% Iterate over 2D subspaces
+for floor = floors
+for building = buildings
+for threshold = thresholds
+
+% Isolate a 2D sub-space (single floor of single building)
+rows = ((srcData(:,523) == floor) & (srcData(:,524) == building));
+dataSet = srcData(rows, :);
+normalisedData = 1 - (abs(dataSet(:, 1:520)) / 100);
+%normalisedData = normalisedData - mean(normalisedData);
+original_locations = dataSet(:, 521:522);
+
 % Relative Gain Estimation Algorithm
 if strcmp(RGEA_type,'none') == 0
     tic
@@ -69,6 +81,7 @@ if strcmp(RGEA_type,'none') == 0
         G = GroundRGEA(srcData(:, 1:520), srcData(:, 528), srcData(:,521:523));
     end
     for d = G'
+        % TODO: NEVER MODIFIES ACTUAL SOURCE DATA
         deviceMeas = srcData(srcData(:,528) == d(1), 1:520);
         visMeas = (deviceMeas(:,1:520) ~= 100) & (deviceMeas(:,1:520) ~= -100);
         deviceMeas(visMeas) = deviceMeas(visMeas) - d(2);
@@ -77,17 +90,6 @@ if strcmp(RGEA_type,'none') == 0
 else
     rgea_num = 0;
 end
-
-% Iterate over 2D subspaces
-for floor = floors
-for building = buildings
-for threshold = thresholds
-
-% Isolate a 2D sub-space (single floor of single building)
-rows = ((srcData(:,523) == floor) & (srcData(:,524) == building));
-dataSet = srcData(rows, :);
-normalisedData = 1 - (abs(dataSet(:, 1:520)) / 100);
-original_locations = dataSet(:, 521:522);
 
 % Artificial GPS restriction
 for j = 1:size(dataSet,1)

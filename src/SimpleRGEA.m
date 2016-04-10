@@ -5,11 +5,15 @@ function [ G ] = SimpleRGEA( J, K, ...
 %   K [in] - Vector of device IDs relating rows to device
 %   G [out] - Pairs of device IDs (1) to estimated gain (2)
 
-%{
-num_strongest_APs = 4;
-min_strong_overlap = 3;
-min_AP_strength = -90;
-%}
+if exist('num_strongest_APs', 'var') == 0
+    num_strongest_APs = 4;
+end
+if exist('min_strong_overlap', 'var') == 0
+    min_strong_overlap = 3;
+end
+if exist('min_AP_strength', 'var') == 0
+    min_AP_strength = -90;
+end
 
 D = sort(unique(K)); % List of device IDs
 J(J == 100) = -100; % Replace positive invisibility markers
@@ -61,7 +65,7 @@ for i = nchoosek(1:size(D,1), 2)'
         deltaG(i(1), i(2)) = mean(avg_diff(prox));
         sigma_deltaG(i(1), i(2)) = (1 / size(m, 1)) * sqrt(sum((avg_diff(prox) - deltaG(i(1), i(2))).^2));
     end
-    %fprintf('%f | %d:%d / %d\n', deltaG(i(1), i(2)), i(1), i(2), size(D,1))
+    fprintf('%f | %d:%d / %d\n', deltaG(i(1), i(2)), i(1), i(2), size(D,1))
 end
 
 % Solve least mean squares set of simultaneous equations

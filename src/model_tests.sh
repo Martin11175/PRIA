@@ -11,8 +11,8 @@ ips_types=( "'all'" ) #( "'all'" "'max'" )
 
 # Model generation parameters
 thresholds="[-100 -95 -90 -85 -80 -75 -70 -65 -60 -55 -50]"
-buildings="[0 1 2 3]"
-floors="[0 1 2 3 4]"
+buildings="[0 1 2]"
+floors="[0 1 2 3]"
 bounds=( 20 ) #( 0 5 10 15 20 25 30 40 50 75 100 )
 chances=( 100 ) #( 100 75 50 30 25 20 15 10 5 )
 
