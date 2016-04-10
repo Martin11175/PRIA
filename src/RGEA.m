@@ -1,11 +1,13 @@
-function [ G ] = RGEA( J, K )
+function [ G ] = RGEA( J, K, prox_threshold, min_AP_overlap )
 %RGEA EZ Relative Gain Estimation Algorithm
 %   J [in] - Matrix of RSSI measurements (APs as columns)
 %   K [in] - Vector of device IDs relating rows to device
 %   G [out] - Pairs of device IDs (1) to estimated gain (2)
 
+%{
 prox_threshold = 3;
 min_AP_overlap = 2;
+%}
 
 D = sort(unique(K)); % List of device IDs
 J(J == 100) = -100; % Replace positive invisibility markers to prevent skew
@@ -39,7 +41,7 @@ for i = nchoosek(1:size(D,1), 2)'
         deltaG(i(1), i(2)) = mean(avg_diff(prox));
         sigma_deltaG(i(1), i(2)) = (1 / sum(sum(prox))) * sqrt(sum((avg_diff(prox) - deltaG(i(1), i(2))).^2));
     end
-    fprintf('%f | %d:%d / %d\n', deltaG(i(1), i(2)), i(1), i(2), size(D,1))
+    %fprintf('%f | %d:%d / %d\n', deltaG(i(1), i(2)), i(1), i(2), size(D,1))
 end
 
 % Solve least mean squares set of simultaneous equations
@@ -63,6 +65,8 @@ end
 warning('off','MATLAB:rankDeficientMatrix');
 G = [D (C \ d)];
 warning('on','MATLAB:rankDeficientMatrix');
+
+G = deltaG;
 
 end
 
