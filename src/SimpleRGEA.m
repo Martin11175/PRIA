@@ -1,5 +1,5 @@
 function [ G ] = SimpleRGEA( J, K, ...
-    num_strongest_APs, min_strong_overlap, min_AP_strength )
+    min_AP_strength, num_strongest_APs, min_strong_overlap )
 %SimpleRGEA Simple Relative Gain Estimation Algorithm using strongest RSSIs
 %   J [in] - Matrix of RSSI measurements (APs as columns)
 %   K [in] - Vector of device IDs relating rows to device
@@ -87,5 +87,7 @@ end
 warning('off','MATLAB:rankDeficientMatrix');
 G = [D (C \ d)];
 warning('on','MATLAB:rankDeficientMatrix');
+
+G = deltaG;
 
 end

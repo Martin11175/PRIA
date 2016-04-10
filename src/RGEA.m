@@ -43,7 +43,7 @@ for i = nchoosek(1:size(D,1), 2)'
         deltaG(i(1), i(2)) = mean(avg_diff(prox));
         sigma_deltaG(i(1), i(2)) = (1 / sum(sum(prox))) * sqrt(sum((avg_diff(prox) - deltaG(i(1), i(2))).^2));
     end
-    fprintf('%f | %d:%d / %d\n', deltaG(i(1), i(2)), i(1), i(2), size(D,1))
+    %fprintf('%f | %d:%d / %d\n', deltaG(i(1), i(2)), i(1), i(2), size(D,1))
 end
 
 % Solve least mean squares set of simultaneous equations
@@ -67,6 +67,8 @@ end
 warning('off','MATLAB:rankDeficientMatrix');
 G = [D (C \ d)];
 warning('on','MATLAB:rankDeficientMatrix');
+
+G = deltaG;
 
 end
 
