@@ -72,19 +72,20 @@ if strcmp(RGEA_type,'none') == 0
     tic
     if strcmp(RGEA_type,'rgea') == 1
         rgea_num = 1;
-        G = RGEA(srcData(:, 1:520), srcData(:, 528));
+        G = RGEA(dataSet(:, 1:520), dataSet(:, 528));
     elseif strcmp(RGEA_type,'simple') == 1
         rgea_num = 2;
-        G = SimpleRGEA(srcData(:, 1:520), srcData(:, 528));
+        G = SimpleRGEA(dataSet(:, 1:520), dataSet(:, 528));
     else
         rgea_num = 3;
-        G = GroundRGEA(srcData(:, 1:520), srcData(:, 528), srcData(:,521:523));
+        G = GroundRGEA(dataSet(:, 1:520), dataSet(:, 528), dataSet(:,521:523));
     end
     for d = G'
-        % TODO: NEVER MODIFIES ACTUAL SOURCE DATA
-        deviceMeas = srcData(srcData(:,528) == d(1), 1:520);
-        visMeas = (deviceMeas(:,1:520) ~= 100) & (deviceMeas(:,1:520) ~= -100);
-        deviceMeas(visMeas) = deviceMeas(visMeas) - d(2);
+        visMeas = (dataSet(:,1:520) ~= 100) & (dataSet(:,1:520) ~= -100);
+        deviceMeas = dataSet(:,528) == d(1);
+        visMeas(~deviceMeas, :) = false;
+        totMeas = [visMeas, false(size(visMeas,1), 9)];
+        dataSet(totMeas) = dataSet(totMeas) - d(2);
     end
     toc
 else
@@ -209,6 +210,11 @@ while new_value_flag
                 I = I & ismember(1:520, order(1:4));
             end
             O = j(I);
+            if strcmp(RGEA_type,'none') == 0
+                if sum(G(:,1) == j(528)) > 0
+                    O = O - G(G(:,1) == j(528),2);
+                end
+            end
             C = APparams(I, :);
             
             if size(O,1) > 2
@@ -250,6 +256,11 @@ for j = test_dataSet'
         I(tmp(order(1:3))) = true;
     end
     O = j(I);
+    if strcmp(RGEA_type,'none') == 0
+        if sum(G(:,1) == j(528)) > 0
+            O = O - G(G(:,1) == j(528),2);
+        end
+    end
     C = APparams(I, :);
         
     if size(O,1) > 2

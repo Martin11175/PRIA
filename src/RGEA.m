@@ -68,7 +68,5 @@ warning('off','MATLAB:rankDeficientMatrix');
 G = [D (C \ d)];
 warning('on','MATLAB:rankDeficientMatrix');
 
-G = deltaG;
-
 end
 

@@ -11,16 +11,16 @@ srcData(:,521) = srcData(:,521) - min_lat;
 srcData(:,522) = srcData(:,522) - min_long;
 
 % Prepare summary files
+%{
 if exist('ez_relgain_summary.csv', 'file') == 0
     fprintf(fopen('ez_relgain_summary.csv', 'w'), ...
         'floor,building,prox_threshold,min_AP_overlap,gain_error\n');
 end
-%{
+%}
 if exist('h_relgain_summary.csv', 'file') == 0
     fprintf(fopen('h_relgain_summary.csv', 'w'), ...
         'floor,building,num_strongest_APs,min_AP_strength,min_strong_overlap,gain_error\n');
 end
-%}
 
 % Parameters to test
 % EZ
@@ -32,11 +32,12 @@ num_strongest = [ 2 3 4 5 7 10 ];
 min_strong_overlap = [ 2 3 4 5 6 ];
 
 % Test accuracy -----------------------------------------------------------
-for building = [ 0 1 2 ]
+for building = 2 %[ 0 1 2 ]
 %for floor = [ 0 1 2 3 ]
     
     %dataSet = ((srcData(:,523) == floor) & (srcData(:,524) == building));
     dataSet = (srcData(:,524) == building);
+    %dataSet = (srcData(:,523) == floor);
     
     % Set data up for test
     J = srcData(dataSet, 1:520);
@@ -48,18 +49,19 @@ for building = [ 0 1 2 ]
     g = GroundRGEA(J,K,X);
     
     % Run algortihms and write summaries
+    %{
     for prox = prox_threshold
         for overlap = min_AP_overlap
-            fprintf('F(%d) B(%d) | EZ: %d %d\n', -1, building, prox, overlap);
+            fprintf('F(%d) B(%d) | EZ: %d %d\n', floor, -1, prox, overlap);
             ez = RGEA(J,K,prox,overlap);
             
             dlmwrite('ez_relgain_summary.csv', ...
-                [-1, building, prox, overlap, sum(sum(abs(g - ez)))], ...
+                [floor, -1, prox, overlap, sum(sum(abs(g - ez)))], ...
                 'delimiter', ',', '-append');
         end
     end
+    %}
 
-    %{
     for strength = min_AP_strength
         for num_str = num_strongest
             for str_overlap = min_strong_overlap
@@ -72,7 +74,6 @@ for building = [ 0 1 2 ]
             end
         end
     end
-    %}
 
 end
 %end
