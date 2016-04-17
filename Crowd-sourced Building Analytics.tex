@@ -377,16 +377,104 @@
 	            Localisation of new data points using this model is a much simpler process, simply plugging in the observed RSSIs for all modelled APs into equation \ref{eq:EZdistance} to obtain an estimation of distance. As these APs also have a fixed location, so long as the data point can see at least 3 modelled APs the location of the data point can be found through trilateration. Even with the inaccuracies produced by random fluctuations in RSSIs, there should exist a single global minimum for distance error when solving for the latitude / longitude location. This combined with the fact that the solution only requires the two location parameters, it is just as effective and much faster to use a least-squared error simultaneous equation solver rather than including the overheads associated with a simulated annealer.
 	            
 	            It is unexplored at this point however as to how the selection of modelled APs from which the point is localised might affect accuracy. For example, during the AP propagation phase of modelling, a data point is localised as soon as enough of its observed APs are parametrised but it might be more effective to restrict localisation to more reliable measurements. To this end, using the thresholding technique from the modelling phase will impose this restriction, but the maximal set heuristic from other components can also be applied in a similar manner. By restricting localisation to over the strongest (and most likely reliable) RSSIs, the system might be able to achieve higher localisation accuracy by avoiding weaker conflicting measurements where possible without removing coverage outright that might occur from thresholding. As such the various combinations of restrictions, component types and localisation methods will be evaluated for accuracy in section \ref{sec:modeleval}.
+	            
+		\section{Summary}
+		
+			This chapter has described the process of creating an EZ-style IPS and the various tweaks required to make it more feasible in a larger real-world deployment. The original specification supplied by \citet{chintalapudi2010indoor} was broken down into a number of components through which the data can be pre-processed for reduced modelling time / increased localisation accuracy and explored independently. In every case, the specifications of the pre-processing components were found to be inaccurate, invalid in edge cases or simply not scalable to the size of the data set under test. Fixes for these issues were identified, implemented and then extended to other components where it could theoretically improve the overall modelling time or accuracy. 
+            
+            These modifications focused around simple changes that might remove less reliable or edge-case data points, namely through use of the maximum strength RSSIs per data point or removing any values below a certain threshold. While it was identified that these edge-cases could be used to easily identify very specific regions of the space being modelled, there currently exists no mechanism in this set of techniques to identify and represent them. Finally, the application of these modifications to the modelling and localisation component itself was investigated along with a reduction of the EZ specified genetic algorithm to a simulated annealer for significantly reduced implementation, run-time and evaluation complexity. Throughout this process a number of generic parameters were discussed; this in combination with the number of interchangeable components makes the upcoming experimental analysis a must in order to identify the most significant changes and combinations available.
         
 	\chapter{Evaluation}
     \label{chap:eval}
     
+        This chapter will identify objective measures of success from the outputs of each of the components discussed in chapter \ref{chap:method} and provide surrounding commentary. This process will require the design and implementation of a number of experiments running both individual components and combinations thereof over the aforementioned UJIIndoorLoc data set \cite{torres2014ujiindoorloc} to evaluate the system and techniques as a whole. Where possible, recommendations of parameters for general-case performance will be made and short-comings of the data set itself will be highlighted to assess the expected real-world performance of the system.
+    
 	    \section{Relative Gain Estimation}
 	    \label{sec:rgeaeval}
-	    
+        
+            The first component to be evaluated is the relative gain estimation algorithm as the accuracy of its results may have a strong impact on all subsequent components. Both the EZ and heuristic implementation of the RGEA have a small number of configurable parameters, but given their continuous nature an exhaustive search for a `best' combination would be intractable and likely fit specifically to this data set. To avoid this, a selection of values for each parameter across the most likely useful input range has been selected such that the tests are representative without becoming overwhelming (see figure \ref{fig:rgeaparams}). 
+            
+            As described in section \ref{sec:dataprep}, the parameters surrounding EZ's testing will be the average difference threshold below which the location is deemed proximate (\texttt{prox\_threshold}) and the minimum number of common APs observed between points (\texttt{min\_AP\_overlap}) before they are considered for calculation. The Heuristic method however will look for relative improvement with respect to the minimum strength for RSSIs to be considered (\texttt{min\_AP\_strength}), the size of the maximum set of measurements (\texttt{num\_strong\_APs}) and the required overlap across these sets for the points to be marked as proximate (\texttt{min\_strong\_overlap}).
+            
+            \begin{figure}
+                \label{fig:rgeaparams}
+                \centering
+                \begin{tabular}[h]{| c | c |}
+                    \hline
+                    Parameter & Range \\ \hline
+                    \texttt{prox\_threshold} & $2, 3, 4, 5, 7, 10$ \\
+                    \texttt{min\_AP\_overlap} & $1, 2, 3, 4, 5$ \\ \hline
+                    \texttt{min\_AP\_strength} & $-100, -90, -80, -70$ \\
+                    \texttt{num\_strong\_APs} & $2, 3, 4, 5, 7, 10$ \\
+                    \texttt{min\_strong\_overlap} & $2, 3, 4, 5, 6$ \\ \hline
+                \end{tabular}
+                \caption{Experimental parameter ranges for RGEA evaluation}
+            \end{figure}
+            
+            The experiments run will compare both technique's ability to identify relative gains against the values provided by the ground truth estimator run over the same data set as no actual values were provided for individual device gains. It is important to note that only relative gains can be compared rather than the output absolute values as a relative gain of +7dB between two devices could be interpreted as +7dB gain on one device or -7dB on the other, leading to a potential double of the error being reported for a correct gain calculation. First however, experiments will be run to see how efficiently each technique identifies proximate locations as a means of testing the validity of the theory surrounding them.
+
 		    \subsection{Proximity Determination}
+            
+                This experiment will run the proximity determination sub-components of each RGEA type against one another to report on their efficiency. This will be determined not only the percentage of proximate pairs available that are correctly defined as such, but also the ratio of correctly identified proximate pairs to falsely identified proximate pairs. These results should provide insight as to how useful the algorithm will be in practice as not many proximate pairs in general would demonstrate a pessimistic approach with little benefit to running the algorithm but a low chance of accidentally making it worse as well. An overly optimistic result with a large proportion of falsely proximate pairs however might do more harm than good on its inclusion by completely mangling the input data with non-existent gain differences.
+                
+                The selection of points deemed as proximate will be determined using the ground truth estimator that marks all pairs of measurements (across devices) within 1 meter of each other on the same floor. The input data for this first round of tests will be the entire UJIIndoorLoc data set, including all floors and buildings. The data will not be pre-processed in any way and only the ground truth estimator will be able to make use of the locations assigned to each point. It was theorised that use of the entire data set would be useful even when only modelling a 2D subspace as the gain applied to each device should be consistent, no matter the location. Identifying as many of the relative gain differences as possible would hopefully then reduce the artificial noise applied even in spaces where no proximate points exist. 
+                
+                The inclusion of other floors and buildings in a single pass shouldn't adversely affect the result (other than drastically increasing the run-time) as the RSSI gap / AP fingerprint between each floor and building should be significant enough such that no points across floors are marked as proximate. The pre-processing elements of this system are also deterministic unlike the modelling element, so each run should yield the same results.
+                
+                \begin{figure}[h]
+                	\label{fig:ez_overlap_prox}
+                	\centering
+                	\begin{minipage}{0.5\textwidth}
+                		\centering
+                		\includegraphics[width=1\textwidth]{ez_overlap_prox_correct.jpg}
+                	\end{minipage}\hfill
+                	\begin{minipage}{0.5\textwidth}
+                		\centering
+                		\includegraphics[width=1\textwidth]{ez_overlap_prox_false.jpg}
+                	\end{minipage}
+                	\caption{Effect of enforcing a larger minimum overlap on EZ's RGEA with respect to percentage of correctly identified proximate points (left, red) and the number of falsely identified proximate points per correct point (right, blue).}
+                \end{figure}
+                
+                \begin{figure}[h]
+                	\label{fig:ez_prox_prox}
+                	\centering
+                	\begin{minipage}{0.5\textwidth}
+                		\centering
+                		\includegraphics[width=1\textwidth]{ez_prox_prox_correct.jpg}
+                	\end{minipage}\hfill
+                	\begin{minipage}{0.5\textwidth}
+                		\centering
+                		\includegraphics[width=1\textwidth]{ez_prox_prox_false.jpg}
+                	\end{minipage}
+                	\caption{Effect of increasing the proximity threshold on EZ's RGEA with respect to percentage of correctly identified proximate points (left, red) and the number of falsely identified proximate points per correct point (right, blue).}
+                \end{figure}
+                
+                First to be discussed are the results of running EZ's RGEA over the data set while tuning the \texttt{prox\_threshold} and \texttt{min\_AP\_overlap} parameters. As shown in figure \ref{fig:ez_overlap_prox}, imposing a greater restriction on the minimum number of APs visible at both points to be considered had a minimal impact on the algorithms performance, even when only 1 common AP is required. This is likely due to the other restrictions over set comparison imposed in section \ref{sec:dataprep} rendering this metric less useful for accuracy. Profiling also revealed no significant change in run-time despite the reduction in calculations required. However, it is anticipated that this is due to the slow performance of Matlab's \texttt{ismember} function and could likely be improved with a more efficient comparison function.
+                
+                As was anticipated however, increasing the average RSSI difference threshold at which points are deemed proximate enforced a very strong relationship between the number of points correctly and falsely identified. What was not anticipated however was the rapid increase in correct-to-false ratio. The results shown in figure \ref{fig:ez_prox_prox} highlight a rapid increase in inclusion when the threshold is set above 5dB, including up to 5 times more correct results but up to 7 times more falsely proximate points than those extra valid results. The effect of increasing this threshold is theoretically simple, but the reason behind the sudden increase could result from a number of factors such as the inclusion threshold including some new devices directly rather than transitively. \citet{chintalapudi2010indoor} recommended a value of 3dB in their experiments at which ``RGEA estimates receiver gain differences accurately within 1-3dB''. This claim will be verified with subsequent testing in section \ref{sec:gainestimation}.
+                
+                Unfortunately, the extreme run-time of computing pair-wise similarity over the whole data set in combination with some unanticipated interruptions to experimentation lead to a very truncated data set from the heuristic evaluation (as shown in figure \ref{fig:h_prox_summary}). However, even from this small collection of points, some obvious conclusions can be drawn; first being the tremendous number of falsely proximate pairs. In the worst case, the heuristic RGEA is identifying 18 incorrect pairs for every 1 correct, more than 2.5 times that of the worst observed for EZ's method. However, the second point of note is that the heuristic method also finds 2.5 times more of the correct pairings, over 50\% in some cases. It should be noted though that the total number of potential pairs given the 19,000 strong data set is roughly 180,500,000, so the algorithm is still far from selecting every pair.
+                
+                \begin{figure}
+                	\label{fig:h_prox_summary}
+                	\centering
+                	\begin{tabular}[h]{| c | c | c | c | c |}
+                		\hline
+                		\texttt{min\_AP\_strength} & \texttt{min\_strong\_overlap} & Correct & Missed & False \\ \hline
+                		-100 & 2 & 66,406 & 63,284 & 1,200,000 \\
+                		-100 & 3 & 25,803 & 103,890 & 329,010 \\
+                		-90 & 2 & 66,118 & 63,572 & 1,186,700 \\
+                		-90 & 3 & 25,734 & 103,960 & 327000 \\
+                		-80 & 2 & 59,055 & 70,635 & 1,030,300 \\
+                		-80 & 3 & 23,707 & 105,980 & 289,420 \\ \hline
+                	\end{tabular}
+                	\caption{Experimental results from heuristic proximity checking with \texttt{num\_strong\_APs} set to 4}
+                \end{figure}
+                
+                Upon further investigation into the set of false pairs, it was found that significant number of pairs taken on different floors with over 10 meters lateral difference between them had almost identical maximal sets and an average difference of 2dB for each common maximum RSSI measurement. This type of accidental pairing would seem unavoidable according to the techniques employed here and as such a brief experiment was run to evaluate performance on the data set separated into the 2D subspaces across which modelling would be performed. Promisingly the heuristic algorithm identified the exact same set of correct pairs with a 20\% reduction in false-positives for parameters (\texttt{min\_AP\_strength}: -100, \texttt{min\_strong\_overlap}: 3). This bring's estimated performance in line with EZ's RGEA but reduces run time by roughly 25\%. While seemingly unreasonable (especially for any system relying directly on correct identification of proximate pairs), the impact of these excess points will now be evaluated in section \ref{sec:gainestimation}'s gain estimation experiments.
 		    
 		    \subsection{Gain Estimation}
+		    \label{sec:gainestimation}
 	    
 	    \section{Modelling Accuracy}
 	    \label{sec:modeleval}
@@ -397,15 +485,12 @@
 	
 		\textcolor{red}{Save actual quantifiable results for this section! Evaluate against requirements / massive discrepancies in method.}
 		\begin{itemize}
-			\item Parameter experimentation
 			\item Use PlotFloor to show difference between models with various pieces of the system included / excluded and parameters tweaked
 			\item Evaluate with noisy and partially localised data (explain how this is unrealistic though because we cannot tell what data around the edge would truly be localised, so we just remove the location from random points)
-            \item Independent vs. estimating every APs parameters at once?
 			\item Note EZ specifically says it works best with a large amount of data distributed across the whole area whereas UJIIndoorLoc provides with lots of measurements from the same locations. Will be interesting to see accuracy when used on an actual crowd-sourced deployment / samples collected from randomly generated locations.
 			\item Show validation as well as evaluation of new model - explain increasing threshold will remove potentially useful boundary cases, but remove a large amount of useless noisy data.
 			\item Validation should mainly be shown through qualitative justification and explanation, but can be done over a large number of tests (multiple runs on multiple floors and buildings) in the absence of mathematical proof.
 			\item Test same parameters across other data sets (library and computer lab) for consistent levels of accuracy
-            \item \textcolor{blue}{RGEA evaluations: RGEA pessimistic, Heuristic optimistic. On further inspection though, a number of those identified as false positives had differences of 2dB between the same three APs identified as strongest, but the measurements were taken a whole floor and over 10m laterally apart! Evaluation run over how effectively the points were determined as proximate as then you can compare only APs visible to both locations to avoid clipping of RSSIs below the detection threshold. Good gain estimation though despite false positives (at least on single floors)}
             \item Do a run where simulated annealing runs 1000 times or until it finds an error of < 3m. Does that significantly increase the model's accuracy?
             \item \textcolor{red}{HOW TO DISPLAY DATA}
 		\end{itemize}
