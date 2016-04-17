@@ -414,6 +414,7 @@
             The experiments run will compare both technique's ability to identify relative gains against the values provided by the ground truth estimator run over the same data set as no actual values were provided for individual device gains. It is important to note that only relative gains can be compared rather than the output absolute values as a relative gain of +7dB between two devices could be interpreted as +7dB gain on one device or -7dB on the other, leading to a potential double of the error being reported for a correct gain calculation. First however, experiments will be run to see how efficiently each technique identifies proximate locations as a means of testing the validity of the theory surrounding them.
 
 		    \subsection{Proximity Determination}
+            \label{sec:prox_est}
             
                 This experiment will run the proximity determination sub-components of each RGEA type against one another to report on their efficiency. This will be determined not only the percentage of proximate pairs available that are correctly defined as such, but also the ratio of correctly identified proximate pairs to falsely identified proximate pairs. These results should provide insight as to how useful the algorithm will be in practice as not many proximate pairs in general would demonstrate a pessimistic approach with little benefit to running the algorithm but a low chance of accidentally making it worse as well. An overly optimistic result with a large proportion of falsely proximate pairs however might do more harm than good on its inclusion by completely mangling the input data with non-existent gain differences.
                 
@@ -473,11 +474,62 @@
                 
                 Upon further investigation into the set of false pairs, it was found that significant number of pairs taken on different floors with over 10 meters lateral difference between them had almost identical maximal sets and an average difference of 2dB for each common maximum RSSI measurement. This type of accidental pairing would seem unavoidable according to the techniques employed here and as such a brief experiment was run to evaluate performance on the data set separated into the 2D subspaces across which modelling would be performed. Promisingly the heuristic algorithm identified the exact same set of correct pairs with a 20\% reduction in false-positives for parameters (\texttt{min\_AP\_strength}: -100, \texttt{min\_strong\_overlap}: 3). This bring's estimated performance in line with EZ's RGEA but reduces run time by roughly 25\%. While seemingly unreasonable (especially for any system relying directly on correct identification of proximate pairs), the impact of these excess points will now be evaluated in section \ref{sec:gainestimation}'s gain estimation experiments.
 		    
-		    \subsection{Gain Estimation}
+		    \subsection{Relative Gain Estimation}
 		    \label{sec:gainestimation}
+            
+                Ultimately, the amount of correctly estimated gain between pairs of devices is the best measure of the proximity metric's performance in this context. As discussed previously, both techniques find a disproportionately large number of falsely proximate pairs for each one correctly identified. This experiment will judge the extra included points' impact on the actual result. In order to test the validity of the application of these techniques over a number of spaces, each technique (and combination of parameters) will be run over the UJIIndoorLoc data set split into the 2D subspaces that will be used for modelling. The techniques will then be judged by their averaged performance over all spaces (for the best general-fit parameters) according to what percentage of the existing relative gain across all device pairs that they identify (calculated through the ground truth estimator).
+                
+                \begin{figure}[h]
+                    \label{fig:ez_comp}
+                    \centering
+                    \begin{minipage}{0.5\textwidth}
+                        \centering
+                        \includegraphics[width=1\textwidth]{ez_overlap.jpg}
+                    \end{minipage}\hfill
+                    \begin{minipage}{0.5\textwidth}
+                        \centering
+                        \includegraphics[width=1\textwidth]{ez_prox.jpg}
+                    \end{minipage}
+                    \caption{Effect of changing EZ's RGEA parameters on percentage of missed relative gain.}
+                \end{figure}
+                
+                First to be evaluated again are EZ's RGEA parameters. The graphs shown in figure \ref{fig:ez_comp} show the impact of tuning each parameter on the total percentage relative gain error. Each point shows the percentage relative gain error for a 2D subspace, averaged for all potential values of the other parameter (assuming independence). The blue line shown at 100\% shows the reference amount of gain error if no calculation were applied, while the grey line shows trend relating to tuning the parameter across all subspaces.
+                
+                In line with the results from section \ref{sec:prox_est}, increasing the minimum number of APs visible from both points in a potential pair appears to have no effect on the accuracy of the algorithm; maintaining roughly the same average and standard deviation of gain errors. Allowing a larger difference in gain's for proximate points however has a marked increase in potential to correctly recognise gain differences between devices. The greatest increase in performance is seen at around 7dB, where the majority of spaces had their gains corrected by roughly 30\% as opposed to EZ's claim that 3dB provided the best results. Increasing the gain threshold further appears to slightly decrease the median gain error, but the standard deviation takes a significant hit, potentially increasing the gain error by up to 150\%. When comparing these results to those found in the proximity experiments, the inclusion of more proximate pairs explains the increase in potential gain identified and those included erroneously seemingly bias the estimated gain towards $0$dB in the majority of cases, making EZ's gain estimation pessimistic, but safe.
+                
+                \begin{figure}[h]
+                    \label{fig:h_minAP}
+                    \centering
+                    \includegraphics[width=0.6\textwidth]{h_minAP.jpg}
+                    \caption{Effect of increasing the minimum measurement strength required for heuristic RGEA on percentage of missed relative gain.}
+                \end{figure}
+                
+                The results of testing the heuristic RGEA's performance however are much harder to analyse because of the strong relationship between \texttt{min\_strong\_overlap} and \texttt{num\_strong\_APs}. \texttt{min\_AP\_strength} however is assumed to have an independent effect over the accuracy of the algorithm and it's affect is displayed in figure \ref{fig:h_minAP}. Similar to the results shown in \ref{fig:h_prox_summary}, reducing the set analysed by imposing a minimum threshold reduces the number of pairs included globally and in correlation, the amount of gain that can be derived (as shown by the distribution clustering towards 100\% error with increased threshold).
+                
+                \begin{figure}[h]
+                    \label{fig:h_overlap}
+                    \centering
+                    \begin{minipage}{0.5\textwidth}
+                        \centering
+                        \includegraphics[width=1\textwidth]{h_overlap.jpg}
+                    \end{minipage}\hfill
+                    \begin{minipage}{0.5\textwidth}
+                        \centering
+                        \includegraphics[width=1\textwidth]{h_overlap_anomalous.jpg}
+                    \end{minipage}
+                    \caption{Effect of changing heuristic RGEA's maximal set parameters on percentage of missed relative gain. General distribution shown in red (left) and the anomalous subspace in blue (right).}
+                \end{figure}
+                
+                Shown in figure \ref{fig:h_overlap} is the relationship between the maximal set size and overlap (\texttt{num\_strong\_APs} and \texttt{min\_strong\_overlap}) and their effect on relative gain error. These results have had to be split because of the extreme outliers produced by one particular subspace (whose results are shown in blue on the right). In the worst case, this space produced 3 times more error than the rest of the data set with unknown cause and as such have been excluded to make the results of the general case clearer. 
+                
+                As was theorised in section \ref{sec:dataprep}, requiring the maximal set to overlap entirely produced no proximate points and as such no gain estimation. For small maximal sets (<5) however, allowing for a single difference between the sets provided extremely accurate estimations, with errors as low as 10\% total gain missed. Surprisingly, these results run contrary to the implied errors that could have arisen from the seemingly poor proximity estimation displayed in figure \ref{fig:h_prox_summary}. This implies that the proximity estimation displayed through using heuristic RGEA is more of a fingerprinting method, marking all points in a larger area, but in a way such that the errors caused by pairing points on opposite sides of the zone are balanced out overall. However, when these fingerprinting zones are set too large (>5), with too little overlap required (>2 less than the size of the set), the accuracy of the gain estimation drops significantly with much less certainty towards the outcome. 
+                
+                As a result, the recommended parameters for heuristic RGEA are \texttt{min\_AP\_strength}: -100, \texttt{num\_strong\_APs}:4, \texttt{min\_strong\_overlap}: 3. Estimation over the whole data set was tested, but the results are excluded because of the extreme skew provided by the inclusion of results from the subspace shown in figure \ref{fig:h_overlap}.
 	    
 	    \section{Modelling Accuracy}
 	    \label{sec:modeleval}
+        
+            Explain problems with data set and why not using RGEA to improve input.
 	    
 		    \subsection{Component Effectiveness}
 		    
@@ -490,12 +542,12 @@
 			\item Note EZ specifically says it works best with a large amount of data distributed across the whole area whereas UJIIndoorLoc provides with lots of measurements from the same locations. Will be interesting to see accuracy when used on an actual crowd-sourced deployment / samples collected from randomly generated locations.
 			\item Show validation as well as evaluation of new model - explain increasing threshold will remove potentially useful boundary cases, but remove a large amount of useless noisy data.
 			\item Validation should mainly be shown through qualitative justification and explanation, but can be done over a large number of tests (multiple runs on multiple floors and buildings) in the absence of mathematical proof.
-			\item Test same parameters across other data sets (library and computer lab) for consistent levels of accuracy
             \item Do a run where simulated annealing runs 1000 times or until it finds an error of < 3m. Does that significantly increase the model's accuracy?
             \item \textcolor{red}{HOW TO DISPLAY DATA}
 		\end{itemize}
-		
-		\textcolor{green}{\emph{\[GOOD PIECES WITHIN\]}Testing should show validation as well as evaluation of the new model. Validation could explain how increasing threshold level will remove APs from other floors, but also potentially remove small overlaps from nearby buildings (i.e. if an AP is visible only in a small area near the edge of the building, seeing that AP means the location must me in that space). A similar effect could potentially be observed across floors (i.e. the AP only being visible if the location is directly below it), but this would require a much wider domain for parameters, such as extremely low transmission powers or extremely high path loss rates. However, use of these extremes, could be identified and used to help place the AP on another floor with some defined loss across floors like the WAF used in RADAR.}
+        
+        \section{Summary}
+        
 	
 	\chapter{Conclusion}
     \label{chap:conclusion}
