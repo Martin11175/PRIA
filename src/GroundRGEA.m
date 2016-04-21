@@ -1,4 +1,4 @@
-function [ G ] = GroundRGEA( J, K, X )
+function [ G ] = GroundRGEA( J, K, X, prox_dst )
 %GroundRGEA Ground Truth Relative Gain Estimation Algorithm using location data
 %   J [in] - Matrix of RSSI measurements (APs as columns)
 %   K [in] - Vector of device IDs relating rows to device
@@ -12,6 +12,10 @@ J(J == 100) = -100; % Replace positive invisibility markers to prevent skew
 % Calculate relative gain between pairs of devices
 deltaG = zeros(size(D,1));
 sigma_deltaG = zeros(size(D,1)); % Uncertainty (estimated standard deviation)
+tot_prox = 0;
+if exist('prox_dst', 'var') == 0
+    prox_dst = 1;
+end
 
 for i = nchoosek(1:size(D,1), 2)'
     k_1 = J(K == D(i(1)), :);
@@ -23,12 +27,13 @@ for i = nchoosek(1:size(D,1), 2)'
     avg_diff = zeros(size(k_1, 1), size(k_2, 1));
     
     % Proximate on the same floor within 1m
-    prox = (abs(bsxfun(@minus, x_1(:,1), x_2(:,1)')) < 1 ...
-        & abs(bsxfun(@minus, x_1(:,2), x_2(:,2)')) < 1 ...
+    prox = (abs(bsxfun(@minus, x_1(:,1), x_2(:,1)')) < prox_dst ...
+        & abs(bsxfun(@minus, x_1(:,2), x_2(:,2)')) < prox_dst ...
         & bsxfun(@eq, x_1(:,3), x_2(:,3)'));
     [m, n] = find(prox);
     
     if size(m, 1) > 0
+        tot_prox = tot_prox + size(m,1);
         for p = [m n]'
             % Only compare visible APs
             vis = (k_1(p(1),:) > -100) & (k_2(p(2),:) > -100);
@@ -74,5 +79,7 @@ end
 warning('off','MATLAB:rankDeficientMatrix');
 G = [D (C \ d)];
 warning('on','MATLAB:rankDeficientMatrix');
+
+fprintf('%fm | %d\n', prox_dst, tot_prox);
 
 end

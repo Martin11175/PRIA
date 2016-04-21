@@ -15,20 +15,12 @@
 \wordcount{\textcolor{red}{TODO}}
 
 \abstract{
-	Estimate (for BSc!):
-	\begin{itemize}
-		\item Abstract, ethics statement, etc. - 500 \textcolor{red}{(0)}
-		\item Introduction - 1,000 \textcolor{green}{(881)}
-		\item Literature review - 3,000 \textcolor{green}{(4,104)}
-		\item Problem description/analysis - 1,500 \textcolor{green}{(1,350)}
-		\item Design and implementation - 2,500 \textcolor{green}{(3,707)}
-		\item Results and evaluation - 2,500 \textcolor{red}{(0)}
-		\item Conclusion - 1,000 \textcolor{red}{(0)}
-	\end{itemize}
-	\textcolor{red}{Total word count: 10,631 (including notes)}
+    This project aims to establish a framework around which building analytics systems can be built and evaluated. The set of building analytics systems are established as those performing crowd-sourced data gathering, indoor positioning (IPS) and generating automated schematics across a space. Upon reviewing a number techniques for each component, it was seen that most were disjoint, each operating on an undisclosed data set with a proprietary implementation of their own techniques and the systems being compared against. To remedy this a reference implementation of an IPS based on Microsoft's EZ IPS was developed to test against the UJIIndoorLoc data set as a common comparison point for future work. During development, a number of unnoted deficiencies were found, documented and resolved and a number of heuristic variants of components within EZ were created to handle the larger data sets. Evaluation of these techniques then showed median error values of <10\% of the size of the space (comparable with EZ's evaluation) while making use or markedly less complex algorithms. It is anticipated that this work will be continued with other projects building more variants are techniques around the provided software for great communal benefit.
 }
 
-\acknowledgements{Thanks to Iain Bate in his role of supervisor, without whom's support and guidance this project may never have seen success. Also thanks to \citeauthor{torres2014ujiindoorloc} for their eager responses and wide data set enabling great future insight and broad analysis.}
+\acknowledgements{
+    Thanks to Iain Bate in his role of supervisor, without whom's support and guidance this project may never have seen success. Also thanks to \citeauthor{torres2014ujiindoorloc} for their eager responses and wide data set enabling great future insight and broad analysis.
+}
 
 \begin{document}
 	
@@ -383,6 +375,8 @@
 			This chapter has described the process of creating an EZ-style IPS and the various tweaks required to make it more feasible in a larger real-world deployment. The original specification supplied by \citet{chintalapudi2010indoor} was broken down into a number of components through which the data can be pre-processed for reduced modelling time / increased localisation accuracy and explored independently. In every case, the specifications of the pre-processing components were found to be inaccurate, invalid in edge cases or simply not scalable to the size of the data set under test. Fixes for these issues were identified, implemented and then extended to other components where it could theoretically improve the overall modelling time or accuracy. 
             
             These modifications focused around simple changes that might remove less reliable or edge-case data points, namely through use of the maximum strength RSSIs per data point or removing any values below a certain threshold. While it was identified that these edge-cases could be used to easily identify very specific regions of the space being modelled, there currently exists no mechanism in this set of techniques to identify and represent them. Finally, the application of these modifications to the modelling and localisation component itself was investigated along with a reduction of the EZ specified genetic algorithm to a simulated annealer for significantly reduced implementation, run-time and evaluation complexity. Throughout this process a number of generic parameters were discussed; this in combination with the number of interchangeable components makes the upcoming experimental analysis a must in order to identify the most significant changes and combinations available.
+            
+            \textcolor{red}{MAKE CODE AVAILABLE IN PUBLIC REPOSITORY AND CITE}
         
 	\chapter{Evaluation}
     \label{chap:eval}
@@ -524,52 +518,106 @@
                 
                 As was theorised in section \ref{sec:dataprep}, requiring the maximal set to overlap entirely produced no proximate points and as such no gain estimation. For small maximal sets (<5) however, allowing for a single difference between the sets provided extremely accurate estimations, with errors as low as 10\% total gain missed. Surprisingly, these results run contrary to the implied errors that could have arisen from the seemingly poor proximity estimation displayed in figure \ref{fig:h_prox_summary}. This implies that the proximity estimation displayed through using heuristic RGEA is more of a fingerprinting method, marking all points in a larger area, but in a way such that the errors caused by pairing points on opposite sides of the zone are balanced out overall. However, when these fingerprinting zones are set too large (>5), with too little overlap required (>2 less than the size of the set), the accuracy of the gain estimation drops significantly with much less certainty towards the outcome. 
                 
-                As a result, the recommended parameters for heuristic RGEA are \texttt{min\_AP\_strength}: -100, \texttt{num\_strong\_APs}:4, \texttt{min\_strong\_overlap}: 3. Estimation over the whole data set was tested, but the results are excluded because of the extreme skew provided by the inclusion of results from the subspace shown in figure \ref{fig:h_overlap}.
+                As a result, the recommended parameters for heuristic RGEA are \texttt{min\_AP\_strength}: -100, \texttt{num\_strong\_APs}:4, \texttt{min\_strong\_overlap}: 3. Estimation over the whole data set was tested, but the results are excluded because of the extreme skew provided by the inclusion of results from the anomalous subspace shown in figure \ref{fig:h_overlap}.
 	    
 	    \section{Modelling Accuracy}
 	    \label{sec:modeleval}
         
-            Explain problems with data set and why not using RGEA to improve input.
+            In this section, the IPS will be evaluated as a whole against it's potential to localise data points in a 2D space. These results will help to validate the decisions made in section \ref{sec:modelcreation}, the theoretical assumptions made behind those decisions and the results boasted by \citeauthor{chintalapudi2010indoor}'s implementation \citep{chintalapudi2010indoor}.
+            
+            The `localisability' of each model is split into two metrics: the median distance error between the sets of estimated and actual locations of the test data points and the percentage of the test data points that are localisable within the modelled space. To this end, the UJIIndoorLoc data set is already split into source and test data subsets for techniques relying on the modelling data set to cover the entirety of the space under test such as this \citep{torres2014ujiindoorloc}. While having pre-defined test data sets removes the random factor normally associated with testing machine learning techniques, the fact that UJIIndoorLoc can be split into a number of independent 2D subspaces increases the validity of these experiments by taking the average performance over multiple environments rather than a randomly chosen subset of the same environment.
+            
+            \begin{figure}[h]
+                \label{fig:datapoints}
+                \centering
+                \includegraphics[width=0.6\textwidth]{datapoints.jpg}
+                \caption{Sample data point distribution for a single floor of a building from the UJIIndoorLoc data set \citep{torres2014ujiindoorloc}.}
+            \end{figure}
+            
+            It should be noted however that UJIIndoorLoc is not the ideal data set for testing EZ's modelling technique, merely the most complete and publicly available set for starting a framework in line with the project's goals. As shown in figure \ref{fig:datapoints}, samples were generally taken at the entrances to each logical space (i.e. rooms), but fails to represent the majority of traffic along corridors or distributed across larger open spaces. While it can be argued that the greatest impact on signal strength across a number of smaller rooms (such as an office environment) will be the walls (as modelled by RADAR's wall attenuation factor \citep{bahl2000radar}) and as such measurements within each space should have little variation, a truly organic data set gathered through crowd-sourcing would provide the most ecologically valid results.
+            
+            \subsection{Thresholding and Localisation}
+            
+	            The first component to be evaluated is the last component of the system: the modeller itself as this establishes a base-line around which any additions can be judged. As discussed previously, this experiment will demonstrate the average performance of the modeller over the set of 2D subspaces available in the UJIIndoorLoc data set with respect to any minimum RSSI threshold applied and the localisation technique used (see section \ref{sec:modelcreation}). The input data will assume the role of a sample data set; gathered with all data point locations known before modelling as to avoid employing AP propagation and provide a `best-case' scenario. No RGEA or other data preparation will be employed however as no actual ground truth values are provided, so the experiment avoids introducing any other sources of potential error.
+            
+                \begin{figure}[h]
+                    \label{fig:threshold}
+                    \centering
+                    \includegraphics[width=0.6\textwidth]{threshold.jpg}
+                    \caption{Effect of increasing the minimum RSSI strength required on the localisability of a given space.}
+                \end{figure}
+                
+                Figure \ref{fig:threshold} shows the benefit of taking advantage of the thresholding and maximum strength trilateration techniques described in section \ref{sec:modelcreation}. As anticipated, attempting to localise a data point based on every parameterised AP produced a large number of conflicting constraints as a single low-strength measurement carries the same weight as any one more likely reliable high-strength RSSI. Reducing the impact of low strength measurements through thresholding proves most effective at around -80dB, showing a reduction in error of roughly 30\% (8m) while maintaining >80\% coverage of the space. Increasing the threshold further however shows diminishing returns on error reduction at the cost of a rapidly decreasing coverage.
+                
+                Much more effective than reducing the set of RSSIs used for modelling though was reducing the set of RSSIs per point used for localisation. The results gathered in figure \ref{fig:threshold} show that restricting localisation of data points to the strongest 3 observed RSSIs reduces the median localisation error by just under half at no cost to the amount of localisable space. Thresholding in conjunction with this technique does still show an improvement by forcing the use of more reliable measurements when modelling, but a much less significant 12\% (1.5m) reduction in error for the same penalty to localisable space.
+                
+                Following the success of the maximum strength localisation technique, a second experiment was devised to assess the impact of using simulated annealing over the full genetic algorithm specified by \citet{chintalapudi2010indoor}. In this experiment, the modeller was run over the same set of subspaces with no minimum RSSI threshold using the same maximum strength localiser, but the simulated annealer was allowed to run 100 times when modelling and select the best result as opposed to only enforcing a minimum fitness as defined in section \ref{sec:modelcreation}. The objective here is to emulate the number of solutions explored by a full genetic algorithm and show how an improved fitness for each AP would affect the accuracy of the models in the general case.
+                  
+                \begin{figure}
+                    \label{fig:uber}
+                    \centering
+                    \begin{tabular}[h]{| c | c | c | c |}
+                        \hline
+                        Building ID & Floor ID & Minimum (m) & 100 runs maximum (m)  \\ \hline
+                        0 & 0 & 8.17 & 9.19 \\
+                        0 & 1 & 10.94 & 10.75 \\
+                        0 & 2 & 7.97 & 13.45 \\
+                        0 & 3 & 7.59 & 10.42 \\
+                        1 & 0 & 10.9 & 9.91 \\
+                        1 & 1 & 12.97 & 14.25 \\
+                        1 & 2 & 18.57 & 16.5 \\
+                        1 & 3 & 12.37 & 10.22 \\
+                        2 & 0 & 21.72 & 14.72 \\
+                        2 & 1 & 10.2 & 11.62 \\
+                        2 & 2 & 13.2 & 16.74 \\
+                        2 & 3 & 14.96 & 11.28 \\ \hline
+                        \multicolumn{2}{| c |}{Mean} & 12.46 & 12.42 \\ \hline
+                    \end{tabular}
+                    \caption{Localisation error comparison between a minimum fitness simulated annealer and 100 runs selecting the best fit to the modelling data. Both runs created models localising 98\% of test data points.}
+                \end{figure}
+                
+                Surprisingly, the results in figure \ref{fig:uber} show no significant change in general accuracy with a more thorough exploration of the solution space. This result is very positive when evaluated against the project's goals as it demonstrates that a representative set of parameters can be generated even with a much shorter modelling phase (up to 100 times faster), allowing for more combinations of techniques to be evaluated in a short period.
 	    
-		    \subsection{Component Effectiveness}
+		    \subsection{Clustering Effectiveness}
+            
+                \textcolor{red}{APSelect - \% of APs parameterised against localisability.}
+                
+                \textcolor{red}{LocSelect - More experimental issues (server kept shutting off), review available data, accuracy \emph{should} increase for no cost to coverage.}
 		    
 		    \subsection{Restricted Modelling Performance}
-	
-		\textcolor{red}{Save actual quantifiable results for this section! Evaluate against requirements / massive discrepancies in method.}
-		\begin{itemize}
-			\item Use PlotFloor to show difference between models with various pieces of the system included / excluded and parameters tweaked
-			\item Evaluate with noisy and partially localised data (explain how this is unrealistic though because we cannot tell what data around the edge would truly be localised, so we just remove the location from random points)
-			\item Note EZ specifically says it works best with a large amount of data distributed across the whole area whereas UJIIndoorLoc provides with lots of measurements from the same locations. Will be interesting to see accuracy when used on an actual crowd-sourced deployment / samples collected from randomly generated locations.
-			\item Show validation as well as evaluation of new model - explain increasing threshold will remove potentially useful boundary cases, but remove a large amount of useless noisy data.
-			\item Validation should mainly be shown through qualitative justification and explanation, but can be done over a large number of tests (multiple runs on multiple floors and buildings) in the absence of mathematical proof.
-            \item Do a run where simulated annealing runs 1000 times or until it finds an error of < 3m. Does that significantly increase the model's accuracy?
-            \item \textcolor{red}{HOW TO DISPLAY DATA}
-		\end{itemize}
+            
+                \textcolor{red}{Evaluate with noisy and partially localised data (explain how this is unrealistic though because we cannot tell what data around the edge would truly be localised, so we just remove the location from random points).}
         
         \section{Summary}
         
+            \textcolor{red}{Summarise.}
+            
+            \textcolor{red}{MAKE TESTS AVAILABLE IN PUBLIC REPOSITORY AND CITE}
 	
 	\chapter{Conclusion}
     \label{chap:conclusion}
     
-	    \begin{itemize}
-	    	\item Crowd-sourced building analytics is a large field requiring multiple components to operate, but each piece is independent enough to allow for development by small teams
-	    	\item Components are underspecified from model given by paper
-	    	\item Effectiveness of initial EZ model does not stretch to larger / more complex areas under modelling
-	    	\item Heuristic components improve on speed and accuracy of EZ's IPS
-	    	\item Framework now prepared for future work on crowd-sourced building analytics
-	    \end{itemize}
+        This final chapter will review the work carried out over the life cycle of the project and identify a set of potential further work topics. As the initial set of project aims were relatively broad, the literature review in chapter \ref{chap:related} was necessary to explore the set of deliverables that this project could focus on. The review itself showed how the combined fields of crowd-sourcing, indoor positioning systems and automated floor planning that might make up a building analytics framework are diverse, continually growing but seemingly disjoint with no studies looking into their combined power and the effectiveness thereof. With no common comparison points between systems even within the same field, the necessity of an evaluation framework was further exemplified.
+        
+        In chapter \ref{chap:problem}, the solution space was then reviewed and a starting point identified. While the whole building analytics framework was deemed to be of too grand a scale for a one man project, it was foreseen that each component be developed independently by a small team and combined at a later date. From here, it was thought that the most useful first component to build would be an indoor positioning system as it would provide the largest base around which to build the other components and techniques in future studies. Of the surveyed IPS techniques, the EZ IPS components were selected as being most in line with the project aims, requiring no prior knowledge of the building being modelled, consisting of modular components viable for re-use and experimentation alongside other techniques and being able to make use of the freely available UJIIndoorLoc data set for comparisons against future work \citep{chintalapudi2010indoor, torres2014ujiindoorloc}.
+        
+        With no reference implementation available, chapter \ref{chap:method} set about creating one for use as part the future framework. With a different set of goals in mind, creating a new version proved advantageous, allowing for a different set of design decisions including implementation language and general structure. Implementing based on EZ's specification alone however proved problematic, with numerous edge cases, details left unspecified and requiring a number of fixes to make the system compatible with a 1,000 reading data set (more representative of a crowd-sourced scenario) as opposed to the 101 tested \citep{chintalapudi2010indoor}. Along with the fixes, a number of heuristic approximations were devised to reduce run-time complexity while maintaining performance over larger data sets, primarily based around quick and cheap focussing on more reliable RSSI values.
+        
+        Finally, a comprehensive series of tests was run over this project's implementation in chapter \ref{chap:eval}. As this project is looking to have techniques and components re-used in other applications, the general purpose performance of each part was considered as well as its application as part of the IPS (see proximate point identification and relative gain estimation in section \ref{sec:rgeaeval}). While general purpose performance proved poor, the application of simple heuristic techniques in tandem with the principles garnered from EZ performed amicably, with localisation errors of <10\% of the space modelled in a much shorter time frame than EZ's 7+ hours. The suitability of the data set used was also evaluated and found to be less than optimal, but useful as an initial comparison point.
+        
+        These results of course are not anticipated to compete with state-of-the-art given the diversity of potential techniques to be applied and results from other studies show that techniques such as Horus attain the highest accuracy when given extremely thorough data sets \cite{youssef2005horus}. However, given the lack of reference implementations for many of these techniques, the project goal of encouraging collaborative development towards a comprehensive building analytics framework has been achieved through the identification of comparable techniques, a data set and metric to compare them by and providing a reference implementation around which to build.
 	    
-	    Further Work:
-	    \begin{itemize}
-	    	\item Validation against a real-world crowd sourced data set necessary
-	    	\item Make use of absence of signal / fringe cases
-	    	\item Compare AP model info to ground truth AP parameters
-	    	\item Model 3D space through either inclusion of 3rd dimension or model 3D as a set of 2D layers
-	    	\item Horus methodology - use strongest measurements to define fingerprinted area, then use weaker measurements to refine position
-	    \end{itemize}
+	    \section{Further Work}
+        
+            Given the developmental nature of the overarching project aims, there are still several pieces of short-term work to be done before this could truly be considered a framework. The first of which would be the creation and of a truly crowd-sourced data set. This would likely need to be backed up by regularly spaced sample readings with ground truth locations across the space, but given a complete set of sensor readings with total coverage might help to identify at what locations each sensor can be relied upon. For example, in the UJIIndoorLoc data set it is unknown as to at which point GPS signal is lost and so incomplete data set tests were unlikely to be representative. The application of techniques developed here on this new data set would also help to verify performance comparisons in other future works.
+            
+            The second would be some implementation of an automated floor plan generator as discussed in section \ref{sec:floorplans}. Using a data set with a more completely defined environment (such as that promised by \citet{JoaquinEmail}), comparison between theoretical models generated and the ground truth behind them would be possible, potentially paving the way for a representative comparison metric to be developed.
+            
+            With at least one of every component in place, more long term comparisons can then be developed, evaluating techniques and combinations thereof to identify more situational strengths and weaknesses. Particular cases that could be taken advantage of might be edge-case APs (such as those shown in figures 4.4 and 4.5) to aid with immediately recognising small areas or the fact that an AP is not visible to take into account when defining likelihood of a particular location. These in combination with a Horus-style fingerprinting of the space could lead to extremely precise localisation by recursively eliminating unlikely locations, but it could ultimately be one of the largest indoor positioning systems (in terms of complexity) to date.
+
+            One final foreseeable extension to current techniques is that of the third dimension. Theoretically, when applied to EZ, an extra parameter for elevation of access points and data points should only require one extra observation to uniquely determine. While this could be approximated through use of stacked 2D spaces, for a truly 3D approach a data set in kind will need to be gathered for technique comparison. Only once a 3D space of significant size can be efficiently monitored, localised and mapped with no significant human effort will this framework truly be complete.
     
-    \textcolor{red}{\emph{MAKE SURE YOU CHECK YOUR REFERENCES ARE CORRECT!}}
+            \textcolor{red}{\emph{MAKE SURE YOU CHECK YOUR REFERENCES ARE CORRECT!}}
         
     \bibliography{report.bib}
 	
