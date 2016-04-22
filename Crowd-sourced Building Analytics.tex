@@ -5,6 +5,8 @@
 \usepackage{color}
 \usepackage{graphicx}
 \usepackage{tikz}
+\usepackage{array}
+\usepackage{multirow}
 \usetikzlibrary{positioning,shapes.geometric}
 
 \title{Towards a Building Modelling Framework: Heuristic-EZ}
@@ -21,6 +23,8 @@
 \acknowledgements{
     Thanks to Iain Bate in his role of supervisor, without whom's support and guidance this project may never have seen success. Also thanks to \citeauthor{torres2014ujiindoorloc} for their eager responses and wide data set enabling great future insight and broad analysis.
 }
+
+\newcolumntype{L}{>{\centering\arraybackslash}m{2cm}}
 
 \begin{document}
 	
@@ -580,17 +584,38 @@
 	    
 		    \subsection{Clustering Effectiveness}
             
-                \textcolor{red}{APSelect - \% of APs parameterised against localisability.}
-                
-                \textcolor{red}{LocSelect - More experimental issues (server kept shutting off), review available data, accuracy \emph{should} increase for no cost to coverage.}
-		    
-		    \subsection{Restricted Modelling Performance}
+                Given the increased data set size and area under observation compared to those demonstrated by \citet{chintalapudi2010indoor}, it was noted in section \ref{sec:datacluster} that the use of hierarchical clustering over the UJIIndoorLoc data set might eliminate bias and reduce the modelling time when compared against modelling all observations. As such, this experiment is designed to represent the changes imposed on the generated model through the implementation of APSelect and LocSelect. To avoid over experimentation, each form of APSelect and LocSelect will be applied to the most interesting parameters of the previous experiment,most notably the threshold levels of -100 and -80 dB and both localisation techniques. Metrics reported will be the \% of APs observed after thresholding is applied that are parameterised by the finished model and the same localisability metrics from the previous section to demonstrate impact on the model's accuracy.
             
-                \textcolor{red}{Evaluate with noisy and partially localised data (explain how this is unrealistic though because we cannot tell what data around the edge would truly be localised, so we just remove the location from random points).}
+                \begin{figure}
+                    \label{fig:apselect}
+                    \centering
+                    \begin{tabular}[h]{| L | L | c | c | L | c | c | L |}
+                        \hline
+                        \multirow{2}{*}{\parbox{2cm}{\centering \vspace{.6\baselineskip} Localisation Method}} & \multirow{2}{*}{\parbox{2cm}{\centering \vspace{.6\baselineskip} APSelect Type}} & \multicolumn{3}{c |}{-100dB Threshold} & \multicolumn{3}{c |}{-80dB Threshold} \\ \cline{3-8}
+                        & & \% APs & \% Loc & Avg. Med. Err. (m) & \% APs & \% Loc & Avg. Med. Err. (m) \\ \hline
+                        \multirow{3}{*}{EZ} & None & 100 & 98 & 22.5 & 100 & 86 & 15.1 \\
+                        & EZ & 25 & 87 & 22.4 & 39 & 58 & 16.4 \\
+                        & Heuristic & 77 & 96 & 23.7 & 75 & 72 & 16.6 \\ \hline
+                        \multirow{3}{*}{Heuristic} & None & 100 & 99 & 11.9 & 100 & 85 & 11.1 \\
+                        & EZ & 25 & 91 & 16.7 & 39 & 56 & 15.7 \\
+                        & Heuristic & 77 & 98 & 14.8 & 75 & 72 & 13.1 \\ \hline
+                    \end{tabular}
+                    \caption{Impact of using different variants of the APSelect algorithm on model size and accuracy, averaged across all tested subspaces.}
+                \end{figure}
+                
+                Figure \ref{fig:apselect} shows the average results of multiple runs of this experiment over each 2D subspace with differing combinations of the EZ APSelect and localisation components. In \citeauthor{chintalapudi2010indoor}'s study, only the first two results of the -100dB threshold column were evaluated and their findings are replicated here. When using the EZ localisation scheme and APSelect algorithm, the size of the model can be reduced by over 75\% for minimal penalty to localisability. However, when APSelect is run over the heuristic (maximal) localisation scheme, the lack of model completeness significantly reduces the median accuracy. 
+                
+                Similarly, reducing the number of parameterised APs through both thresholding and APSelect appears to reduce the accuracy of the new model. It is noteworthy though that thresholding is only a linear operation, where hierarchical clustering is significantly more complex. Thus it would seem that the APSelect is much less useful when applied generally as the only result benefiting from its inclusion is the most basic EZ implementation. 
+                
+                While the heuristic APSelect appears to perform more favourably with respect to localisability, this is likely due to it less efficiently identifying redundant APs as its application to the most basic localisation technique actually increases error with less APs removed. Unfortunately, the heuristic clustering mechanism appears to have failed as a whole as it was originally intended to add a small decision overhead to avoid performing large redundant calculations. However, this 4-value set intersection check in Matlab is much less efficient than performing the actual 520-value calculation and as such increases the run time of each check significantly.
+                
+                This was intended to make LocSelect over larger data sets more feasible, as explained in section \ref{sec:datacluster}, the pairwise similarity checking behind hierarchical clustering grows in complexity rapidly enough that LocSelect over 1,000 data points was rendered computationally intractable. However, due to a number of interruptions to the experimentation environment and the unexpected poor performance of the heuristic approximation, no results were able to be gathered to demonstrate the effectiveness of LocSelect, though it is theorised it may improve the accuracy of the model by removing bias towards any one heavily measured location.
         
         \section{Summary}
         
-            \textcolor{red}{Summarise.}
+            This chapter has demonstrated the combined and individual performances of each component part of the EZ IPS and their variants in both their IPS application and general purpose performance where applicable. The accuracy of models created using the original EZ components was shown to degrade over large, irregular data sets such as UJIIndoorLoc compared to the initial statistics gathered by \citet{chintalapudi2010indoor}, but using the simple modifications developed in this project, a significant improvement was shown and recommended parameters were extracted.
+            
+            While the components were tested in order to verify \citeauthor{chintalapudi2010indoor}'s findings and to provide a base-line against which future techniques can be evaluated, the UJIIndoorLoc data set was also briefly evaluated for its validity when tested against \citep{torres2014ujiindoorloc}. The fact that the 3D space could be broken down into a number of 2D subspaces for validation of general purpose performance was a major positive, the distribution of data points however was found to be less representative of a set of measurements that might be gather through natural crowd-sourced movements. This combined with the lack of indication of GPS visibility highlighted the need for a truly crowd-sourced data set for the most ecologically valid evaluation as while a random removal of modelling data locations might seem like an adequate emulation, over a data set of this size it is unlikely that AP propagation would be stimulated for any models with representative coverage.
             
             \textcolor{red}{MAKE TESTS AVAILABLE IN PUBLIC REPOSITORY AND CITE}
 	
@@ -606,18 +631,16 @@
         Finally, a comprehensive series of tests was run over this project's implementation in chapter \ref{chap:eval}. As this project is looking to have techniques and components re-used in other applications, the general purpose performance of each part was considered as well as its application as part of the IPS (see proximate point identification and relative gain estimation in section \ref{sec:rgeaeval}). While general purpose performance proved poor, the application of simple heuristic techniques in tandem with the principles garnered from EZ performed amicably, with localisation errors of <10\% of the space modelled in a much shorter time frame than EZ's 7+ hours. The suitability of the data set used was also evaluated and found to be less than optimal, but useful as an initial comparison point.
         
         These results of course are not anticipated to compete with state-of-the-art given the diversity of potential techniques to be applied and results from other studies show that techniques such as Horus attain the highest accuracy when given extremely thorough data sets \cite{youssef2005horus}. However, given the lack of reference implementations for many of these techniques, the project goal of encouraging collaborative development towards a comprehensive building analytics framework has been achieved through the identification of comparable techniques, a data set and metric to compare them by and providing a reference implementation around which to build.
-	    
-	    \section{Further Work}
         
-            Given the developmental nature of the overarching project aims, there are still several pieces of short-term work to be done before this could truly be considered a framework. The first of which would be the creation and of a truly crowd-sourced data set. This would likely need to be backed up by regularly spaced sample readings with ground truth locations across the space, but given a complete set of sensor readings with total coverage might help to identify at what locations each sensor can be relied upon. For example, in the UJIIndoorLoc data set it is unknown as to at which point GPS signal is lost and so incomplete data set tests were unlikely to be representative. The application of techniques developed here on this new data set would also help to verify performance comparisons in other future works.
+        Given the developmental nature of the overarching project aims, there are still several pieces of short-term work to be done before this could truly be considered a framework. The first of which would be the creation and of a truly crowd-sourced data set. This would likely need to be backed up by regularly spaced sample readings with ground truth locations across the space, but given a complete set of sensor readings with total coverage might help to identify at what locations each sensor can be relied upon. For example, in the UJIIndoorLoc data set it is unknown as to at which point GPS signal is lost and so incomplete data set tests were unlikely to be representative. The application of techniques developed here on this new data set would also help to verify performance comparisons in other future works.
             
-            The second would be some implementation of an automated floor plan generator as discussed in section \ref{sec:floorplans}. Using a data set with a more completely defined environment (such as that promised by \citet{JoaquinEmail}), comparison between theoretical models generated and the ground truth behind them would be possible, potentially paving the way for a representative comparison metric to be developed.
+        The second would be some implementation of an automated floor plan generator as discussed in section \ref{sec:floorplans}. Using a data set with a more completely defined environment (such as that promised by \citet{JoaquinEmail}), comparison between theoretical models generated and the ground truth behind them would be possible, potentially paving the way for a representative comparison metric to be developed.
             
-            With at least one of every component in place, more long term comparisons can then be developed, evaluating techniques and combinations thereof to identify more situational strengths and weaknesses. Particular cases that could be taken advantage of might be edge-case APs (such as those shown in figures 4.4 and 4.5) to aid with immediately recognising small areas or the fact that an AP is not visible to take into account when defining likelihood of a particular location. These in combination with a Horus-style fingerprinting of the space could lead to extremely precise localisation by recursively eliminating unlikely locations, but it could ultimately be one of the largest indoor positioning systems (in terms of complexity) to date.
+        With at least one of every component in place, more long term comparisons can then be developed, evaluating techniques and combinations thereof to identify more situational strengths and weaknesses. Particular cases that could be taken advantage of might be edge-case APs (such as those shown in figures 4.4 and 4.5) to aid with immediately recognising small areas or the fact that an AP is not visible to take into account when defining likelihood of a particular location. These in combination with a Horus-style fingerprinting of the space could lead to extremely precise localisation by recursively eliminating unlikely locations, but it could ultimately be one of the largest indoor positioning systems (in terms of complexity) to date.
 
-            One final foreseeable extension to current techniques is that of the third dimension. Theoretically, when applied to EZ, an extra parameter for elevation of access points and data points should only require one extra observation to uniquely determine. While this could be approximated through use of stacked 2D spaces, for a truly 3D approach a data set in kind will need to be gathered for technique comparison. Only once a 3D space of significant size can be efficiently monitored, localised and mapped with no significant human effort will this framework truly be complete.
+        One final foreseeable extension to current techniques is that of the third dimension. Theoretically, when applied to EZ, an extra parameter for elevation of access points and data points should only require one extra observation to uniquely determine. While this could be approximated through use of stacked 2D spaces, for a truly 3D approach a data set in kind will need to be gathered for technique comparison. Only once a 3D space of significant size can be efficiently monitored, localised and mapped with no significant human effort will this framework truly be complete.
     
-            \textcolor{red}{\emph{MAKE SURE YOU CHECK YOUR REFERENCES ARE CORRECT!}}
+        \textcolor{red}{\emph{MAKE SURE YOU CHECK YOUR REFERENCES ARE CORRECT!}}
         
     \bibliography{report.bib}
 	

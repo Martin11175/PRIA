@@ -24,7 +24,5 @@
 \contentsline {section}{\numberline {5.2}Modelling Accuracy}{36}{section.5.2}
 \contentsline {subsection}{\numberline {5.2.1}Thresholding and Localisation}{37}{subsection.5.2.1}
 \contentsline {subsection}{\numberline {5.2.2}Clustering Effectiveness}{39}{subsection.5.2.2}
-\contentsline {subsection}{\numberline {5.2.3}Restricted Modelling Performance}{39}{subsection.5.2.3}
-\contentsline {section}{\numberline {5.3}Summary}{39}{section.5.3}
-\contentsline {chapter}{\numberline {6}Conclusion}{40}{chapter.6}
-\contentsline {section}{\numberline {6.1}Further Work}{41}{section.6.1}
+\contentsline {section}{\numberline {5.3}Summary}{40}{section.5.3}
+\contentsline {chapter}{\numberline {6}Conclusion}{41}{chapter.6}

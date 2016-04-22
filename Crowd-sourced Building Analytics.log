@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2015.9.4)  20 APR 2016 20:58
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2015.9.4)  22 APR 2016 17:11
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -755,7 +755,16 @@ File: pgfmodulematrix.code.tex 2013/09/17  (rcs-revision 1.8)
 (c:/texlive/2015/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzli
 brarytopaths.code.tex
 File: tikzlibrarytopaths.code.tex 2008/06/17 v3.0.1a (rcs-revision 1.2)
-)))
+))) (c:/texlive/2015/texmf-dist/tex/latex/tools/array.sty
+Package: array 2014/10/28 v2.4c Tabular extension package (FMi)
+\col@sep=\dimen166
+\extrarowheight=\dimen167
+\NC@list=\toks33
+\extratabsurround=\skip56
+\backup@length=\skip57
+) (c:/texlive/2015/texmf-dist/tex/latex/multirow/multirow.sty
+\bigstrutjot=\dimen168
+)
 (c:/texlive/2015/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzli
 brarypositioning.code.tex
 File: tikzlibrarypositioning.code.tex 2008/10/06 v3.0.1a (rcs-revision 1.7)
@@ -772,28 +781,28 @@ File: pgflibraryshapes.geometric.code.tex 2008/06/26 v3.0.1a (rcs-revision 1.1)
 )) (./Crowd-sourced Building Analytics.aux)
 \openout1 = `"Crowd-sourced Building Analytics.aux"'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 25.
-LaTeX Font Info:    ... okay on input line 25.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 25.
-LaTeX Font Info:    ... okay on input line 25.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 25.
-LaTeX Font Info:    ... okay on input line 25.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 25.
-LaTeX Font Info:    ... okay on input line 25.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 25.
-LaTeX Font Info:    ... okay on input line 25.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 25.
-LaTeX Font Info:    ... okay on input line 25.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 25.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 25.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 29.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 29.
 
 (c:/texlive/2015/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 25.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 25.
-LaTeX Font Info:    ... okay on input line 25.
-LaTeX Info: Redefining \microtypecontext on input line 25.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Info: Redefining \microtypecontext on input line 29.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
@@ -808,7 +817,7 @@ Package microtype Info: No adjustment of character kerning.
 File: mt-ppl.cfg 2005/11/16 v1.6 microtype config. file: Palatino (RS)
 )
 \AtBeginShipoutBox=\box40
-Package hyperref Info: Link coloring OFF on input line 25.
+Package hyperref Info: Link coloring OFF on input line 29.
 
 (c:/texlive/2015/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
@@ -818,9 +827,9 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
 \c@section@level=\count135
 )
-LaTeX Info: Redefining \ref on input line 25.
-LaTeX Info: Redefining \pageref on input line 25.
-LaTeX Info: Redefining \nameref on input line 25.
+LaTeX Info: Redefining \ref on input line 29.
+LaTeX Info: Redefining \pageref on input line 29.
+LaTeX Info: Redefining \nameref on input line 29.
 
 (./Crowd-sourced Building Analytics.out)
 (./Crowd-sourced Building Analytics.out)
@@ -831,16 +840,16 @@ LaTeX Info: Redefining \nameref on input line 25.
 (c:/texlive/2015/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count136
-\scratchdimen=\dimen166
+\scratchdimen=\dimen169
 \scratchbox=\box41
 \nofMPsegments=\count137
 \nofMParguments=\count138
-\everyMPshowfont=\toks33
+\everyMPshowfont=\toks34
 \MPscratchCnt=\count139
-\MPscratchDim=\dimen167
+\MPscratchDim=\dimen170
 \MPnumerator=\count140
 \makeMPintoPDFobject=\count141
-\everyMPtoPDFconversion=\toks34
+\everyMPtoPDFconversion=\toks35
 ) (c:/texlive/2015/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
 
@@ -858,54 +867,54 @@ e
 ))
 ABD: EveryShipout initializing macros
 LaTeX Font Info:    Font shape `T1/pplj/bx/n' in size <10.95> not available
-(Font)              Font shape `T1/pplj/b/n' tried instead on input line 27.
+(Font)              Font shape `T1/pplj/b/n' tried instead on input line 31.
 LaTeX Font Info:    Font shape `T1/pplj/bx/n' in size <14.4> not available
-(Font)              Font shape `T1/pplj/b/n' tried instead on input line 27.
+(Font)              Font shape `T1/pplj/b/n' tried instead on input line 31.
 LaTeX Font Info:    Font shape `T1/pplj/bx/n' in size <12> not available
-(Font)              Font shape `T1/pplj/b/n' tried instead on input line 27.
-LaTeX Font Info:    Try loading font information for T1+phv on input line 27.
+(Font)              Font shape `T1/pplj/b/n' tried instead on input line 31.
+LaTeX Font Info:    Try loading font information for T1+phv on input line 31.
 
 (c:/texlive/2015/texmf-dist/tex/latex/psnfss/t1phv.fd
 File: t1phv.fd 2001/06/04 scalable font definitions for T1/phv.
 )
 LaTeX Font Info:    Font shape `T1/phv/m/n' will be
-(Font)              scaled to size 9.85492pt on input line 27.
+(Font)              scaled to size 9.85492pt on input line 31.
 Package microtype Info: Loading generic settings for font family
 (microtype)             `phv' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <10.95> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 27.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 31.
 LaTeX Font Info:    Font shape `T1/phv/b/n' will be
-(Font)              scaled to size 9.85492pt on input line 27.
+(Font)              scaled to size 9.85492pt on input line 31.
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <20.74> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 27.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 31.
 LaTeX Font Info:    Font shape `T1/phv/b/n' will be
-(Font)              scaled to size 18.66588pt on input line 27.
-LaTeX Font Info:    Try loading font information for OT1+ppl on input line 27.
+(Font)              scaled to size 18.66588pt on input line 31.
+LaTeX Font Info:    Try loading font information for OT1+ppl on input line 31.
 
 (c:/texlive/2015/texmf-dist/tex/latex/psnfss/ot1ppl.fd
 File: ot1ppl.fd 2001/06/04 font definitions for OT1/ppl.
 )
-LaTeX Font Info:    Try loading font information for OML+zplm on input line 27.
+LaTeX Font Info:    Try loading font information for OML+zplm on input line 31.
 
 
 (c:/texlive/2015/texmf-dist/tex/latex/psnfss/omlzplm.fd
 File: omlzplm.fd 2002/09/08 Fontinst v1.914 font definitions for OML/zplm.
 )
-LaTeX Font Info:    Try loading font information for OMS+zplm on input line 27.
+LaTeX Font Info:    Try loading font information for OMS+zplm on input line 31.
 
 
 (c:/texlive/2015/texmf-dist/tex/latex/psnfss/omszplm.fd
 File: omszplm.fd 2002/09/08 Fontinst v1.914 font definitions for OMS/zplm.
 )
-LaTeX Font Info:    Try loading font information for OMX+zplm on input line 27.
+LaTeX Font Info:    Try loading font information for OMX+zplm on input line 31.
 
 
 (c:/texlive/2015/texmf-dist/tex/latex/psnfss/omxzplm.fd
 File: omxzplm.fd 2002/09/08 Fontinst v1.914 font definitions for OMX/zplm.
 )
-LaTeX Font Info:    Try loading font information for OT1+zplm on input line 27.
+LaTeX Font Info:    Try loading font information for OT1+zplm on input line 31.
 
 
 (c:/texlive/2015/texmf-dist/tex/latex/psnfss/ot1zplm.fd
@@ -916,7 +925,7 @@ Package microtype Info: Loading generic settings for font family
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 LaTeX Font Info:    Font shape `T1/phv/m/n' will be
-(Font)              scaled to size 10.79993pt on input line 27.
+(Font)              scaled to size 10.79993pt on input line 31.
  [1
 
 
@@ -931,7 +940,7 @@ LaTeX Font Info:    Font shape `T1/phv/m/n' will be
 
 
 ]
-Package tocbasic Info: character protrusion at toc deactivated on input line 27
+Package tocbasic Info: character protrusion at toc deactivated on input line 31
 .
 
 (./Crowd-sourced Building Analytics.toc)
@@ -942,7 +951,7 @@ Package tocbasic Info: character protrusion at toc deactivated on input line 27
 
 ]
 chapter 1.
-LaTeX Font Info:    Try loading font information for TS1+pplj on input line 42.
+LaTeX Font Info:    Try loading font information for TS1+pplj on input line 46.
 
 (c:/texlive/2015/texmf-dist/tex/latex/psnfss/ts1pplj.fd
 File: ts1pplj.fd 2004/09/06 font definitions for TS1/pplj.
@@ -951,9 +960,9 @@ File: ts1pplj.fd 2004/09/06 font definitions for TS1/pplj.
 ] [9]
 chapter 2.
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <14.4> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 62.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 66.
 LaTeX Font Info:    Font shape `T1/phv/b/n' will be
-(Font)              scaled to size 12.9599pt on input line 62.
+(Font)              scaled to size 12.9599pt on input line 66.
 
 Underfull \vbox (badness 5417) has occurred while \output is active []
 
@@ -964,33 +973,33 @@ Underfull \vbox (badness 1701) has occurred while \output is active []
 
  [11]
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <12> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 93.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 97.
 LaTeX Font Info:    Font shape `T1/phv/b/n' will be
-(Font)              scaled to size 10.79993pt on input line 93.
+(Font)              scaled to size 10.79993pt on input line 97.
 
 Underfull \vbox (badness 4726) has occurred while \output is active []
 
  [12]
-<Model_M2.png, id=247, 285.31593pt x 523.9575pt>
+<Model_M2.png, id=237, 285.31593pt x 523.9575pt>
 File: Model_M2.png Graphic file (type png)
  <use Model_M2.png>
-Package pdftex.def Info: Model_M2.png used on input line 117.
+Package pdftex.def Info: Model_M2.png used on input line 121.
 (pdftex.def)             Requested size: 135.89175pt x 249.55397pt.
- [13 <./Model_M2.png>] <dead.png, id=270, 845.40843pt x 491.58656pt>
+ [13 <./Model_M2.png>] <dead.png, id=260, 845.40843pt x 491.58656pt>
 File: dead.png Graphic file (type png)
  <use dead.png>
-Package pdftex.def Info: dead.png used on input line 135.
+Package pdftex.def Info: dead.png used on input line 139.
 (pdftex.def)             Requested size: 317.07619pt x 184.367pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 [14] [15 <./dead.png>]
-<EZHorusRADARComparison.png, id=292, 734.745pt x 566.86781pt>
+<EZHorusRADARComparison.png, id=282, 734.745pt x 566.86781pt>
 File: EZHorusRADARComparison.png Graphic file (type png)
 
 <use EZHorusRADARComparison.png>
-Package pdftex.def Info: EZHorusRADARComparison.png used on input line 158.
+Package pdftex.def Info: EZHorusRADARComparison.png used on input line 162.
 (pdftex.def)             Requested size: 317.07619pt x 244.63068pt.
  [16 <./EZHorusRADARComparison.png>] [17]
 [18]
@@ -1000,7 +1009,7 @@ chapter 3.
 ] [20] [21]
 chapter 4.
 
-Overfull \hbox (1.23798pt too wide) in paragraph at lines 251--251
+Overfull \hbox (1.23798pt too wide) in paragraph at lines 255--255
  [][][][]\T1/pplj/m/n/10.95 (-20) Localised 
  []
 
@@ -1010,33 +1019,33 @@ Overfull \hbox (1.23798pt too wide) in paragraph at lines 251--251
 Underfull \vbox (badness 2698) has occurred while \output is active []
 
  [23]
-<single_overlap.jpg, id=367, 415.5525pt x 213.04594pt>
+<single_overlap.jpg, id=357, 415.5525pt x 213.04594pt>
 File: single_overlap.jpg Graphic file (type jpg)
 
 <use single_overlap.jpg>
-Package pdftex.def Info: single_overlap.jpg used on input line 289.
+Package pdftex.def Info: single_overlap.jpg used on input line 293.
 (pdftex.def)             Requested size: 203.8342pt x 104.50069pt.
 
-Underfull \hbox (badness 6047) in paragraph at lines 290--290
+Underfull \hbox (badness 6047) in paragraph at lines 294--294
 []\T1/pplj/m/n/10.95 (+20) All loc-a-tions demon-strated
  []
 
-<wall.jpg, id=368, 331.2375pt x 249.93375pt>
+<wall.jpg, id=358, 331.2375pt x 249.93375pt>
 File: wall.jpg Graphic file (type jpg)
  <use wall.jpg>
-Package pdftex.def Info: wall.jpg used on input line 295.
+Package pdftex.def Info: wall.jpg used on input line 299.
 (pdftex.def)             Requested size: 203.8342pt x 153.80177pt.
  [24 <./single_overlap.jpg> <./wall.jpg>] [25] [26]
-<fringe.jpg, id=399, 219.06844pt x 225.09094pt>
+<fringe.jpg, id=389, 219.06844pt x 225.09094pt>
 File: fringe.jpg Graphic file (type jpg)
  <use fringe.jpg>
-Package pdftex.def Info: fringe.jpg used on input line 348.
+Package pdftex.def Info: fringe.jpg used on input line 352.
 (pdftex.def)             Requested size: 142.6833pt x 146.60617pt.
 
-<vertical.jpg, id=400, 239.39438pt x 270.25969pt>
+<vertical.jpg, id=390, 239.39438pt x 270.25969pt>
 File: vertical.jpg Graphic file (type jpg)
  <use vertical.jpg>
-Package pdftex.def Info: vertical.jpg used on input line 354.
+Package pdftex.def Info: vertical.jpg used on input line 358.
 (pdftex.def)             Requested size: 142.6833pt x 161.08073pt.
 
 
@@ -1047,7 +1056,7 @@ Underfull \vbox (badness 1226) has occurred while \output is active []
 
  [28 <./fringe.jpg> <./vertical.jpg>] [29] [30]
 chapter 5.
-LaTeX Font Info:    Try loading font information for T1+pcr on input line 391.
+LaTeX Font Info:    Try loading font information for T1+pcr on input line 395.
 (c:/texlive/2015/texmf-dist/tex/latex/psnfss/t1pcr.fd
 File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
 )
@@ -1058,104 +1067,117 @@ Package microtype Info: Loading generic settings for font family
  [31
 
 ]
-<ez_overlap_prox_correct.jpg, id=437, 562.1pt x 421.575pt>
+<ez_overlap_prox_correct.jpg, id=426, 421.575pt x 316.18124pt>
 File: ez_overlap_prox_correct.jpg Graphic file (type jpg)
 
 <use ez_overlap_prox_correct.jpg>
-Package pdftex.def Info: ez_overlap_prox_correct.jpg used on input line 424.
-(pdftex.def)             Requested size: 226.48398pt x 169.86208pt.
+Package pdftex.def Info: ez_overlap_prox_correct.jpg used on input line 428.
+(pdftex.def)             Requested size: 226.48398pt x 169.86691pt.
 
-<ez_overlap_prox_false.jpg, id=438, 562.1pt x 421.575pt>
+<ez_overlap_prox_false.jpg, id=427, 421.575pt x 316.18124pt>
 File: ez_overlap_prox_false.jpg Graphic file (type jpg)
 
 <use ez_overlap_prox_false.jpg>
-Package pdftex.def Info: ez_overlap_prox_false.jpg used on input line 428.
-(pdftex.def)             Requested size: 226.48398pt x 169.86208pt.
+Package pdftex.def Info: ez_overlap_prox_false.jpg used on input line 432.
+(pdftex.def)             Requested size: 226.48398pt x 169.86691pt.
 
-<ez_prox_prox_correct.jpg, id=439, 562.1pt x 421.575pt>
+<ez_prox_prox_correct.jpg, id=428, 421.575pt x 316.18124pt>
 File: ez_prox_prox_correct.jpg Graphic file (type jpg)
 
 <use ez_prox_prox_correct.jpg>
-Package pdftex.def Info: ez_prox_prox_correct.jpg used on input line 438.
-(pdftex.def)             Requested size: 226.48398pt x 169.86208pt.
+Package pdftex.def Info: ez_prox_prox_correct.jpg used on input line 442.
+(pdftex.def)             Requested size: 226.48398pt x 169.86691pt.
 
-<ez_prox_prox_false.jpg, id=440, 562.1pt x 421.575pt>
+<ez_prox_prox_false.jpg, id=429, 421.575pt x 316.18124pt>
 File: ez_prox_prox_false.jpg Graphic file (type jpg)
 
 <use ez_prox_prox_false.jpg>
-Package pdftex.def Info: ez_prox_prox_false.jpg used on input line 442.
-(pdftex.def)             Requested size: 226.48398pt x 169.86208pt.
+Package pdftex.def Info: ez_prox_prox_false.jpg used on input line 446.
+(pdftex.def)             Requested size: 226.48398pt x 169.86691pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 [32 <./ez_overlap_prox_correct.jpg> <./ez_overlap_prox_false.jpg>] [33 <./ez_pr
 ox_prox_correct.jpg> <./ez_prox_prox_false.jpg>]
-<ez_overlap.jpg, id=459, 562.1pt x 421.575pt>
+<ez_overlap.jpg, id=449, 562.1pt x 421.575pt>
 File: ez_overlap.jpg Graphic file (type jpg)
  <use ez_overlap.jpg>
-Package pdftex.def Info: ez_overlap.jpg used on input line 481.
+Package pdftex.def Info: ez_overlap.jpg used on input line 485.
 (pdftex.def)             Requested size: 226.48398pt x 169.86208pt.
 
-<ez_prox.jpg, id=460, 562.1pt x 421.575pt>
+<ez_prox.jpg, id=450, 562.1pt x 421.575pt>
 File: ez_prox.jpg Graphic file (type jpg)
  <use ez_prox.jpg>
-Package pdftex.def Info: ez_prox.jpg used on input line 485.
+Package pdftex.def Info: ez_prox.jpg used on input line 489.
 (pdftex.def)             Requested size: 226.48398pt x 169.86208pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[34] <h_minAP.jpg, id=468, 562.1pt x 421.575pt>
+[34] <h_minAP.jpg, id=458, 562.1pt x 421.575pt>
 File: h_minAP.jpg Graphic file (type jpg)
  <use h_minAP.jpg>
-Package pdftex.def Info: h_minAP.jpg used on input line 497.
+Package pdftex.def Info: h_minAP.jpg used on input line 501.
 (pdftex.def)             Requested size: 271.78352pt x 203.83322pt.
 
-<h_overlap.jpg, id=471, 562.1pt x 421.575pt>
+<h_overlap.jpg, id=461, 562.1pt x 421.575pt>
 File: h_overlap.jpg Graphic file (type jpg)
  <use h_overlap.jpg>
-Package pdftex.def Info: h_overlap.jpg used on input line 508.
+Package pdftex.def Info: h_overlap.jpg used on input line 512.
 (pdftex.def)             Requested size: 226.48398pt x 169.86208pt.
 
-<h_overlap_anomalous.jpg, id=472, 562.1pt x 421.575pt>
+<h_overlap_anomalous.jpg, id=462, 562.1pt x 421.575pt>
 File: h_overlap_anomalous.jpg Graphic file (type jpg)
 
 <use h_overlap_anomalous.jpg>
-Package pdftex.def Info: h_overlap_anomalous.jpg used on input line 512.
+Package pdftex.def Info: h_overlap_anomalous.jpg used on input line 516.
 (pdftex.def)             Requested size: 226.48398pt x 169.86208pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Overfull \hbox (31.44118pt too wide) in paragraph at lines 517--518
+Overfull \hbox (31.44118pt too wide) in paragraph at lines 521--522
 []\T1/pplj/m/n/10.95 (-20) Shown in fig-ure []5.7[] is the re-la-tion-ship betw
 een the max-imal set size and over-lap (\T1/pcr/m/n/10.95 num_strong_APs
  []
 
 [35 <./ez_overlap.jpg> <./ez_prox.jpg> <./h_minAP.jpg>] [36 <./h_overlap.jpg> <
-./h_overlap_anomalous.jpg>] <datapoints.jpg, id=492, 562.1pt x 421.575pt>
+./h_overlap_anomalous.jpg>] <datapoints.jpg, id=482, 562.1pt x 421.575pt>
 File: datapoints.jpg Graphic file (type jpg)
 
 <use datapoints.jpg>
-Package pdftex.def Info: datapoints.jpg used on input line 533.
+Package pdftex.def Info: datapoints.jpg used on input line 537.
 (pdftex.def)             Requested size: 271.78352pt x 203.83322pt.
- <threshold.jpg, id=498, 562.1pt x 421.575pt>
+ <threshold.jpg, id=488, 562.1pt x 421.575pt>
 File: threshold.jpg Graphic file (type jpg)
 
 <use threshold.jpg>
-Package pdftex.def Info: threshold.jpg used on input line 546.
+Package pdftex.def Info: threshold.jpg used on input line 550.
 (pdftex.def)             Requested size: 271.78352pt x 203.83322pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[37 <./datapoints.jpg>] [38 <./threshold.jpg>] [39]
-chapter 6.
-[40
+[37 <./datapoints.jpg>] [38 <./threshold.jpg>]
+Overfull \hbox (0.52673pt too wide) in paragraph at lines 594--594
+ []\T1/pplj/m/n/10.95 (-20) Localisation 
+ []
 
-] (./Crowd-sourced Building Analytics.bbl [41]
+
+Overfull \vbox (2.71782pt too high) detected at line 594
+ []
+
+
+Overfull \vbox (5.58125pt too high) detected at line 594
+ []
+
+[39] [40]
+chapter 6.
+[41
+
+] (./Crowd-sourced Building Analytics.bbl [42]
 Underfull \hbox (badness 10000) in paragraph at lines 43--47
 [][] \T1/pplj/m/n/10.95 (+20) In-ter-na-tional, ``Its in-ter-na-tional - wire-l
 ess traffic man-age-ment
@@ -1179,27 +1201,27 @@ Underfull \hbox (badness 4341) in paragraph at lines 43--47
 d-[]commute-[]times/$[], [Ac-cessed: Nov.
  []
 
-[42
+[43
 
-]) [43]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 624.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 624.
+]) [44]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 647.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 647.
  (./Crowd-sourced Building Analytics.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 624.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 624.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 647.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 647.
 Package rerunfilecheck Info: File `"Crowd-sourced Building Analytics".out' has 
 not changed.
-(rerunfilecheck)             Checksum: 4766F4EE25E490B22092CEB249C195D1;1870.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 624.
+(rerunfilecheck)             Checksum: 3B39F2F7825AE59072398BD0271B74DB;1725.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 647.
  ) 
 Here is how much of TeX's memory you used:
- 21872 strings out of 493091
- 400869 string characters out of 6138532
- 560078 words of memory out of 5000000
- 24497 multiletter control sequences out of 15000+600000
+ 21938 strings out of 493091
+ 401855 string characters out of 6138532
+ 565086 words of memory out of 5000000
+ 24556 multiletter control sequences out of 15000+600000
  73673 words of font info for 331 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 64i,12n,68p,2173b,862s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 64i,14n,68p,2173b,862s stack positions out of 5000i,500n,10000p,200000b,80000s
 {c:/texlive/2015/texmf-dist/fonts/enc/dvips/base/8r.enc}<c:/texlive/2015/texm
 f-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><c:/texlive/2015/texmf-dist/fo
 nts/type1/public/amsfonts/cm/cmmi10.pfb><c:/texlive/2015/texmf-dist/fonts/type1
@@ -1213,11 +1235,11 @@ c/uhvb8a.pfb><c:/texlive/2015/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb><c
 :/texlive/2015/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb><c:/texlive/2015/
 texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb><c:/texlive/2015/texmf-dist/font
 s/type1/urw/palatino/uplri8a.pfb>
-Output written on "Crowd-sourced Building Analytics.pdf" (43 pages, 663627 byte
+Output written on "Crowd-sourced Building Analytics.pdf" (44 pages, 713530 byte
 s).
 PDF statistics:
- 638 PDF objects out of 1000 (max. 8388607)
- 548 compressed objects within 6 object streams
+ 641 PDF objects out of 1000 (max. 8388607)
+ 550 compressed objects within 6 object streams
  121 named destinations out of 1000 (max. 500000)
- 41295 words of extra memory for PDF output out of 42996 (max. 10000000)
+ 41279 words of extra memory for PDF output out of 42996 (max. 10000000)
 
